@@ -1,4 +1,4 @@
-const C='ngplus-v1';
+const C='ngplus-v2';
 const FILES=['./','./index.html','./manifest.json','./icon-180.png','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>{
   self.skipWaiting();

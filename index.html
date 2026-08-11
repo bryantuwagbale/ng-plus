@@ -167,6 +167,10 @@ input[type=number]{-moz-appearance:textfield}
 .reset{margin-top:30px;text-align:center}
 .reset button{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#5F5A4B}
 .err{border:1px solid var(--blood);padding:9px 11px;font-size:12.5px;margin-top:12px;color:#D4655A}
+
+.gate.act{border-color:var(--line)}
+.gate.act .w,.gate.act .n{color:var(--parch)}
+.gate.act .w{width:46px}
 .hide{display:none !important}
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);opacity:0;
   background:var(--stone-2);border:1px solid var(--gold);color:var(--gold-hi);
@@ -243,6 +247,21 @@ input[type=number]{-moz-appearance:textfield}
     </button>
   </section>
 
+
+  <!-- SESSION -->
+  <section>
+    <div class="sec-head"><h2>Session</h2><span class="rule"></span><span class="meta" id="sessMeta"></span></div>
+    <div class="panel">
+      <div class="bar-top">
+        <div class="bar-w" id="sessName">A</div>
+        <div class="eyebrow">Up next</div>
+      </div>
+      <div class="gates" id="sessList" style="margin-top:13px"></div>
+      <button class="btn" id="doneSess" style="width:100%;margin-top:13px">Session complete</button>
+      <div class="note">Tap a lift to set its weight. Squat goes up 10, upper body 5. Stall twice, drop to 85% and climb back.</div>
+    </div>
+  </section>
+
   <!-- BOSSES -->
   <section>
     <div class="sec-head"><h2>The Bar</h2><span class="rule"></span><span class="meta" id="barMeta"></span></div>
@@ -313,7 +332,7 @@ const STATS=[
   {k:'discipline',n:'Discipline',req:l=>[1,2,3,4,5][Math.min(l,4)]+' kitchen rules'}
 ];
 const KEY='ngplus-v1',OLD='btp-state-v1';
-let S={days:{},lifts:[],levels:[],flasks:{},start:null};
+let S={days:{},lifts:[],levels:[],flasks:{},sessions:[],work:{squat:115,bench:95,row:95,ohp:65,pull:0},start:null};
 let D={pool:0,spent:0,cache:0,cacheFrom:null,lost:0};
 
 const iso=d=>{const t=new Date(d);t.setMinutes(t.getMinutes()-t.getTimezoneOffset());return t.toISOString().slice(0,10)};
@@ -327,6 +346,8 @@ const fm=n=>n.toLocaleString();
 function load(){
   try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r));}catch(e){}
   if(!S.start)S.start=TODAY;
+  if(!S.work)S.work={squat:115,bench:95,row:95,ohp:65,pull:0};
+  if(!S.sessions)S.sessions=[];
 }
 function save(){
   try{localStorage.setItem(KEY,JSON.stringify(S));document.getElementById('err').classList.add('hide');}
@@ -455,6 +476,8 @@ function paint(){
   }).join('');
   document.getElementById('liftIn').placeholder=t+'?';
 
+  paintSession();
+
   // stats
   document.getElementById('statList').innerHTML=STATS.map(s=>{
     const lv=statLv(s.k);
@@ -523,6 +546,42 @@ document.getElementById('useFlask').addEventListener('click',()=>{
 document.getElementById('ackDeath').addEventListener('click',()=>{
   const y=shift(TODAY,-1);S.days[y]=Object.assign(S.days[y]||{},{ack:true});save();render();
 });
+
+const PLANS={A:[['squat','Squat','3x5'],['bench','Bench','3x5'],['row','Barbell row','3x8']],
+             B:[['squat','Squat','3x5'],['ohp','Overhead press','3x5'],['pull','Chin-up','3x8']]};
+const BUMP={squat:10,bench:5,row:5,ohp:5,pull:0};
+function nextType(){const s=S.sessions||[];return (s.length&&s[s.length-1].type==='A')?'B':'A'}
+function paintSession(){
+  const t=nextType();
+  document.getElementById('sessName').textContent='Session '+t;
+  document.getElementById('sessMeta').textContent=(S.sessions||[]).length+' logged';
+  document.getElementById('sessList').innerHTML=PLANS[t].map(function(m){
+    const k=m[0],w=S.work[k];
+    return '<div class="gate act" data-lift="'+k+'"><span class="w">'+(w?w:'BW')+'</span><span class="n">'+m[1]+'</span><span class="s">'+m[2]+'</span></div>';
+  }).join('');
+}
+document.getElementById('sessList').addEventListener('click',function(e){
+  const el=e.target.closest('[data-lift]');if(!el)return;
+  const k=el.dataset.lift;
+  const v=prompt('Working weight for this lift (0 for bodyweight)',S.work[k]);
+  if(v===null)return;
+  const n=parseFloat(v);if(isNaN(n)||n<0)return;
+  S.work[k]=n;save();render();
+});
+document.getElementById('doneSess').addEventListener('click',function(){
+  const t=nextType();
+  const before=S.lifts.length?Math.max.apply(null,S.lifts.map(function(x){return x.w})):0;
+  S.sessions=S.sessions||[];S.sessions.push({date:TODAY,type:t});
+  S.lifts=S.lifts.filter(function(x){return x.date!==TODAY});
+  S.lifts.push({date:TODAY,w:S.work.squat});
+  (S.days[TODAY]||(S.days[TODAY]={})).lift=true;
+  const w=S.work.squat;
+  PLANS[t].forEach(function(m){S.work[m[0]]=S.work[m[0]]+BUMP[m[0]]});
+  save();render();
+  const felled=BOSS.filter(function(b){return b.w>before&&b.w<=w});
+  toast(felled.length?felled[felled.length-1].n+' felled':'Session '+t+' logged');
+});
+
 document.getElementById('resetBtn').addEventListener('click',()=>{
   if(!confirm('Abandon the run? Every day, lift, and level is erased.'))return;
   S={days:{},lifts:[],levels:[],flasks:{},start:TODAY};save();render();
