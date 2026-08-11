@@ -185,6 +185,40 @@ input[type=number]{-moz-appearance:textfield}
  font-size:13px;color:var(--parch);line-height:1.55}
 .tip b{color:var(--gold-hi);font-weight:600}
 .tip em{font-style:normal;color:var(--ash)}
+
+.sub-head{display:flex;align-items:center;gap:10px;margin:15px 0 7px}
+.sub-head .lbl{font-family:'Cormorant Garamond',Georgia,serif;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--ash)}
+.sub-head .rule{flex:1;height:1px;background:var(--line)}
+
+.tabs{display:flex;gap:6px;margin-bottom:12px}
+.tab{flex:1;border:1px solid var(--line);background:var(--stone);padding:10px 4px;
+ font-family:'Cormorant Garamond',Georgia,serif;font-size:14.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ash)}
+.tab.on{border-color:rgba(201,162,39,.55);color:var(--gold-hi);background:var(--stone-2)}
+.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
+.cal-head .m{font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;letter-spacing:.2em;text-transform:uppercase;color:var(--parch)}
+.cal-head button{color:var(--gold);font-size:20px;padding:2px 16px;line-height:1}
+.cal-dow,.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal-dow div{text-align:center;font-size:9.5px;letter-spacing:.12em;color:var(--ash);padding-bottom:5px}
+.cell{aspect-ratio:1;border:1px solid var(--line);background:var(--stone);display:grid;place-items:center;
+ font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ash);cursor:pointer;position:relative}
+.cell.void{border:none;background:none;cursor:default}
+.cell.fut{opacity:.3;cursor:default}
+.cell.dead{border-color:var(--blood)}
+.cell.fl{border-color:var(--gold)}
+.cell.now{box-shadow:inset 0 0 0 1px var(--gold-hi)}
+.cell.sel{border-color:var(--gold-hi)}
+.cell b{position:absolute;bottom:2px;left:0;right:0;height:2px;background:var(--gold)}
+
+.nav{display:flex;gap:6px;margin-top:16px}
+.nav button{flex:1;border:1px solid var(--line);background:var(--stone);padding:11px 4px;
+ font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
+.nav button.on{border-color:rgba(201,162,39,.55);color:var(--gold-hi);background:var(--stone-2)}
+.edit{border:1px solid var(--line);background:var(--stone);padding:12px;margin-top:10px}
+.edit .eh{font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;letter-spacing:.12em;color:var(--parch);margin-bottom:10px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{border:1px solid var(--line);background:#100E09;color:var(--ash);padding:8px 11px;
+ font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;letter-spacing:.1em}
+.chip.on{border-color:var(--gold);color:var(--gold-hi);background:rgba(201,162,39,.1)}
 .hide{display:none !important}
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);opacity:0;
   background:var(--stone-2);border:1px solid var(--gold);color:var(--gold-hi);
@@ -201,6 +235,11 @@ input[type=number]{-moz-appearance:textfield}
     <div class="title">NEW GAINS+</div>
     <div class="eyebrow sub" id="stamp">—</div>
   </header>
+
+  <div class="nav">
+    <button class="pg on" data-pg="today">Today</button>
+    <button class="pg" data-pg="history">History</button>
+  </div>
 
   <div id="err" class="err hide"></div>
 
@@ -228,7 +267,7 @@ input[type=number]{-moz-appearance:textfield}
     <div class="tip hide" id="tip-runes"><b>Runes</b> are earned by doing the day’s actions. They stay temporary until you spend them on a level, which makes them permanent. <em>Example: a full day with a lift is 800. Level 2 costs 1,500, so roughly two good days.</em></div>
 
   <!-- TODAY -->
-  <section>
+  <section data-page="today">
     <div class="sec-head"><h2>Today</h2><span class="info" data-tip="today" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="todayR">+0</span></div>
     <div class="tip hide" id="tip-today">Tap each action once you have actually done it. Order does not matter and you can tap them at any point in the day. <em>A day with zero taps is a death and drops your unspent runes into a cache.</em></div>
 
@@ -239,7 +278,7 @@ input[type=number]{-moz-appearance:textfield}
     </button>
     <div class="tip hide" id="tip-floor">The <b>Floor</b> is the smallest version of the day that still counts as a full success. Three parts: the step minimum, protein at lunch, dinner plated in the kitchen. <em>Example: too drained to cook, so you walk twenty minutes, order one grilled chicken item instead of a combo, and eat it off a plate. That is a Floor day. Tap it.</em></div>
 
-    <div style="text-align:right;margin-bottom:4px"><span class="info" data-tip="steps" role="button" tabindex="0" aria-label="What is this">i</span></div>
+    <div class="sub-head"><span class="lbl">Steps</span><span class="rule"></span><span class="info" data-tip="steps" role="button" tabindex="0" aria-label="What is this">i</span></div>
     <div class="seg" id="steps">
       <button data-v="0">None<small>0</small></button>
       <button data-v="1">7k<small>+100</small></button>
@@ -252,7 +291,7 @@ input[type=number]{-moz-appearance:textfield}
       <span class="lb"><b>Lift</b><small id="liftReq">Log the top set below</small></span>
       <span class="r">300</span><span class="info" data-tip="lift" role="button" tabindex="0" aria-label="What is this">i</span>
     </button>
-    <div class="tip hide" id="tip-lift">Checks itself when you complete a session or log a top set below. <em>You do not tap this one directly.</em></div>
+    <div class="tip hide" id="tip-lift">Checks itself when you complete a workout or log a top set below. <em>You do not tap this one directly.</em></div>
 
     <button class="task" data-k="lunch">
       <span class="mark"><i></i></span>
@@ -271,22 +310,22 @@ input[type=number]{-moz-appearance:textfield}
 
 
   <!-- SESSION -->
-  <section>
-    <div class="sec-head"><h2>Session</h2><span class="info" data-tip="session" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="sessMeta"></span></div>
-    <div class="tip hide" id="tip-session">Two workouts, A and B, alternating automatically. Each shows the weight you should use today. <em>Tap any lift to correct its weight. Session complete logs it and adds 10 to squat, 5 to upper body.</em></div>
+  <section data-page="today">
+    <div class="sec-head"><h2>Workouts</h2><span class="info" data-tip="session" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="sessMeta"></span></div>
+    <div class="tip hide" id="tip-session">Two workouts, A and B, alternating automatically. Each shows the weight you should use today. <em>Tap any lift to correct its weight. Workout complete logs it and adds 10 to squat, 5 to upper body.</em></div>
     <div class="panel">
       <div class="bar-top">
         <div class="bar-w" id="sessName">A</div>
         <div class="eyebrow">Up next</div>
       </div>
       <div class="gates" id="sessList" style="margin-top:13px"></div>
-      <button class="btn" id="doneSess" style="width:100%;margin-top:13px">Session complete</button>
+      <button class="btn" id="doneSess" style="width:100%;margin-top:13px">Workout complete</button>
       <div class="note">Tap a lift to set its weight. Completing a session adds 10 to squat, 5 to upper body. Two stalls at one weight: drop to 85%.</div>
     </div>
   </section>
 
   <!-- BOSSES -->
-  <section>
+  <section data-page="today">
     <div class="sec-head"><h2>The Bar</h2><span class="info" data-tip="bar" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="barMeta"></span></div>
     <div class="tip hide" id="tip-bar">Your squat drawn with the plates you would actually load. Below it are the five bosses. <em>Sealed means not yet reached, Next is what you are climbing toward, Felled is done permanently.</em></div>
     <div class="panel">
@@ -308,7 +347,7 @@ input[type=number]{-moz-appearance:textfield}
   </section>
 
   <!-- STATS -->
-  <section>
+  <section data-page="today">
     <div class="sec-head"><h2>Stats</h2><span class="info" data-tip="stats" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="statMeta">Spend levels</span></div>
     <div class="tip hide" id="tip-stats">Each level raises one stat, and each stat raises what the app asks of you. <em>Example: Vigor 1 moves your floor minimum from 2k to 2.5k steps.</em> This is how the plan gets harder without you deciding to make it harder.</div>
     <div id="statList"></div>
@@ -316,8 +355,8 @@ input[type=number]{-moz-appearance:textfield}
   </section>
 
   <!-- WEEK -->
-  <section>
-    <div class="sec-head"><h2>The Week</h2><span class="info" data-tip="week" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta">Mon–Sun</span></div>
+  <section data-page="today">
+    <div class="sec-head"><h2>The Week</h2><span class="info" data-tip="week" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta">Sun–Sat</span></div>
     <div class="tip hide" id="tip-week">Each bar is one day, height is that day’s runes. Gold is earned, a red outline is a zero day. <em>The only weekly target is beating last week’s total. Not a number, just more than last time.</em></div>
     <div class="strip" id="strip"></div>
     <div class="verdict" id="verdict"></div>
@@ -343,12 +382,29 @@ input[type=number]{-moz-appearance:textfield}
     <div class="note" id="trend">Same time each morning. Only the 7-day average is meaningful. Daily swings of 2 to 4 lb are water.</div>
   </section>
 
+
+  <!-- HISTORY -->
+  <section data-page="history">
+    <div class="sec-head"><h2>History</h2><span class="info" data-tip="history" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="histMeta"></span></div>
+    <div class="tip hide" id="tip-history">Every day you have logged. <em>Brighter cells are bigger days, a red outline is a zero day, a gold outline means a flask was used.</em> Tap any past day to log or correct it. <em>Log what happened, not what you wish had: backfilling a day you actually missed makes the cache meaningless.</em></div>
+    <div id="calWrap">
+      <div class="cal-head"><button id="mPrev" aria-label="Previous month">&lsaquo;</button><span class="m" id="mLabel"></span><button id="mNext" aria-label="Next month">&rsaquo;</button></div>
+      <div class="cal-dow"><div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div></div>
+      <div class="cal" id="cal"></div>
+      <div class="note" id="calDetail">Tap any past day to log or correct it.</div>
+    </div>
+    <div id="logWrap" style="margin-top:22px">
+      <div class="sub-head"><span class="lbl">Workout log</span><span class="rule"></span></div>
+      <div class="gates" id="logList"></div>
+    </div>
+  </section>
+
   <div class="reset">
     <button id="exportBtn">Back up run</button>
     <label for="importIn" style="cursor:pointer;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#5F5A4B;margin:0 14px">Restore</label>
     <input type="file" id="importIn" accept="application/json" style="display:none">
     <button id="resetBtn">Abandon run</button>
-    <div class="note" style="text-align:center;margin-top:10px;letter-spacing:.14em">NEW GAINS+ v1.0</div>
+    <div class="note" style="text-align:center;margin-top:10px;letter-spacing:.14em">NEW GAINS+ v1.1</div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -369,7 +425,7 @@ let D={pool:0,spent:0,cache:0,cacheFrom:null,lost:0};
 const iso=d=>{const t=new Date(d);t.setMinutes(t.getMinutes()-t.getTimezoneOffset());return t.toISOString().slice(0,10)};
 const TODAY=iso(new Date());
 const shift=(s,n)=>{const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return iso(d)};
-function monday(s){const d=new Date(s+'T12:00:00');const w=(d.getDay()+6)%7;d.setDate(d.getDate()-w);return iso(d)}
+function monday(s){const d=new Date(s+'T12:00:00');d.setDate(d.getDate()-d.getDay());return iso(d)}
 const MON=monday(TODAY),PREV=shift(MON,-7),MK=TODAY.slice(0,7);
 if(!S.start)S.start=TODAY;
 const fm=n=>n.toLocaleString();
@@ -508,6 +564,7 @@ function paint(){
   document.getElementById('liftIn').placeholder=t+'?';
 
   paintSession();
+  paintHistory();
 
   // stats
   document.getElementById('statList').innerHTML=STATS.map(s=>{
@@ -518,7 +575,7 @@ function paint(){
   }).join('');
 
   // week
-  const names=['M','T','W','T','F','S','S'];
+  const names=['S','M','T','W','T','F','S'];
   document.getElementById('strip').innerHTML=weekDays(MON).map((s,i)=>{
     const e=s<=TODAY?earned(s):0,ht=Math.min(100,e/800*100);
     const cls=[s===TODAY?'today':'',day(s).flask?'flasked':'',(S.days[s]&&e===0&&!day(s).flask)?'dead':''].join(' ');
@@ -584,7 +641,7 @@ const BUMP={squat:10,bench:5,row:5,ohp:5,pull:0};
 function nextType(){const s=S.sessions||[];return (s.length&&s[s.length-1].type==='A')?'B':'A'}
 function paintSession(){
   const t=nextType();
-  document.getElementById('sessName').textContent='Session '+t;
+  document.getElementById('sessName').textContent='Workout '+t;
   document.getElementById('sessMeta').textContent=(S.sessions||[]).length+' logged';
   document.getElementById('sessList').innerHTML=PLANS[t].map(function(m){
     const k=m[0],w=S.work[k];
@@ -610,7 +667,7 @@ document.getElementById('doneSess').addEventListener('click',function(){
   PLANS[t].forEach(function(m){S.work[m[0]]=S.work[m[0]]+BUMP[m[0]]});
   save();render();
   const felled=BOSS.filter(function(b){return b.w>before&&b.w<=w});
-  toast(felled.length?felled[felled.length-1].n+' felled':'Session '+t+' logged');
+  toast(felled.length?felled[felled.length-1].n+' felled':'Workout '+t+' logged');
 });
 
 
@@ -634,12 +691,106 @@ document.addEventListener('visibilitychange',function(){if(!document.hidden)chec
 window.addEventListener('focus',checkDay);
 window.addEventListener('pageshow',function(e){if(e.persisted)checkDay()});
 
+
+var viewM=TODAY.slice(0,7), selDay=null;
+function paintHistory(){
+  var y=+viewM.slice(0,4), mo=+viewM.slice(5,7);
+  document.getElementById('mLabel').textContent=new Date(y,mo-1,1).toLocaleDateString(undefined,{month:'long',year:'numeric'});
+  var first=new Date(y,mo-1,1), lead=first.getDay(), dim=new Date(y,mo,0).getDate(), h='';
+  for(var i=0;i<lead;i++) h+='<div class="cell void"></div>';
+  for(var d=1;d<=dim;d++){
+    var ds=viewM+'-'+String(d).padStart(2,'0'), e=earned(ds), rec=S.days[ds];
+    var cls='cell', st='';
+    if(ds>TODAY) cls+=' fut';
+    else{
+      if(rec&&e===0&&!day(ds).flask) cls+=' dead';
+      if(day(ds).flask) cls+=' fl';
+      if(e>0) st=' style="background:rgba(201,162,39,'+(0.10+0.55*Math.min(1,e/800)).toFixed(2)+');color:#131109"';
+    }
+    if(ds===TODAY) cls+=' now';
+    if(ds===selDay) cls+=' sel';
+    var lift=S.lifts.some(function(x){return x.date===ds});
+    h+='<div class="'+cls+'" data-d="'+ds+'"'+st+'>'+d+(lift?'<b></b>':'')+'</div>';
+  }
+  document.getElementById('cal').innerHTML=h;
+  var logged=Object.keys(S.days).filter(function(k){return earned(k)>0}).length;
+  document.getElementById('histMeta').textContent=logged+' days logged';
+  if(selDay) showDay(selDay);
+
+  var L=(S.sessions||[]).slice().reverse();
+  document.getElementById('logList').innerHTML=L.length?L.map(function(s){
+    var lf=S.lifts.filter(function(x){return x.date===s.date})[0];
+    var dd=new Date(s.date+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'});
+    return '<div class="gate act"><span class="w">'+(lf?lf.w:'—')+'</span><span class="n">Workout '+s.type+'</span><span class="s">'+dd+'</span></div>';
+  }).join(''):'<div class="note">No workouts logged yet.</div>';
+}
+function showDay(ds){
+  var e=earned(ds), d=day(ds), parts=[];
+  if(d.floor)parts.push('Floor');
+  if(d.steps===1)parts.push('7k');
+  if(d.steps===2)parts.push('10k');
+  if(d.lift)parts.push('Lift');
+  if(d.lunch)parts.push('Lunch');
+  if(d.dinner)parts.push('Dinner');
+  if(d.flask)parts.push('Flask used');
+  var lf=S.lifts.filter(function(x){return x.date===ds})[0];
+  if(lf)parts.push(lf.w+' lb');
+  if(d.weight)parts.push(d.weight+' lb bw');
+  var lbl=new Date(ds+'T12:00:00').toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
+  document.getElementById('calDetail').innerHTML=
+    '<span>'+(parts.length?parts.join(', '):'nothing logged')+'</span>'+editPanel(ds);
+}
+document.getElementById('cal').addEventListener('click',function(e){
+  var c=e.target.closest('[data-d]');if(!c||c.classList.contains('fut'))return;
+  selDay=(selDay===c.dataset.d)?null:c.dataset.d;
+  if(!selDay)document.getElementById('calDetail').innerHTML='Tap any past day to log or correct it.';
+  paintHistory();
+});
+function stepM(n){
+  var y=+viewM.slice(0,4), m=+viewM.slice(5,7)+n;
+  if(m<1){m=12;y--} if(m>12){m=1;y++}
+  viewM=y+'-'+String(m).padStart(2,'0'); selDay=null; paintHistory();
+}
+document.getElementById('mPrev').addEventListener('click',function(){stepM(-1)});
+document.getElementById('mNext').addEventListener('click',function(){stepM(1)});
+
+
+document.querySelectorAll('.pg').forEach(function(b){
+  b.addEventListener('click',function(){
+    document.querySelectorAll('.pg').forEach(function(x){x.classList.toggle('on',x===b)});
+    document.querySelectorAll('[data-page]').forEach(function(sec){
+      sec.classList.toggle('hide',sec.dataset.page!==b.dataset.pg);
+    });
+    window.scrollTo(0,0);
+  });
+});
+
+var EDIT=[['floor','Floor'],['steps1','7k'],['steps2','10k'],['lift','Lift'],['lunch','Lunch'],['dinner','Dinner'],['flask','Flask']];
+function editPanel(ds){
+  var d=day(ds), h='';
+  EDIT.forEach(function(m){
+    var on = m[0]==='steps1' ? d.steps===1 : m[0]==='steps2' ? d.steps===2 : !!d[m[0]];
+    h+='<button class="chip'+(on?' on':'')+'" data-ek="'+m[0]+'">'+m[1]+'</button>';
+  });
+  var lbl=new Date(ds+'T12:00:00').toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
+  return '<div class="edit"><div class="eh">'+lbl+' &middot; '+fm(earned(ds))+' runes</div><div class="chips" id="chips" data-ds="'+ds+'">'+h+'</div></div>';
+}
+document.addEventListener('click',function(e){
+  var c=e.target.closest('.chip');if(!c)return;
+  var ds=c.parentNode.dataset.ds, k=c.dataset.ek;
+  var d=S.days[ds]||(S.days[ds]={});
+  if(k==='steps1') d.steps = d.steps===1?0:1;
+  else if(k==='steps2') d.steps = d.steps===2?0:2;
+  else d[k]=!d[k];
+  save();render();
+});
+
 document.getElementById('resetBtn').addEventListener('click',()=>{
   if(!confirm('Abandon the run? Every day, lift, and level is erased.'))return;
   S={days:{},lifts:[],levels:[],flasks:{},start:TODAY};save();render();
 });
 
-load();if(S.days[TODAY]===undefined)S.days[TODAY]={};render();if(!S.tipShown){var t0=document.getElementById('tip-floor');if(t0){t0.classList.remove('hide');var b0=document.querySelector('.info[data-tip="floor"]');if(b0)b0.classList.add('on')}S.tipShown=true;save()};
+document.querySelectorAll('[data-page="history"]').forEach(function(x){x.classList.add('hide')});load();if(S.days[TODAY]===undefined)S.days[TODAY]={};render();if(!S.tipShown){var t0=document.getElementById('tip-floor');if(t0){t0.classList.remove('hide');var b0=document.querySelector('.info[data-tip="floor"]');if(b0)b0.classList.add('on')}S.tipShown=true;save()};
 document.getElementById('exportBtn').addEventListener('click',exportData);
 document.getElementById('importIn').addEventListener('change',e=>{if(e.target.files[0])importData(e.target.files[0])});
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
