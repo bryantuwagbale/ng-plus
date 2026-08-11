@@ -6,6 +6,11 @@
 <title>New Gains+</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#131109">
+<meta name="description" content="A daily tracker for fat loss and strength recovery. Runes, levels, bosses, and a floor you can hit on your worst day.">
+<meta property="og:title" content="New Gains+">
+<meta property="og:description" content="A daily tracker for fat loss and strength recovery. Adherence over optimality.">
+<meta property="og:type" content="website">
+
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -171,6 +176,15 @@ input[type=number]{-moz-appearance:textfield}
 .gate.act{border-color:var(--line)}
 .gate.act .w,.gate.act .n{color:var(--parch)}
 .gate.act .w{width:46px}
+
+.info{width:16px;height:16px;min-width:16px;border:1px solid var(--line);border-radius:50%;color:var(--ash);
+ font-family:'Cormorant Garamond',Georgia,serif;font-size:11px;line-height:14px;text-align:center;
+ display:inline-block;cursor:pointer;flex-shrink:0;user-select:none;transition:border-color .15s,color .15s}
+.info.on{border-color:var(--gold);color:var(--gold-hi);background:rgba(201,162,39,.1)}
+.tip{border-left:1px solid var(--gold);background:rgba(201,162,39,.05);padding:11px 13px;margin:0 0 7px;
+ font-size:13px;color:var(--parch);line-height:1.55}
+.tip b{color:var(--gold-hi);font-weight:600}
+.tip em{font-style:normal;color:var(--ash)}
 .hide{display:none !important}
 .toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);opacity:0;
   background:var(--stone-2);border:1px solid var(--gold);color:var(--gold-hi);
@@ -193,7 +207,7 @@ input[type=number]{-moz-appearance:textfield}
   <!-- DEATH -->
   <div class="death hide" id="death">
     <h2>CACHE DROPPED</h2>
-    <p id="deathBody">Yesterday scored nothing. Don't force a play. Just farm.</p>
+    <p id="deathBody">Yesterday scored nothing.</p>
     <div class="row">
       <button class="btn sm" id="useFlask">Drink a flask</button>
       <button class="btn sm ghost" id="ackDeath">Just farm</button>
@@ -202,7 +216,7 @@ input[type=number]{-moz-appearance:textfield}
 
   <!-- RUNES -->
   <div class="runes">
-    <div class="eyebrow">Runes held</div>
+    <div class="eyebrow">Runes held <span class="info" data-tip="runes" role="button" tabindex="0" aria-label="What is this">i</span></div>
     <div class="rune-n" id="runes">0</div>
     <div class="lvl-row">
       <span class="lv" id="lvl">Level 1</span>
@@ -211,46 +225,55 @@ input[type=number]{-moz-appearance:textfield}
     <div class="track"><i id="lvlTrack"></i></div>
     <div class="cost" id="cost">1,500 to Level 2</div>
   </div>
+    <div class="tip hide" id="tip-runes"><b>Runes</b> are earned by doing the day’s actions. They stay temporary until you spend them on a level, which makes them permanent. <em>Example: a full day with a lift is 800. Level 2 costs 1,500, so roughly two good days.</em></div>
 
   <!-- TODAY -->
   <section>
-    <div class="sec-head"><h2>Today</h2><span class="rule"></span><span class="meta" id="todayR">+0</span></div>
+    <div class="sec-head"><h2>Today</h2><span class="info" data-tip="today" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="todayR">+0</span></div>
+    <div class="tip hide" id="tip-today">Tap each action once you have actually done it. Order does not matter and you can tap them at any point in the day. <em>A day with zero taps is a death and drops your unspent runes into a cache.</em></div>
 
     <button class="task" data-k="floor">
       <span class="mark"><i></i></span>
       <span class="lb"><b>The Floor</b><small id="floorReq">2k steps · protein lunch · plate in the kitchen</small></span>
-      <span class="r">100</span>
+      <span class="r">100</span><span class="info" data-tip="floor" role="button" tabindex="0" aria-label="What is this">i</span>
     </button>
+    <div class="tip hide" id="tip-floor">The <b>Floor</b> is the smallest version of the day that still counts as a full success. Three parts: the step minimum, protein at lunch, dinner plated in the kitchen. <em>Example: too drained to cook, so you walk twenty minutes, order one grilled chicken item instead of a combo, and eat it off a plate. That is a Floor day. Tap it.</em></div>
 
+    <div style="text-align:right;margin-bottom:4px"><span class="info" data-tip="steps" role="button" tabindex="0" aria-label="What is this">i</span></div>
     <div class="seg" id="steps">
       <button data-v="0">None<small>0</small></button>
       <button data-v="1">7k<small>+100</small></button>
       <button data-v="2">10k<small>+200</small></button>
     </div>
+    <div class="tip hide" id="tip-steps">Pick the tier you actually reached, not the one you meant to. <em>Your desk-job baseline is 3k to 5k, so 7k is about a twenty-minute walk on top and 10k is about forty.</em></div>
 
     <button class="task" data-k="lift">
       <span class="mark"><i></i></span>
       <span class="lb"><b>Lift</b><small id="liftReq">Log the top set below</small></span>
-      <span class="r">300</span>
+      <span class="r">300</span><span class="info" data-tip="lift" role="button" tabindex="0" aria-label="What is this">i</span>
     </button>
+    <div class="tip hide" id="tip-lift">Checks itself when you complete a session or log a top set below. <em>You do not tap this one directly.</em></div>
 
     <button class="task" data-k="lunch">
       <span class="mark"><i></i></span>
-      <span class="lb"><b>Lunch was already made</b><small>Decided Sunday, not at noon</small></span>
-      <span class="r">100</span>
+      <span class="lb"><b>Lunch was already made</b><small>Cooked ahead. No midday decision.</small></span>
+      <span class="r">100</span><span class="info" data-tip="lunch" role="button" tabindex="0" aria-label="What is this">i</span>
     </button>
+    <div class="tip hide" id="tip-lunch">Lunch existed before you got hungry. <em>Example: Sunday you cooked five containers of chicken and rice. Monday you take one. That is the tap.</em> Ordering food at noon does not count, even if it was a good order.</div>
 
     <button class="task" data-k="dinner">
       <span class="mark"><i></i></span>
-      <span class="lb"><b>Plated in the kitchen</b><small>Leftovers boxed before sitting down</small></span>
-      <span class="r">100</span>
+      <span class="lb"><b>Plated in the kitchen</b><small>Portion at the counter. Store the rest before eating.</small></span>
+      <span class="r">100</span><span class="info" data-tip="dinner" role="button" tabindex="0" aria-label="What is this">i</span>
     </button>
+    <div class="tip hide" id="tip-dinner">Fill your plate at the stove and put the rest in containers before you sit down. <em>Serving family-style at the table reliably adds a few hundred calories, because seconds cost nothing. This makes seconds cost getting up.</em></div>
   </section>
 
 
   <!-- SESSION -->
   <section>
-    <div class="sec-head"><h2>Session</h2><span class="rule"></span><span class="meta" id="sessMeta"></span></div>
+    <div class="sec-head"><h2>Session</h2><span class="info" data-tip="session" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="sessMeta"></span></div>
+    <div class="tip hide" id="tip-session">Two workouts, A and B, alternating automatically. Each shows the weight you should use today. <em>Tap any lift to correct its weight. Session complete logs it and adds 10 to squat, 5 to upper body.</em></div>
     <div class="panel">
       <div class="bar-top">
         <div class="bar-w" id="sessName">A</div>
@@ -258,13 +281,14 @@ input[type=number]{-moz-appearance:textfield}
       </div>
       <div class="gates" id="sessList" style="margin-top:13px"></div>
       <button class="btn" id="doneSess" style="width:100%;margin-top:13px">Session complete</button>
-      <div class="note">Tap a lift to set its weight. Squat goes up 10, upper body 5. Stall twice, drop to 85% and climb back.</div>
+      <div class="note">Tap a lift to set its weight. Completing a session adds 10 to squat, 5 to upper body. Two stalls at one weight: drop to 85%.</div>
     </div>
   </section>
 
   <!-- BOSSES -->
   <section>
-    <div class="sec-head"><h2>The Bar</h2><span class="rule"></span><span class="meta" id="barMeta"></span></div>
+    <div class="sec-head"><h2>The Bar</h2><span class="info" data-tip="bar" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="barMeta"></span></div>
+    <div class="tip hide" id="tip-bar">Your squat drawn with the plates you would actually load. Below it are the five bosses. <em>Sealed means not yet reached, Next is what you are climbing toward, Felled is done permanently.</em></div>
     <div class="panel">
       <div class="bar-top">
         <div>
@@ -279,38 +303,44 @@ input[type=number]{-moz-appearance:textfield}
         <input type="number" id="liftIn" inputmode="decimal" step="5" placeholder="Top set">
         <button class="btn" id="logLift">Log</button>
       </div>
-      <div class="note">Add 10 while it keeps moving. Stall twice at one weight, drop to 85% and climb back. Stalling is not death.</div>
+      <div class="note">Top set only. Logging it here marks the Lift action and advances the ladder.</div>
     </div>
   </section>
 
   <!-- STATS -->
   <section>
-    <div class="sec-head"><h2>Stats</h2><span class="rule"></span><span class="meta" id="statMeta">Spend levels</span></div>
+    <div class="sec-head"><h2>Stats</h2><span class="info" data-tip="stats" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="statMeta">Spend levels</span></div>
+    <div class="tip hide" id="tip-stats">Each level raises one stat, and each stat raises what the app asks of you. <em>Example: Vigor 1 moves your floor minimum from 2k to 2.5k steps.</em> This is how the plan gets harder without you deciding to make it harder.</div>
     <div id="statList"></div>
-    <div class="note">Vigor leads. Strength and Endurance cannot exceed Vigor by more than one.</div>
+    <div class="note">Each level raises one stat, and each stat raises its own requirement. Strength and Endurance cannot exceed Vigor by more than one.</div>
   </section>
 
   <!-- WEEK -->
   <section>
-    <div class="sec-head"><h2>The Week</h2><span class="rule"></span><span class="meta">Mon–Sun</span></div>
+    <div class="sec-head"><h2>The Week</h2><span class="info" data-tip="week" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta">Mon–Sun</span></div>
+    <div class="tip hide" id="tip-week">Each bar is one day, height is that day’s runes. Gold is earned, a red outline is a zero day. <em>The only weekly target is beating last week’s total. Not a number, just more than last time.</em></div>
     <div class="strip" id="strip"></div>
     <div class="verdict" id="verdict"></div>
     <div class="grid" style="margin-top:16px">
       <div class="cell">
         <div class="k" id="streak">0<small> d</small></div>
-        <div class="l">Floor streak</div>
+        <div class="l">Floor streak <span class="info" data-tip="streak" role="button" tabindex="0" aria-label="What is this">i</span></div>
         <div class="flasks" id="flaskRow"></div>
       </div>
       <div class="cell">
         <div class="k" id="avgW">—</div>
-        <div class="l">7-day average</div>
+        <div class="l">7-day average <span class="info" data-tip="weight" role="button" tabindex="0" aria-label="What is this">i</span></div>
         <div class="row" style="margin-top:9px">
           <input type="number" id="wIn" inputmode="decimal" step="0.1" placeholder="lb">
           <button class="btn sm" id="logW">Set</button>
         </div>
       </div>
     </div>
-    <div class="note" id="trend">Weigh every morning, same conditions. Only the 7-day average is real.</div>
+
+    <div class="tip hide" id="tip-streak">Consecutive days you hit the Floor. The two teardrops are flasks, refilling on the 1st. <em>Drinking one turns a zero day into a Floor day: no runes, but no death and the streak survives.</em></div>
+
+    <div class="tip hide" id="tip-weight">Type your weight each morning, same time, before eating. <em>Only the seven-day average is shown, because single days swing 2 to 4 lb on water and salt alone.</em> Target is 0.5 to 1.0 lb down per week.</div>
+    <div class="note" id="trend">Same time each morning. Only the 7-day average is meaningful. Daily swings of 2 to 4 lb are water.</div>
   </section>
 
   <div class="reset">
@@ -318,6 +348,7 @@ input[type=number]{-moz-appearance:textfield}
     <label for="importIn" style="cursor:pointer;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#5F5A4B;margin:0 14px">Restore</label>
     <input type="file" id="importIn" accept="application/json" style="display:none">
     <button id="resetBtn">Abandon run</button>
+    <div class="note" style="text-align:center;margin-top:10px;letter-spacing:.14em">NEW GAINS+ v1.0</div>
   </div>
 </div>
 <div class="toast" id="toast"></div>
@@ -453,8 +484,8 @@ function paint(){
   de.classList.toggle('hide',!dead);
   if(dead){
     document.getElementById('deathBody').textContent=D.cache>0
-      ? fm(D.cache)+' runes are on the ground. Floor today and you pick them all back up. Do not force a play. Just farm.'
-      : 'Yesterday scored nothing. Nothing was carried, so nothing was lost. Just farm.';
+      ? fm(D.cache)+' runes dropped here. Any scoring action today recovers all of them. A second zero day loses them permanently.'
+      : 'Nothing was held, so nothing was lost. Just farm.';
     const f=flasksLeft();
     const fb=document.getElementById('useFlask');
     fb.textContent=f>0?'Drink a flask ('+f+')':'No flasks';fb.disabled=f<=0;
@@ -582,12 +613,33 @@ document.getElementById('doneSess').addEventListener('click',function(){
   toast(felled.length?felled[felled.length-1].n+' felled':'Session '+t+' logged');
 });
 
+
+document.addEventListener('click',function(e){
+  const b=e.target.closest('.info');if(!b)return;
+  e.preventDefault();e.stopPropagation();
+  const t=document.getElementById('tip-'+b.dataset.tip);if(!t)return;
+  const open=!t.classList.contains('hide');
+  document.querySelectorAll('.tip').forEach(function(x){x.classList.add('hide')});
+  document.querySelectorAll('.info').forEach(function(x){x.classList.remove('on')});
+  if(!open){t.classList.remove('hide');b.classList.add('on')}
+},true);
+
+
+// date rollover: the app reads the date once, so refresh it when the day turns
+function checkDay(){
+  try{ if(iso(new Date())!==TODAY) location.reload(); }catch(e){}
+}
+setInterval(checkDay,60000);
+document.addEventListener('visibilitychange',function(){if(!document.hidden)checkDay()});
+window.addEventListener('focus',checkDay);
+window.addEventListener('pageshow',function(e){if(e.persisted)checkDay()});
+
 document.getElementById('resetBtn').addEventListener('click',()=>{
   if(!confirm('Abandon the run? Every day, lift, and level is erased.'))return;
   S={days:{},lifts:[],levels:[],flasks:{},start:TODAY};save();render();
 });
 
-load();if(S.days[TODAY]===undefined)S.days[TODAY]={};render();
+load();if(S.days[TODAY]===undefined)S.days[TODAY]={};render();if(!S.tipShown){var t0=document.getElementById('tip-floor');if(t0){t0.classList.remove('hide');var b0=document.querySelector('.info[data-tip="floor"]');if(b0)b0.classList.add('on')}S.tipShown=true;save()};
 document.getElementById('exportBtn').addEventListener('click',exportData);
 document.getElementById('importIn').addEventListener('change',e=>{if(e.target.files[0])importData(e.target.files[0])});
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
