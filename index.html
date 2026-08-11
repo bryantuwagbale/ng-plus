@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>New Gains+</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#131109">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="New Gains+">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --void:#131109;
+  --stone:#1D1A13;
+  --stone-2:#252118;
+  --line:#3A3427;
+  --gold:#C9A227;
+  --gold-hi:#EBCB63;
+  --parch:#E6DEC8;
+  --ash:#8C8571;
+  --blood:#8C2B22;
+  --moss:#5E7A4B;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--void);
+  background-image:radial-gradient(ellipse at 50% -10%, #221E14 0%, var(--void) 62%);
+  background-attachment:fixed;
+  color:var(--parch);
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  font-size:15px;line-height:1.45;
+  padding:env(safe-area-inset-top) 0 calc(64px + env(safe-area-inset-bottom));min-height:100vh;
+}
+.wrap{max-width:520px;margin:0 auto;padding:0 16px}
+.serif{font-family:'Cormorant Garamond',Georgia,serif}
+.mono{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
+.eyebrow{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--ash);font-weight:500}
+
+/* header */
+header{padding:22px 0 14px;text-align:center;border-bottom:1px solid var(--line);position:relative}
+header:after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:var(--line);opacity:.5}
+.title{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:34px;letter-spacing:.14em;color:var(--gold-hi);line-height:1}
+.sub{margin-top:6px}
+
+/* death banner */
+.death{margin:16px 0 0;border-top:1px solid var(--blood);border-bottom:1px solid var(--blood);
+  background:linear-gradient(180deg,rgba(140,43,34,0) 0%,rgba(140,43,34,.28) 50%,rgba(140,43,34,0) 100%);
+  padding:20px 14px;text-align:center}
+.death h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:29px;letter-spacing:.2em;color:#D4655A;line-height:1}
+.death p{font-size:13.5px;color:var(--parch);margin-top:9px;opacity:.86}
+.death .row{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+
+/* rune panel */
+.runes{margin-top:20px;text-align:center;padding:20px 14px;border:1px solid var(--line);background:var(--stone);position:relative}
+.runes:before{content:"";position:absolute;inset:4px;border:1px solid rgba(201,162,39,.16);pointer-events:none}
+.rune-n{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:52px;line-height:1;color:var(--gold-hi);letter-spacing:.02em}
+.rune-n.pulse{animation:pop .5s ease-out}
+@keyframes pop{0%{transform:scale(1)}30%{transform:scale(1.09);color:#FFF0B8}100%{transform:scale(1)}}
+.lvl-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
+.lvl-row .lv{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--parch);letter-spacing:.08em}
+.track{height:3px;background:#2E2A1F;margin-top:11px;position:relative;overflow:hidden}
+.track i{display:block;height:100%;background:linear-gradient(90deg,var(--gold) 0%,var(--gold-hi) 100%);width:0;transition:width .5s cubic-bezier(.2,.7,.3,1)}
+.cost{font-size:12px;color:var(--ash);margin-top:8px;letter-spacing:.04em}
+
+/* buttons */
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
+.btn{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:15px;letter-spacing:.16em;text-transform:uppercase;
+  padding:9px 18px;border:1px solid var(--gold);color:var(--gold-hi);background:rgba(201,162,39,.06)}
+.btn:hover{background:rgba(201,162,39,.15)}
+.btn.ghost{border-color:var(--line);color:var(--ash);background:none}
+.btn[disabled]{opacity:.32;cursor:default}
+.btn.sm{padding:7px 13px;font-size:13.5px;letter-spacing:.12em}
+button:focus-visible,input:focus-visible{outline:2px solid var(--gold-hi);outline-offset:2px}
+
+/* sections */
+section{margin-top:30px}
+.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.sec-head h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:16px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+.sec-head .rule{flex:1;height:1px;background:var(--line)}
+.sec-head .meta{font-size:11px;letter-spacing:.14em;color:var(--ash);text-transform:uppercase;white-space:nowrap}
+
+/* tasks */
+.task{width:100%;display:flex;align-items:center;gap:13px;text-align:left;
+  border:1px solid var(--line);background:var(--stone);padding:13px;margin-bottom:6px;transition:border-color .15s,background .15s}
+.task:active{background:var(--stone-2)}
+.task .mark{width:20px;height:20px;flex-shrink:0;border:1px solid var(--ash);transform:rotate(45deg);
+  display:grid;place-items:center;transition:background .16s,border-color .16s,box-shadow .16s}
+.task .mark i{width:8px;height:8px;background:var(--gold-hi);opacity:0;transform:scale(.4);transition:opacity .16s,transform .16s}
+.task .lb{flex:1;min-width:0}
+.task .lb b{font-weight:500;font-size:15px;display:block;letter-spacing:.01em}
+.task .lb small{color:var(--ash);font-size:12px;display:block;line-height:1.35}
+.task .r{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ash);flex-shrink:0;letter-spacing:.04em}
+.task.on{border-color:rgba(201,162,39,.55);background:var(--stone-2)}
+.task.on .mark{border-color:var(--gold-hi);box-shadow:0 0 10px rgba(201,162,39,.3)}
+.task.on .mark i{opacity:1;transform:scale(1)}
+.task.on .r{color:var(--gold-hi)}
+.seg{display:flex;gap:6px;margin-bottom:6px}
+.seg button{flex:1;border:1px solid var(--line);background:var(--stone);padding:12px 4px;text-align:center;
+  font-family:'Cormorant Garamond',serif;font-size:16px;letter-spacing:.14em;text-transform:uppercase}
+.seg button small{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.02em;color:var(--ash);margin-top:2px}
+.seg button.on{border-color:rgba(201,162,39,.55);background:var(--stone-2);color:var(--gold-hi)}
+.seg button.on small{color:var(--gold)}
+
+/* bar */
+.panel{border:1px solid var(--line);background:var(--stone);padding:16px 14px}
+.bar-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.bar-w{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:32px;line-height:1;color:var(--parch)}
+.bar-w em{font-style:normal;font-size:13px;color:var(--ash);font-weight:500}
+.bar-sub{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ash);margin-top:5px;margin-bottom:12px}
+svg.rig{display:block;width:100%;height:auto}
+.gates{margin-top:15px;display:flex;flex-direction:column;gap:4px}
+.gate{display:flex;align-items:center;gap:11px;padding:7px 10px;border:1px solid transparent;background:rgba(0,0,0,.22)}
+.gate .w{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;width:34px;color:var(--ash)}
+.gate .n{font-family:'Cormorant Garamond',serif;font-size:15.5px;letter-spacing:.08em;color:var(--ash);flex:1}
+.gate .s{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
+.gate.cleared{border-color:rgba(201,162,39,.3)}
+.gate.cleared .w,.gate.cleared .n{color:var(--gold-hi)}
+.gate.cleared .s{color:var(--gold)}
+.gate.next{border-color:var(--blood)}
+.gate.next .n,.gate.next .w{color:var(--parch)}
+.gate.next .s{color:#D4655A}
+.row{display:flex;gap:7px;margin-top:14px}
+input[type=number]{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;width:100%;padding:10px 11px;
+  border:1px solid var(--line);background:#100E09;color:var(--parch)}
+input[type=number]::placeholder{color:#5F5A4B;font-weight:500}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield}
+
+/* stats grid */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.cell{border:1px solid var(--line);background:var(--stone);padding:13px}
+.cell .k{font-family:'Cormorant Garamond',serif;font-size:27px;line-height:1.05;color:var(--parch)}
+.cell .k small{font-size:12px;color:var(--ash)}
+.cell .l{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ash);margin-top:4px}
+.flasks{display:flex;gap:7px;margin-top:9px}
+.flask{width:13px;height:18px;border:1px solid var(--gold);border-radius:2px 2px 5px 5px;background:linear-gradient(180deg,transparent 32%,var(--blood) 32%)}
+.flask.spent{border-color:var(--line);background:none}
+
+/* stats list */
+.stat-line{display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--line);background:var(--stone);margin-bottom:5px}
+.stat-line .nm{font-family:'Cormorant Garamond',serif;font-size:16px;letter-spacing:.12em;flex:1}
+.stat-line .pips{display:flex;gap:3px}
+.stat-line .pip{width:6px;height:6px;background:#332E22;transform:rotate(45deg)}
+.stat-line .pip.on{background:var(--gold-hi)}
+.stat-line .req{font-size:11.5px;color:var(--ash);width:96px;text-align:right}
+
+/* week strip */
+.strip{display:flex;gap:4px}
+.day{flex:1;text-align:center}
+.day .bar{height:40px;background:#211D15;display:flex;align-items:flex-end;overflow:hidden;border:1px solid transparent}
+.day .bar i{display:block;width:100%;background:linear-gradient(180deg,var(--gold-hi),var(--gold));height:0;transition:height .4s}
+.day.flasked .bar i{background:var(--blood)}
+.day.dead .bar{border-color:var(--blood)}
+.day .d{font-size:10px;letter-spacing:.16em;color:var(--ash);margin-top:5px;text-transform:uppercase}
+.day.today .d{color:var(--gold-hi)}
+
+.note{font-size:12px;color:var(--ash);margin-top:10px;line-height:1.5}
+.verdict{text-align:center;font-family:'Cormorant Garamond',serif;font-size:17px;letter-spacing:.05em;margin-top:14px;color:var(--parch)}
+.verdict b{color:var(--gold-hi);font-weight:600}
+.reset{margin-top:30px;text-align:center}
+.reset button{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#5F5A4B}
+.err{border:1px solid var(--blood);padding:9px 11px;font-size:12.5px;margin-top:12px;color:#D4655A}
+.hide{display:none !important}
+.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);opacity:0;
+  background:var(--stone-2);border:1px solid var(--gold);color:var(--gold-hi);
+  font-family:'Cormorant Garamond',serif;font-size:16px;letter-spacing:.16em;text-transform:uppercase;
+  padding:11px 22px;transition:opacity .3s,transform .3s;pointer-events:none;z-index:9;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+@media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="title">NEW GAINS+</div>
+    <div class="eyebrow sub" id="stamp">—</div>
+  </header>
+
+  <div id="err" class="err hide"></div>
+
+  <!-- DEATH -->
+  <div class="death hide" id="death">
+    <h2>CACHE DROPPED</h2>
+    <p id="deathBody">Yesterday scored nothing. Don't force a play. Just farm.</p>
+    <div class="row">
+      <button class="btn sm" id="useFlask">Drink a flask</button>
+      <button class="btn sm ghost" id="ackDeath">Just farm</button>
+    </div>
+  </div>
+
+  <!-- RUNES -->
+  <div class="runes">
+    <div class="eyebrow">Runes held</div>
+    <div class="rune-n" id="runes">0</div>
+    <div class="lvl-row">
+      <span class="lv" id="lvl">Level 1</span>
+      <button class="btn sm" id="levelBtn" disabled>Level up</button>
+    </div>
+    <div class="track"><i id="lvlTrack"></i></div>
+    <div class="cost" id="cost">1,500 to Level 2</div>
+  </div>
+
+  <!-- TODAY -->
+  <section>
+    <div class="sec-head"><h2>Today</h2><span class="rule"></span><span class="meta" id="todayR">+0</span></div>
+
+    <button class="task" data-k="floor">
+      <span class="mark"><i></i></span>
+      <span class="lb"><b>The Floor</b><small id="floorReq">2k steps · protein lunch · plate in the kitchen</small></span>
+      <span class="r">100</span>
+    </button>
+
+    <div class="seg" id="steps">
+      <button data-v="0">None<small>0</small></button>
+      <button data-v="1">7k<small>+100</small></button>
+      <button data-v="2">10k<small>+200</small></button>
+    </div>
+
+    <button class="task" data-k="lift">
+      <span class="mark"><i></i></span>
+      <span class="lb"><b>Lift</b><small id="liftReq">Log the top set below</small></span>
+      <span class="r">300</span>
+    </button>
+
+    <button class="task" data-k="lunch">
+      <span class="mark"><i></i></span>
+      <span class="lb"><b>Lunch was already made</b><small>Decided Sunday, not at noon</small></span>
+      <span class="r">100</span>
+    </button>
+
+    <button class="task" data-k="dinner">
+      <span class="mark"><i></i></span>
+      <span class="lb"><b>Plated in the kitchen</b><small>Leftovers boxed before sitting down</small></span>
+      <span class="r">100</span>
+    </button>
+  </section>
+
+  <!-- BOSSES -->
+  <section>
+    <div class="sec-head"><h2>The Bar</h2><span class="rule"></span><span class="meta" id="barMeta"></span></div>
+    <div class="panel">
+      <div class="bar-top">
+        <div>
+          <div class="bar-w" id="barW">115 <em>lb</em></div>
+          <div class="bar-sub" id="barSub"></div>
+        </div>
+        <div class="eyebrow" id="barTag">Next session</div>
+      </div>
+      <svg class="rig" id="rig" viewBox="0 0 340 92" role="img" aria-label="Loaded barbell"></svg>
+      <div class="gates" id="gates"></div>
+      <div class="row">
+        <input type="number" id="liftIn" inputmode="decimal" step="5" placeholder="Top set">
+        <button class="btn" id="logLift">Log</button>
+      </div>
+      <div class="note">Add 10 while it keeps moving. Stall twice at one weight, drop to 85% and climb back. Stalling is not death.</div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section>
+    <div class="sec-head"><h2>Stats</h2><span class="rule"></span><span class="meta" id="statMeta">Spend levels</span></div>
+    <div id="statList"></div>
+    <div class="note">Vigor leads. Strength and Endurance cannot exceed Vigor by more than one.</div>
+  </section>
+
+  <!-- WEEK -->
+  <section>
+    <div class="sec-head"><h2>The Week</h2><span class="rule"></span><span class="meta">Mon–Sun</span></div>
+    <div class="strip" id="strip"></div>
+    <div class="verdict" id="verdict"></div>
+    <div class="grid" style="margin-top:16px">
+      <div class="cell">
+        <div class="k" id="streak">0<small> d</small></div>
+        <div class="l">Floor streak</div>
+        <div class="flasks" id="flaskRow"></div>
+      </div>
+      <div class="cell">
+        <div class="k" id="avgW">—</div>
+        <div class="l">7-day average</div>
+        <div class="row" style="margin-top:9px">
+          <input type="number" id="wIn" inputmode="decimal" step="0.1" placeholder="lb">
+          <button class="btn sm" id="logW">Set</button>
+        </div>
+      </div>
+    </div>
+    <div class="note" id="trend">Weigh every morning, same conditions. Only the 7-day average is real.</div>
+  </section>
+
+  <div class="reset">
+    <button id="exportBtn">Back up run</button>
+    <label for="importIn" style="cursor:pointer;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#5F5A4B;margin:0 14px">Restore</label>
+    <input type="file" id="importIn" accept="application/json" style="display:none">
+    <button id="resetBtn">Abandon run</button>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const R={floor:100,lift:300,lunch:100,dinner:100},STEPR=[0,100,200];
+const BOSS=[{w:135,n:'First Plate'},{w:155,n:'The Wall of Habit'},{w:185,n:'Old Ground'},{w:205,n:'The Approach'},{w:225,n:'Two Plates'}];
+const STATS=[
+  {k:'vigor',n:'Vigor',req:l=>['2k','2.5k','3k','3.5k','4k'][Math.min(l,4)]+' floor steps'},
+  {k:'endurance',n:'Endurance',req:l=>[49,55,60,65,70][Math.min(l,4)]+'k steps / wk'},
+  {k:'strength',n:'Strength',req:l=>[2,2,3,3,4][Math.min(l,4)]+' lifts / wk'},
+  {k:'discipline',n:'Discipline',req:l=>[1,2,3,4,5][Math.min(l,4)]+' kitchen rules'}
+];
+const KEY='ngplus-v1',OLD='btp-state-v1';
+let S={days:{},lifts:[],levels:[],flasks:{},start:null};
+let D={pool:0,spent:0,cache:0,cacheFrom:null,lost:0};
+
+const iso=d=>{const t=new Date(d);t.setMinutes(t.getMinutes()-t.getTimezoneOffset());return t.toISOString().slice(0,10)};
+const TODAY=iso(new Date());
+const shift=(s,n)=>{const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return iso(d)};
+function monday(s){const d=new Date(s+'T12:00:00');const w=(d.getDay()+6)%7;d.setDate(d.getDate()-w);return iso(d)}
+const MON=monday(TODAY),PREV=shift(MON,-7),MK=TODAY.slice(0,7);
+if(!S.start)S.start=TODAY;
+const fm=n=>n.toLocaleString();
+
+function load(){
+  try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r));}catch(e){}
+  if(!S.start)S.start=TODAY;
+}
+function save(){
+  try{localStorage.setItem(KEY,JSON.stringify(S));document.getElementById('err').classList.add('hide');}
+  catch(e){const el=document.getElementById('err');el.textContent='Not saving. Private browsing blocks storage. Open this outside a private tab.';el.classList.remove('hide');}
+}
+function exportData(){
+  const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);
+  a.download='new-gains-plus-'+TODAY+'.json';a.click();URL.revokeObjectURL(a.href);
+}
+function importData(f){
+  const r=new FileReader();
+  r.onload=()=>{try{S=Object.assign({days:{},lifts:[],levels:[],flasks:{},start:TODAY},JSON.parse(r.result));save();render();toast('Run restored')}
+  catch(e){alert('That file could not be read.')}};
+  r.readAsText(f);
+}
+
+const day=s=>S.days[s]||{};
+function earned(s){const d=day(s);let n=0;for(const k in R)if(d[k])n+=R[k];return n+STEPR[d.steps||0]}
+function alive(s){return earned(s)>0||day(s).flask}
+
+function derive(){
+  D={pool:0,spent:0,cache:0,cacheFrom:null,lost:0};
+  let c=S.start;
+  while(c<=TODAY){
+    const e=earned(c);
+    if(e===0&&!day(c).flask){
+      if(D.cache>0){D.lost+=D.cache;D.cache=0;D.cacheFrom=null}
+      if(D.pool-D.spent>0){D.cache=D.pool-D.spent;D.pool-=D.cache;D.cacheFrom=c}
+    }else{
+      D.pool+=e;
+      if(D.cache>0&&day(c).floor){D.pool+=D.cache;D.cache=0;D.cacheFrom=null}
+    }
+    c=shift(c,1);
+  }
+  D.spent=(S.levels||[]).reduce((a,l)=>a+l.cost,0);
+}
+const held=()=>D.pool-D.spent;
+const level=()=>1+(S.levels||[]).length;
+const costNext=()=>1500+500*(level()-1);
+const statLv=k=>(S.levels||[]).filter(l=>l.stat===k).length;
+function canRaise(k){
+  const v=statLv('vigor');
+  if(k==='strength'||k==='endurance')return statLv(k)<v+1;
+  return true;
+}
+const flasksLeft=()=>2-((S.flasks||{})[MK]||0);
+function streak(){let n=0,c=TODAY;if(!day(c).floor&&!day(c).flask)c=shift(c,-1);
+  while(S.days[c]&&(day(c).floor||day(c).flask)){n++;c=shift(c,-1)}return n}
+const weekDays=m=>[0,1,2,3,4,5,6].map(i=>shift(m,i));
+const weekR=m=>weekDays(m).reduce((a,s)=>a+(s<=TODAY?earned(s):0),0);
+
+const lastLift=()=>S.lifts.length?S.lifts[S.lifts.length-1]:null;
+const nextT=()=>{const l=lastLift();return l?l.w+10:115};
+function plates(t){const per=(t-45)/2,out=[];let r=per;
+  for(const p of[45,35,25,10,5,2.5]){while(r>=p-0.001){out.push(p);r=+(r-p).toFixed(2)}}
+  return{per,list:out,rem:r}}
+const PC={45:'#2E4A7A',35:'#3F5E38',25:'#7A2A24',10:'#1A1710',5:'#B08D1F',2.5:'#C8C0A8'};
+function rig(t){
+  const{per,list}=plates(t),el=document.getElementById('rig');
+  if(per<0){el.innerHTML='<text x="170" y="50" text-anchor="middle" font-family="monospace" font-size="12" fill="#8C8571">Lighter than the bar</text>';return}
+  const cx=170,sl=118,cy=46;let g='';
+  g+=`<rect x="24" y="${cy-3}" width="292" height="6" fill="#4A4436"/>`;
+  g+=`<rect x="${cx-56}" y="${cy-5}" width="112" height="10" fill="#332E22"/>`;
+  [-1,1].forEach(dir=>{
+    let x=cx+dir*sl,off=dir>0?x+7:x-7;
+    g+=`<rect x="${dir>0?x:x-5}" y="${cy-6}" width="5" height="12" fill="#332E22"/>`;
+    list.forEach(p=>{
+      const h=Math.max(19,17+p*1.5),w=p>=25?10:(p>=10?7:5),px=dir>0?off:off-w;
+      g+=`<rect x="${px}" y="${cy-h/2}" width="${w}" height="${h}" fill="${PC[p]}" stroke="#0C0A06" stroke-width="1"/>`;
+      off+=dir*(w+2.5);
+    });
+  });
+  el.innerHTML=g;
+}
+let tt;
+function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');
+  clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2200)}
+
+function render(){try{paint()}catch(e){console.error(e)}}
+function paint(){
+  derive();
+  const wk=Math.floor((new Date(MON+'T12:00:00')-new Date(monday(S.start)+'T12:00:00'))/6048e5)+1;
+  document.getElementById('stamp').textContent='Week '+wk+' · '+new Date(TODAY+'T12:00:00').toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
+
+  document.getElementById('runes').textContent=fm(held());
+  document.getElementById('lvl').textContent='Level '+level();
+  const c=costNext(),h=held();
+  document.getElementById('lvlTrack').style.width=Math.min(100,h/c*100)+'%';
+  document.getElementById('cost').textContent=h>=c?'Ready to level':fm(c-h)+' more to Level '+(level()+1);
+  document.getElementById('levelBtn').disabled=h<c;
+
+  document.querySelectorAll('.task').forEach(b=>b.classList.toggle('on',!!day(TODAY)[b.dataset.k]));
+  document.querySelectorAll('#steps button').forEach(b=>b.classList.toggle('on',(day(TODAY).steps||0)==+b.dataset.v));
+  document.getElementById('todayR').textContent='+'+fm(earned(TODAY));
+  document.getElementById('floorReq').textContent=STATS[0].req(statLv('vigor'))+' · protein lunch · plate in the kitchen';
+  document.getElementById('liftReq').textContent=STATS[2].req(statLv('strength'));
+
+  // death
+  const y=shift(TODAY,-1);
+  const dead=S.days[y]!==undefined&&earned(y)===0&&!day(y).flask&&!day(y).ack;
+  const de=document.getElementById('death');
+  de.classList.toggle('hide',!dead);
+  if(dead){
+    document.getElementById('deathBody').textContent=D.cache>0
+      ? fm(D.cache)+' runes are on the ground. Floor today and you pick them all back up. Do not force a play. Just farm.'
+      : 'Yesterday scored nothing. Nothing was carried, so nothing was lost. Just farm.';
+    const f=flasksLeft();
+    const fb=document.getElementById('useFlask');
+    fb.textContent=f>0?'Drink a flask ('+f+')':'No flasks';fb.disabled=f<=0;
+  }
+
+  // bar
+  const l=lastLift(),t=nextT(),show=(l&&l.date===TODAY)?l.w:t;
+  document.getElementById('barTag').textContent=(l&&l.date===TODAY)?'Logged today':'Next session';
+  document.getElementById('barW').innerHTML=show+' <em>lb</em>';
+  const p=plates(show);
+  document.getElementById('barSub').textContent=p.per>=0?'per side  '+p.list.join(' + ')+(p.rem>0.01?'  (+'+p.rem+' short)':''):'';
+  document.getElementById('barMeta').textContent=l?'Last '+l.w:'Start 115';
+  rig(show);
+  const best=S.lifts.length?Math.max(...S.lifts.map(x=>x.w)):0;
+  const nx=BOSS.find(b=>best<b.w);
+  document.getElementById('gates').innerHTML=BOSS.map(b=>{
+    const cl=best>=b.w,isn=nx&&nx.w===b.w;
+    return '<div class="gate'+(cl?' cleared':'')+(isn?' next':'')+'"><span class="w">'+b.w+'</span><span class="n">'+b.n+'</span><span class="s">'+(cl?'Felled':(isn?'Next':'Sealed'))+'</span></div>';
+  }).join('');
+  document.getElementById('liftIn').placeholder=t+'?';
+
+  // stats
+  document.getElementById('statList').innerHTML=STATS.map(s=>{
+    const lv=statLv(s.k);
+    return '<div class="stat-line"><span class="nm">'+s.n+'</span><span class="pips">'+
+      [0,1,2,3,4].map(i=>'<span class="pip'+(i<lv?' on':'')+'"></span>').join('')+
+      '</span><span class="req">'+s.req(lv)+'</span></div>';
+  }).join('');
+
+  // week
+  const names=['M','T','W','T','F','S','S'];
+  document.getElementById('strip').innerHTML=weekDays(MON).map((s,i)=>{
+    const e=s<=TODAY?earned(s):0,ht=Math.min(100,e/800*100);
+    const cls=[s===TODAY?'today':'',day(s).flask?'flasked':'',(S.days[s]&&e===0&&!day(s).flask)?'dead':''].join(' ');
+    return '<div class="day '+cls+'"><div class="bar"><i style="height:'+ht+'%"></i></div><div class="d">'+names[i]+'</div></div>';
+  }).join('');
+  const now=weekR(MON),pr=weekR(PREV),v=document.getElementById('verdict');
+  if(pr<=0)v.innerHTML='<b>'+fm(now)+'</b> this week. No mark to beat yet.';
+  else if(now>pr)v.innerHTML='<b>'+fm(now-pr)+'</b> ahead of last week.';
+  else v.innerHTML='<b>'+fm(pr-now+1)+'</b> behind last week. Just farm.';
+
+  document.getElementById('streak').innerHTML=streak()+'<small> d</small>';
+  const fl=flasksLeft();
+  document.getElementById('flaskRow').innerHTML=[0,1].map(i=>'<div class="flask'+(i<2-fl?' spent':'')+'"></div>').join('');
+
+  const avg=r=>{const a=[];for(let i=0;i<7;i++){const w=day(shift(TODAY,-i-r*7)).weight;if(w)a.push(w)}return a.length?a.reduce((x,y)=>x+y)/a.length:null};
+  const a0=avg(0),a1=avg(1);
+  document.getElementById('avgW').textContent=a0?a0.toFixed(1):'—';
+  if(a0&&a1){const d=a0-a1;
+    document.getElementById('trend').textContent=(d<0?'Down ':'Up ')+Math.abs(d).toFixed(1)+' lb on the 7-day average. Target is 0.5 to 1.0 down.';}
+}
+
+function set(k,v){const d=S.days[TODAY]||(S.days[TODAY]={});d[k]=v;save();
+  const el=document.getElementById('runes');el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse');render()}
+
+document.querySelectorAll('.task').forEach(b=>b.addEventListener('click',()=>set(b.dataset.k,!day(TODAY)[b.dataset.k])));
+document.querySelectorAll('#steps button').forEach(b=>b.addEventListener('click',()=>set('steps',+b.dataset.v)));
+
+document.getElementById('levelBtn').addEventListener('click',()=>{
+  const opts=STATS.filter(s=>canRaise(s.k));
+  const pick=prompt('Raise which stat?\n\n'+opts.map((s,i)=>(i+1)+'. '+s.n+'  ('+s.req(statLv(s.k)+1)+')').join('\n'));
+  const i=parseInt(pick,10)-1;
+  if(isNaN(i)||!opts[i])return;
+  S.levels=S.levels||[];S.levels.push({stat:opts[i].k,cost:costNext(),date:TODAY});
+  save();render();toast(opts[i].n+' raised');
+});
+document.getElementById('logLift').addEventListener('click',()=>{
+  const el=document.getElementById('liftIn'),w=parseFloat(el.value);
+  if(!w||w<45)return;
+  const before=S.lifts.length?Math.max(...S.lifts.map(x=>x.w)):0;
+  S.lifts=S.lifts.filter(x=>x.date!==TODAY);S.lifts.push({date:TODAY,w});
+  (S.days[TODAY]||(S.days[TODAY]={})).lift=true;
+  el.value='';save();render();
+  const felled=BOSS.filter(b=>b.w>before&&b.w<=w);
+  if(felled.length)toast(felled[felled.length-1].n+' felled');
+});
+document.getElementById('logW').addEventListener('click',()=>{
+  const el=document.getElementById('wIn'),w=parseFloat(el.value);
+  if(!w)return;set('weight',w);el.value='';
+});
+document.getElementById('useFlask').addEventListener('click',()=>{
+  if(flasksLeft()<=0)return;const y=shift(TODAY,-1);
+  S.flasks=S.flasks||{};S.flasks[MK]=(S.flasks[MK]||0)+1;
+  S.days[y]=Object.assign(S.days[y]||{},{flask:true});
+  save();render();toast('Flask drunk');
+});
+document.getElementById('ackDeath').addEventListener('click',()=>{
+  const y=shift(TODAY,-1);S.days[y]=Object.assign(S.days[y]||{},{ack:true});save();render();
+});
+document.getElementById('resetBtn').addEventListener('click',()=>{
+  if(!confirm('Abandon the run? Every day, lift, and level is erased.'))return;
+  S={days:{},lifts:[],levels:[],flasks:{},start:TODAY};save();render();
+});
+
+load();if(S.days[TODAY]===undefined)S.days[TODAY]={};render();
+document.getElementById('exportBtn').addEventListener('click',exportData);
+document.getElementById('importIn').addEventListener('change',e=>{if(e.target.files[0])importData(e.target.files[0])});
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+</script>
+</body>
+</html>
