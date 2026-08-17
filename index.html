@@ -2,798 +2,621 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>New Gains+</title>
-<link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#131109">
-<meta name="description" content="A daily tracker for fat loss and strength recovery. Runes, levels, bosses, and a floor you can hit on your worst day.">
-<meta property="og:title" content="New Gains+">
-<meta property="og:description" content="A daily tracker for fat loss and strength recovery. Adherence over optimality.">
-<meta property="og:type" content="website">
-
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="theme-color" content="#0E1116">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="New Gains+">
-<link rel="apple-touch-icon" href="icon-180.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<title>New Gains+</title>
+<link rel="manifest" href='data:application/manifest+json,{"name":"New Gains%2B","short_name":"NG%2B","display":"standalone","background_color":"%230E1116","theme_color":"%230E1116","start_url":"."}'>
 <style>
 :root{
-  --void:#131109;
-  --stone:#1D1A13;
-  --stone-2:#252118;
-  --line:#3A3427;
-  --gold:#C9A227;
-  --gold-hi:#EBCB63;
-  --parch:#E6DEC8;
-  --ash:#8C8571;
-  --blood:#8C2B22;
-  --moss:#5E7A4B;
+  --ink:#0E1116; --panel:#161B22; --panel2:#1B222B; --line:#252D38;
+  --bone:#E6E9EC; --ash:#8B95A1; --dim:#5B6673;
+  --gold:#C9A227; --goldsoft:#E0BE4A; --golddim:#4A3F17;
+  --jade:#4E8C6A; --blood:#9E3535; --flask:#4A7FB5;
+  --r:10px;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
 }
-*{box-sizing:border-box;margin:0;padding:0}
-html{-webkit-text-size-adjust:100%}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%}
 body{
-  background:var(--void);
-  background-image:radial-gradient(ellipse at 50% -10%, #221E14 0%, var(--void) 62%);
-  background-attachment:fixed;
-  color:var(--parch);
-  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
-  font-size:15px;line-height:1.45;
-  padding:env(safe-area-inset-top) 0 calc(64px + env(safe-area-inset-bottom));min-height:100vh;
+  margin:0;background:var(--ink);color:var(--bone);font-family:var(--sans);
+  font-size:15px;line-height:1.35;overscroll-behavior:none;
 }
-.wrap{max-width:520px;margin:0 auto;padding:0 16px}
-.serif{font-family:'Cormorant Garamond',Georgia,serif}
-.mono{font-family:'JetBrains Mono',ui-monospace,Menlo,monospace;font-variant-numeric:tabular-nums}
-.eyebrow{font-size:10.5px;letter-spacing:.28em;text-transform:uppercase;color:var(--ash);font-weight:500}
+button,input,select,textarea{font:inherit;color:inherit}
+button{background:none;border:none;padding:0;cursor:pointer}
 
-/* header */
-header{padding:22px 0 14px;text-align:center;border-bottom:1px solid var(--line);position:relative}
-header:after{content:"";position:absolute;left:0;right:0;bottom:-4px;height:1px;background:var(--line);opacity:.5}
-.title{font-family:'Cormorant Garamond',Georgia,serif;font-weight:600;font-size:34px;letter-spacing:.14em;color:var(--gold-hi);line-height:1}
-.sub{margin-top:6px}
+#app{max-width:520px;margin:0 auto;height:100dvh;display:flex;flex-direction:column}
+main{flex:1;overflow-y:auto;padding:10px 14px 8px;-webkit-overflow-scrolling:touch}
+.view{display:none}.view.on{display:block}
 
-/* death banner */
-.death{margin:16px 0 0;border-top:1px solid var(--blood);border-bottom:1px solid var(--blood);
-  background:linear-gradient(180deg,rgba(140,43,34,0) 0%,rgba(140,43,34,.28) 50%,rgba(140,43,34,0) 100%);
-  padding:20px 14px;text-align:center}
-.death h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:29px;letter-spacing:.2em;color:#D4655A;line-height:1}
-.death p{font-size:13.5px;color:var(--parch);margin-top:9px;opacity:.86}
-.death .row{display:flex;gap:8px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+/* ---- type ---- */
+.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+h2{margin:0 0 8px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono);color:var(--ash);font-weight:500}
 
-/* rune panel */
-.runes{margin-top:20px;text-align:center;padding:20px 14px;border:1px solid var(--line);background:var(--stone);position:relative}
-.runes:before{content:"";position:absolute;inset:4px;border:1px solid rgba(201,162,39,.16);pointer-events:none}
-.rune-n{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:52px;line-height:1;color:var(--gold-hi);letter-spacing:.02em}
-.rune-n.pulse{animation:pop .5s ease-out}
-@keyframes pop{0%{transform:scale(1)}30%{transform:scale(1.09);color:#FFF0B8}100%{transform:scale(1)}}
-.lvl-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:16px}
-.lvl-row .lv{font-family:'Cormorant Garamond',serif;font-size:19px;color:var(--parch);letter-spacing:.08em}
-.track{height:3px;background:#2E2A1F;margin-top:11px;position:relative;overflow:hidden}
-.track i{display:block;height:100%;background:linear-gradient(90deg,var(--gold) 0%,var(--gold-hi) 100%);width:0;transition:width .5s cubic-bezier(.2,.7,.3,1)}
-.cost{font-size:12px;color:var(--ash);margin-top:8px;letter-spacing:.04em}
+/* ---- readout (signature) ---- */
+.readout{padding:2px 0 10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+.rune-line{display:flex;align-items:baseline;gap:8px}
+.rune-big{font-family:var(--mono);font-size:44px;line-height:1;font-weight:600;color:var(--gold);letter-spacing:-.04em}
+.rune-unit{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--golddim);color:#8A7526}
+.ceil{display:flex;gap:3px;margin-top:9px}
+.ceil i{flex:1;height:3px;background:var(--line);border-radius:2px}
+.ceil i.f{background:var(--gold)}
+.ceil i.l{background:var(--goldsoft)}
+.meta{display:flex;gap:0;margin-top:11px;border-top:1px solid var(--line);padding-top:9px}
+.meta div{flex:1;min-width:0}
+.meta .v{font-family:var(--mono);font-size:14px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ok{color:var(--jade)}.bad{color:var(--blood)}.gold{color:var(--gold)}.blue{color:var(--flask)}
 
-/* buttons */
-button{font:inherit;color:inherit;cursor:pointer;background:none;border:none}
-.btn{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:15px;letter-spacing:.16em;text-transform:uppercase;
-  padding:9px 18px;border:1px solid var(--gold);color:var(--gold-hi);background:rgba(201,162,39,.06)}
-.btn:hover{background:rgba(201,162,39,.15)}
-.btn.ghost{border-color:var(--line);color:var(--ash);background:none}
-.btn[disabled]{opacity:.32;cursor:default}
-.btn.sm{padding:7px 13px;font-size:13.5px;letter-spacing:.12em}
-button:focus-visible,input:focus-visible{outline:2px solid var(--gold-hi);outline-offset:2px}
+/* ---- cards ---- */
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;margin-bottom:10px}
+.card.floor{border-color:#2E3745}
+.card.floor.done{border-color:#2F5942;background:linear-gradient(180deg,#16241C,#161B22 60%)}
+.hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.hdr .st{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ash)}
 
-/* sections */
-section{margin-top:30px}
-.sec-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
-.sec-head h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:16px;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
-.sec-head .rule{flex:1;height:1px;background:var(--line)}
-.sec-head .meta{font-size:11px;letter-spacing:.14em;color:var(--ash);text-transform:uppercase;white-space:nowrap}
+/* ---- rows ---- */
+.row{display:flex;align-items:center;gap:11px;padding:9px 2px;border-top:1px solid var(--line);width:100%;text-align:left}
+.row:first-of-type{border-top:none}
+.box{width:19px;height:19px;flex:0 0 19px;border:1.5px solid #3A4553;border-radius:5px;position:relative;transition:.12s}
+.row.on .box{background:var(--jade);border-color:var(--jade)}
+.row.on .box::after{content:"";position:absolute;left:5.5px;top:2px;width:4px;height:9px;border:solid #0E1116;border-width:0 2px 2px 0;transform:rotate(42deg)}
+.row .lbl{flex:1;min-width:0}
+.row .sub{font-size:11.5px;color:var(--dim);margin-top:1px}
+.row .val{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.02em}
+.row.on .val{color:var(--gold)}
+.row:disabled{opacity:.35}
 
-/* tasks */
-.task{width:100%;display:flex;align-items:center;gap:13px;text-align:left;
-  border:1px solid var(--line);background:var(--stone);padding:13px;margin-bottom:6px;transition:border-color .15s,background .15s}
-.task:active{background:var(--stone-2)}
-.task .mark{width:20px;height:20px;flex-shrink:0;border:1px solid var(--ash);transform:rotate(45deg);
-  display:grid;place-items:center;transition:background .16s,border-color .16s,box-shadow .16s}
-.task .mark i{width:8px;height:8px;background:var(--gold-hi);opacity:0;transform:scale(.4);transition:opacity .16s,transform .16s}
-.task .lb{flex:1;min-width:0}
-.task .lb b{font-weight:500;font-size:15px;display:block;letter-spacing:.01em}
-.task .lb small{color:var(--ash);font-size:12px;display:block;line-height:1.35}
-.task .r{font-family:'Cormorant Garamond',serif;font-size:17px;color:var(--ash);flex-shrink:0;letter-spacing:.04em}
-.task.on{border-color:rgba(201,162,39,.55);background:var(--stone-2)}
-.task.on .mark{border-color:var(--gold-hi);box-shadow:0 0 10px rgba(201,162,39,.3)}
-.task.on .mark i{opacity:1;transform:scale(1)}
-.task.on .r{color:var(--gold-hi)}
-.seg{display:flex;gap:6px;margin-bottom:6px}
-.seg button{flex:1;border:1px solid var(--line);background:var(--stone);padding:12px 4px;text-align:center;
-  font-family:'Cormorant Garamond',serif;font-size:16px;letter-spacing:.14em;text-transform:uppercase}
-.seg button small{display:block;font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.02em;color:var(--ash);margin-top:2px}
-.seg button.on{border-color:rgba(201,162,39,.55);background:var(--stone-2);color:var(--gold-hi)}
-.seg button.on small{color:var(--gold)}
+/* ---- generic ---- */
+.btn{display:block;width:100%;padding:11px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel2);
+  font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone);margin-top:8px}
+.btn.gold{border-color:#6B5A1E;color:var(--goldsoft);background:#1E1A0E}
+.btn.sm{width:auto;padding:7px 11px;margin:0;font-size:11px}
+.btn:disabled{opacity:.32}
+.split{display:flex;gap:8px}.split>*{flex:1}
+input[type=text],input[type=number],select,textarea{
+  width:100%;background:#0B0E13;border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:15px}
+textarea{resize:none;font-size:14px}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
+.hint{font-size:11.5px;color:var(--dim);margin-top:6px}
+.kv{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);font-size:14px}
+.kv:first-child{border-top:none}
+.kv .n{font-family:var(--mono);font-variant-numeric:tabular-nums}
 
-/* bar */
-.panel{border:1px solid var(--line);background:var(--stone);padding:16px 14px}
-.bar-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
-.bar-w{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:32px;line-height:1;color:var(--parch)}
-.bar-w em{font-style:normal;font-size:13px;color:var(--ash);font-weight:500}
-.bar-sub{font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ash);margin-top:5px;margin-bottom:12px}
-svg.rig{display:block;width:100%;height:auto}
-.gates{margin-top:15px;display:flex;flex-direction:column;gap:4px}
-.gate{display:flex;align-items:center;gap:11px;padding:7px 10px;border:1px solid transparent;background:rgba(0,0,0,.22)}
-.gate .w{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:13px;width:34px;color:var(--ash)}
-.gate .n{font-family:'Cormorant Garamond',serif;font-size:15.5px;letter-spacing:.08em;color:var(--ash);flex:1}
-.gate .s{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
-.gate.cleared{border-color:rgba(201,162,39,.3)}
-.gate.cleared .w,.gate.cleared .n{color:var(--gold-hi)}
-.gate.cleared .s{color:var(--gold)}
-.gate.next{border-color:var(--blood)}
-.gate.next .n,.gate.next .w{color:var(--parch)}
-.gate.next .s{color:#D4655A}
-.row{display:flex;gap:7px;margin-top:14px}
-input[type=number]{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:15px;width:100%;padding:10px 11px;
-  border:1px solid var(--line);background:#100E09;color:var(--parch)}
-input[type=number]::placeholder{color:#5F5A4B;font-weight:500}
-input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
-input[type=number]{-moz-appearance:textfield}
+/* ---- tabs ---- */
+nav{display:flex;border-top:1px solid var(--line);background:#0B0E13;padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;padding:9px 2px 10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
+nav button.on{color:var(--gold)}
+nav button span{display:block;font-size:17px;line-height:1;margin-bottom:4px;filter:grayscale(1) opacity(.55)}
+nav button.on span{filter:none}
 
-/* stats grid */
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.cell{border:1px solid var(--line);background:var(--stone);padding:13px}
-.cell .k{font-family:'Cormorant Garamond',serif;font-size:27px;line-height:1.05;color:var(--parch)}
-.cell .k small{font-size:12px;color:var(--ash)}
-.cell .l{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ash);margin-top:4px}
-.flasks{display:flex;gap:7px;margin-top:9px}
-.flask{width:13px;height:18px;border:1px solid var(--gold);border-radius:2px 2px 5px 5px;background:linear-gradient(180deg,transparent 32%,var(--blood) 32%)}
-.flask.spent{border-color:var(--line);background:none}
+/* ---- calendar ---- */
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cal .dow{text-align:center;font-family:var(--mono);font-size:9px;color:var(--dim);padding-bottom:2px}
+.cal button{aspect-ratio:1;border:1px solid var(--line);border-radius:7px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;background:var(--panel);font-family:var(--mono);gap:1px}
+.cal button.pad{border:none;background:none}
+.cal button .d{font-size:11px;color:var(--ash)}
+.cal button .r{font-size:9px;color:var(--dim)}
+.cal button.earn{background:#1E1A0E;border-color:#54471A}.cal button.earn .r{color:var(--goldsoft)}
+.cal button.floor{background:#16241C;border-color:#2F5942}.cal button.floor .r{color:var(--jade)}
+.cal button.dead{background:#231315;border-color:#5C2626}.cal button.dead .r{color:#C05656}
+.cal button.flask{background:#121C26;border-color:#2C4C69}.cal button.flask .r{color:var(--flask)}
+.cal button.today{outline:1.5px solid var(--gold);outline-offset:-1px}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:9px}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:middle}
 
-/* stats list */
-.stat-line{display:flex;align-items:center;gap:10px;padding:9px 11px;border:1px solid var(--line);background:var(--stone);margin-bottom:5px}
-.stat-line .nm{font-family:'Cormorant Garamond',serif;font-size:16px;letter-spacing:.12em;flex:1}
-.stat-line .pips{display:flex;gap:3px}
-.stat-line .pip{width:6px;height:6px;background:#332E22;transform:rotate(45deg)}
-.stat-line .pip.on{background:var(--gold-hi)}
-.stat-line .req{font-size:11.5px;color:var(--ash);width:96px;text-align:right}
+/* ---- sheet ---- */
+.scrim{position:fixed;inset:0;background:rgba(4,6,9,.7);display:none;z-index:20}
+.scrim.on{display:block}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--panel);
+  border-radius:16px 16px 0 0;border-top:1px solid var(--line);padding:14px 14px calc(14px + env(safe-area-inset-bottom));
+  max-height:88dvh;overflow-y:auto}
+.grip{width:34px;height:4px;background:#333C48;border-radius:2px;margin:0 auto 11px}
 
-/* week strip */
-.strip{display:flex;gap:4px}
-.day{flex:1;text-align:center}
-.day .bar{height:40px;background:#211D15;display:flex;align-items:flex-end;overflow:hidden;border:1px solid transparent}
-.day .bar i{display:block;width:100%;background:linear-gradient(180deg,var(--gold-hi),var(--gold));height:0;transition:height .4s}
-.day.flasked .bar i{background:var(--blood)}
-.day.dead .bar{border-color:var(--blood)}
-.day .d{font-size:10px;letter-spacing:.16em;color:var(--ash);margin-top:5px;text-transform:uppercase}
-.day.today .d{color:var(--gold-hi)}
-
-.note{font-size:12px;color:var(--ash);margin-top:10px;line-height:1.5}
-.verdict{text-align:center;font-family:'Cormorant Garamond',serif;font-size:17px;letter-spacing:.05em;margin-top:14px;color:var(--parch)}
-.verdict b{color:var(--gold-hi);font-weight:600}
-.reset{margin-top:30px;text-align:center}
-.reset button{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#5F5A4B}
-.err{border:1px solid var(--blood);padding:9px 11px;font-size:12.5px;margin-top:12px;color:#D4655A}
-
-.gate.act{border-color:var(--line)}
-.gate.act .w,.gate.act .n{color:var(--parch)}
-.gate.act .w{width:46px}
-
-.info{width:16px;height:16px;min-width:16px;border:1px solid var(--line);border-radius:50%;color:var(--ash);
- font-family:'Cormorant Garamond',Georgia,serif;font-size:11px;line-height:14px;text-align:center;
- display:inline-block;cursor:pointer;flex-shrink:0;user-select:none;transition:border-color .15s,color .15s}
-.info.on{border-color:var(--gold);color:var(--gold-hi);background:rgba(201,162,39,.1)}
-.tip{border-left:1px solid var(--gold);background:rgba(201,162,39,.05);padding:11px 13px;margin:0 0 7px;
- font-size:13px;color:var(--parch);line-height:1.55}
-.tip b{color:var(--gold-hi);font-weight:600}
-.tip em{font-style:normal;color:var(--ash)}
-
-.sub-head{display:flex;align-items:center;gap:10px;margin:15px 0 7px}
-.sub-head .lbl{font-family:'Cormorant Garamond',Georgia,serif;font-size:12.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--ash)}
-.sub-head .rule{flex:1;height:1px;background:var(--line)}
-
-.tabs{display:flex;gap:6px;margin-bottom:12px}
-.tab{flex:1;border:1px solid var(--line);background:var(--stone);padding:10px 4px;
- font-family:'Cormorant Garamond',Georgia,serif;font-size:14.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--ash)}
-.tab.on{border-color:rgba(201,162,39,.55);color:var(--gold-hi);background:var(--stone-2)}
-.cal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px}
-.cal-head .m{font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;letter-spacing:.2em;text-transform:uppercase;color:var(--parch)}
-.cal-head button{color:var(--gold);font-size:20px;padding:2px 16px;line-height:1}
-.cal-dow,.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.cal-dow div{text-align:center;font-size:9.5px;letter-spacing:.12em;color:var(--ash);padding-bottom:5px}
-.cell{aspect-ratio:1;border:1px solid var(--line);background:var(--stone);display:grid;place-items:center;
- font-family:'JetBrains Mono',monospace;font-size:11.5px;color:var(--ash);cursor:pointer;position:relative}
-.cell.void{border:none;background:none;cursor:default}
-.cell.fut{opacity:.3;cursor:default}
-.cell.dead{border-color:var(--blood)}
-.cell.fl{border-color:var(--gold)}
-.cell.now{box-shadow:inset 0 0 0 1px var(--gold-hi)}
-.cell.sel{border-color:var(--gold-hi)}
-.cell b{position:absolute;bottom:2px;left:0;right:0;height:2px;background:var(--gold)}
-
-.nav{display:flex;gap:6px;margin-top:16px}
-.nav button{flex:1;border:1px solid var(--line);background:var(--stone);padding:11px 4px;
- font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;letter-spacing:.2em;text-transform:uppercase;color:var(--ash)}
-.nav button.on{border-color:rgba(201,162,39,.55);color:var(--gold-hi);background:var(--stone-2)}
-.edit{border:1px solid var(--line);background:var(--stone);padding:12px;margin-top:10px}
-.edit .eh{font-family:'Cormorant Garamond',Georgia,serif;font-size:15px;letter-spacing:.12em;color:var(--parch);margin-bottom:10px}
-.chips{display:flex;flex-wrap:wrap;gap:5px}
-.chip{border:1px solid var(--line);background:#100E09;color:var(--ash);padding:8px 11px;
- font-family:'Cormorant Garamond',Georgia,serif;font-size:14px;letter-spacing:.1em}
-.chip.on{border-color:var(--gold);color:var(--gold-hi);background:rgba(201,162,39,.1)}
-.hide{display:none !important}
-.toast{position:fixed;left:50%;bottom:26px;transform:translateX(-50%) translateY(14px);opacity:0;
-  background:var(--stone-2);border:1px solid var(--gold);color:var(--gold-hi);
-  font-family:'Cormorant Garamond',serif;font-size:16px;letter-spacing:.16em;text-transform:uppercase;
-  padding:11px 22px;transition:opacity .3s,transform .3s;pointer-events:none;z-index:9;text-align:center}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-@media (prefers-reduced-motion:reduce){*{transition:none !important;animation:none !important}}
+/* ---- misc ---- */
+.tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 6px;border-radius:4px;border:1px solid var(--line);color:var(--ash)}
+.sect{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin:10px 0 3px}
+.sect:first-child{margin-top:0}
+.gi{display:flex;align-items:center;gap:9px;padding:6px 0;border-top:1px solid var(--line)}
+.gi.on span{text-decoration:line-through;color:var(--dim)}
+.gi span{flex:1}
+.x{color:var(--dim);font-family:var(--mono);padding:0 4px}
+.bossrow{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:13px}
+.bossrow.cur{color:var(--gold)}
+.bossrow.won{color:var(--dim);text-decoration:line-through}
+.bossrow .nm{font-family:var(--sans);font-size:13px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
-<div class="wrap">
-
-  <header>
-    <div class="title">NEW GAINS+</div>
-    <div class="eyebrow sub" id="stamp">—</div>
-  </header>
-
-  <div class="nav">
-    <button class="pg on" data-pg="today">Today</button>
-    <button class="pg" data-pg="history">History</button>
-  </div>
-
-  <div id="err" class="err hide"></div>
-
-  <!-- DEATH -->
-  <div class="death hide" id="death">
-    <h2>CACHE DROPPED</h2>
-    <p id="deathBody">Yesterday scored nothing.</p>
-    <div class="row">
-      <button class="btn sm" id="useFlask">Drink a flask</button>
-      <button class="btn sm ghost" id="ackDeath">Just farm</button>
-    </div>
-  </div>
-
-  <!-- RUNES -->
-  <div class="runes">
-    <div class="eyebrow">Runes held <span class="info" data-tip="runes" role="button" tabindex="0" aria-label="What is this">i</span></div>
-    <div class="rune-n" id="runes">0</div>
-    <div class="lvl-row">
-      <span class="lv" id="lvl">Level 1</span>
-      <button class="btn sm" id="levelBtn" disabled>Level up</button>
-    </div>
-    <div class="track"><i id="lvlTrack"></i></div>
-    <div class="cost" id="cost">1,500 to Level 2</div>
-  </div>
-    <div class="tip hide" id="tip-runes"><b>Runes</b> are earned by doing the day’s actions. They stay temporary until you spend them on a level, which makes them permanent. <em>Example: a full day with a lift is 800. Level 2 costs 1,500, so roughly two good days.</em></div>
-
-  <!-- TODAY -->
-  <section data-page="today">
-    <div class="sec-head"><h2>Today</h2><span class="info" data-tip="today" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="todayR">+0</span></div>
-    <div class="tip hide" id="tip-today">Tap each action once you have actually done it. Order does not matter and you can tap them at any point in the day. <em>A day with zero taps is a death and drops your unspent runes into a cache.</em></div>
-
-    <button class="task" data-k="floor">
-      <span class="mark"><i></i></span>
-      <span class="lb"><b>The Floor</b><small id="floorReq">2k steps · protein lunch · plate in the kitchen</small></span>
-      <span class="r">100</span><span class="info" data-tip="floor" role="button" tabindex="0" aria-label="What is this">i</span>
-    </button>
-    <div class="tip hide" id="tip-floor">The <b>Floor</b> is the smallest version of the day that still counts as a full success. Three parts: the step minimum, protein at lunch, dinner plated in the kitchen. <em>Example: too drained to cook, so you walk twenty minutes, order one grilled chicken item instead of a combo, and eat it off a plate. That is a Floor day. Tap it.</em></div>
-
-    <div class="sub-head"><span class="lbl">Steps</span><span class="rule"></span><span class="info" data-tip="steps" role="button" tabindex="0" aria-label="What is this">i</span></div>
-    <div class="seg" id="steps">
-      <button data-v="0">None<small>0</small></button>
-      <button data-v="1">7k<small>+100</small></button>
-      <button data-v="2">10k<small>+200</small></button>
-    </div>
-    <div class="tip hide" id="tip-steps">Pick the tier you actually reached, not the one you meant to. <em>Your desk-job baseline is 3k to 5k, so 7k is about a twenty-minute walk on top and 10k is about forty.</em></div>
-
-    <button class="task" data-k="lift">
-      <span class="mark"><i></i></span>
-      <span class="lb"><b>Lift</b><small id="liftReq">Log the top set below</small></span>
-      <span class="r">300</span><span class="info" data-tip="lift" role="button" tabindex="0" aria-label="What is this">i</span>
-    </button>
-    <div class="tip hide" id="tip-lift">Checks itself when you complete a workout or log a top set below. <em>You do not tap this one directly.</em></div>
-
-    <button class="task" data-k="lunch">
-      <span class="mark"><i></i></span>
-      <span class="lb"><b>Lunch was already made</b><small>Cooked ahead. No midday decision.</small></span>
-      <span class="r">100</span><span class="info" data-tip="lunch" role="button" tabindex="0" aria-label="What is this">i</span>
-    </button>
-    <div class="tip hide" id="tip-lunch">Lunch existed before you got hungry. <em>Example: Sunday you cooked five containers of chicken and rice. Monday you take one. That is the tap.</em> Ordering food at noon does not count, even if it was a good order.</div>
-
-    <button class="task" data-k="dinner">
-      <span class="mark"><i></i></span>
-      <span class="lb"><b>Plated in the kitchen</b><small>Portion at the counter. Store the rest before eating.</small></span>
-      <span class="r">100</span><span class="info" data-tip="dinner" role="button" tabindex="0" aria-label="What is this">i</span>
-    </button>
-    <div class="tip hide" id="tip-dinner">Fill your plate at the stove and put the rest in containers before you sit down. <em>Serving family-style at the table reliably adds a few hundred calories, because seconds cost nothing. This makes seconds cost getting up.</em></div>
-  </section>
-
-
-  <!-- SESSION -->
-  <section data-page="today">
-    <div class="sec-head"><h2>Workouts</h2><span class="info" data-tip="session" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="sessMeta"></span></div>
-    <div class="tip hide" id="tip-session">Two workouts, A and B, alternating automatically. Each shows the weight you should use today. <em>Tap any lift to correct its weight. Workout complete logs it and adds 10 to squat, 5 to upper body.</em></div>
-    <div class="panel">
-      <div class="bar-top">
-        <div class="bar-w" id="sessName">A</div>
-        <div class="eyebrow">Up next</div>
-      </div>
-      <div class="gates" id="sessList" style="margin-top:13px"></div>
-      <button class="btn" id="doneSess" style="width:100%;margin-top:13px">Workout complete</button>
-      <div class="note">Tap a lift to set its weight. Completing a session adds 10 to squat, 5 to upper body. Two stalls at one weight: drop to 85%.</div>
-    </div>
-  </section>
-
-  <!-- BOSSES -->
-  <section data-page="today">
-    <div class="sec-head"><h2>The Bar</h2><span class="info" data-tip="bar" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="barMeta"></span></div>
-    <div class="tip hide" id="tip-bar">Your squat drawn with the plates you would actually load. Below it are the five bosses. <em>Sealed means not yet reached, Next is what you are climbing toward, Felled is done permanently.</em></div>
-    <div class="panel">
-      <div class="bar-top">
-        <div>
-          <div class="bar-w" id="barW">115 <em>lb</em></div>
-          <div class="bar-sub" id="barSub"></div>
-        </div>
-        <div class="eyebrow" id="barTag">Next session</div>
-      </div>
-      <svg class="rig" id="rig" viewBox="0 0 340 92" role="img" aria-label="Loaded barbell"></svg>
-      <div class="gates" id="gates"></div>
-      <div class="row">
-        <input type="number" id="liftIn" inputmode="decimal" step="5" placeholder="Top set">
-        <button class="btn" id="logLift">Log</button>
-      </div>
-      <div class="note">Top set only. Logging it here marks the Lift action and advances the ladder.</div>
-    </div>
-  </section>
-
-  <!-- STATS -->
-  <section data-page="today">
-    <div class="sec-head"><h2>Stats</h2><span class="info" data-tip="stats" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="statMeta">Spend levels</span></div>
-    <div class="tip hide" id="tip-stats">Each level raises one stat, and each stat raises what the app asks of you. <em>Example: Vigor 1 moves your floor minimum from 2k to 2.5k steps.</em> This is how the plan gets harder without you deciding to make it harder.</div>
-    <div id="statList"></div>
-    <div class="note">Each level raises one stat, and each stat raises its own requirement. Strength and Endurance cannot exceed Vigor by more than one.</div>
-  </section>
-
-  <!-- WEEK -->
-  <section data-page="today">
-    <div class="sec-head"><h2>The Week</h2><span class="info" data-tip="week" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta">Sun–Sat</span></div>
-    <div class="tip hide" id="tip-week">Each bar is one day, height is that day’s runes. Gold is earned, a red outline is a zero day. <em>The only weekly target is beating last week’s total. Not a number, just more than last time.</em></div>
-    <div class="strip" id="strip"></div>
-    <div class="verdict" id="verdict"></div>
-    <div class="grid" style="margin-top:16px">
-      <div class="cell">
-        <div class="k" id="streak">0<small> d</small></div>
-        <div class="l">Floor streak <span class="info" data-tip="streak" role="button" tabindex="0" aria-label="What is this">i</span></div>
-        <div class="flasks" id="flaskRow"></div>
-      </div>
-      <div class="cell">
-        <div class="k" id="avgW">—</div>
-        <div class="l">7-day average <span class="info" data-tip="weight" role="button" tabindex="0" aria-label="What is this">i</span></div>
-        <div class="row" style="margin-top:9px">
-          <input type="number" id="wIn" inputmode="decimal" step="0.1" placeholder="lb">
-          <button class="btn sm" id="logW">Set</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="tip hide" id="tip-streak">Consecutive days you hit the Floor. The two teardrops are flasks, refilling on the 1st. <em>Drinking one turns a zero day into a Floor day: no runes, but no death and the streak survives.</em></div>
-
-    <div class="tip hide" id="tip-weight">Type your weight each morning, same time, before eating. <em>Only the seven-day average is shown, because single days swing 2 to 4 lb on water and salt alone.</em> Target is 0.5 to 1.0 lb down per week.</div>
-    <div class="note" id="trend">Same time each morning. Only the 7-day average is meaningful. Daily swings of 2 to 4 lb are water.</div>
-  </section>
-
-
-  <!-- HISTORY -->
-  <section data-page="history">
-    <div class="sec-head"><h2>History</h2><span class="info" data-tip="history" role="button" tabindex="0" aria-label="What is this">i</span><span class="rule"></span><span class="meta" id="histMeta"></span></div>
-    <div class="tip hide" id="tip-history">Every day you have logged. <em>Brighter cells are bigger days, a red outline is a zero day, a gold outline means a flask was used.</em> Tap any past day to log or correct it. <em>Log what happened, not what you wish had: backfilling a day you actually missed makes the cache meaningless.</em></div>
-    <div id="calWrap">
-      <div class="cal-head"><button id="mPrev" aria-label="Previous month">&lsaquo;</button><span class="m" id="mLabel"></span><button id="mNext" aria-label="Next month">&rsaquo;</button></div>
-      <div class="cal-dow"><div>S</div><div>M</div><div>T</div><div>W</div><div>T</div><div>F</div><div>S</div></div>
-      <div class="cal" id="cal"></div>
-      <div class="note" id="calDetail">Tap any past day to log or correct it.</div>
-    </div>
-    <div id="logWrap" style="margin-top:22px">
-      <div class="sub-head"><span class="lbl">Workout log</span><span class="rule"></span></div>
-      <div class="gates" id="logList"></div>
-    </div>
-  </section>
-
-  <div class="reset">
-    <button id="exportBtn">Back up run</button>
-    <label for="importIn" style="cursor:pointer;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:#5F5A4B;margin:0 14px">Restore</label>
-    <input type="file" id="importIn" accept="application/json" style="display:none">
-    <button id="resetBtn">Abandon run</button>
-    <div class="note" style="text-align:center;margin-top:10px;letter-spacing:.14em">NEW GAINS+ v1.1</div>
-  </div>
+<div id="app">
+  <main>
+    <section id="v-today" class="view on"></section>
+    <section id="v-food" class="view"></section>
+    <section id="v-work" class="view"></section>
+    <section id="v-hist" class="view"></section>
+    <section id="v-stats" class="view"></section>
+  </main>
+  <nav id="tabs">
+    <button data-t="today" class="on"><span>◉</span>Today</button>
+    <button data-t="food"><span>◧</span>Food</button>
+    <button data-t="work"><span>▤</span>Workouts</button>
+    <button data-t="hist"><span>▦</span>History</button>
+    <button data-t="stats"><span>◈</span>Stats</button>
+  </nav>
 </div>
-<div class="toast" id="toast"></div>
+<div class="scrim" id="scrim"><div class="sheet" id="sheet"></div></div>
 
 <script>
-const R={floor:100,lift:300,lunch:100,dinner:100},STEPR=[0,100,200];
-const BOSS=[{w:135,n:'First Plate'},{w:155,n:'The Wall of Habit'},{w:185,n:'Old Ground'},{w:205,n:'The Approach'},{w:225,n:'Two Plates'}];
-const STATS=[
-  {k:'vigor',n:'Vigor',req:l=>['2k','2.5k','3k','3.5k','4k'][Math.min(l,4)]+' floor steps'},
-  {k:'endurance',n:'Endurance',req:l=>[49,55,60,65,70][Math.min(l,4)]+'k steps / wk'},
-  {k:'strength',n:'Strength',req:l=>[2,2,3,3,4][Math.min(l,4)]+' lifts / wk'},
-  {k:'discipline',n:'Discipline',req:l=>[1,2,3,4,5][Math.min(l,4)]+' kitchen rules'}
-];
-const KEY='ngplus-v1',OLD='btp-state-v1';
-let S={days:{},lifts:[],levels:[],flasks:{},sessions:[],work:{squat:115,bench:95,row:95,ohp:65,pull:0},start:null};
-let D={pool:0,spent:0,cache:0,cacheFrom:null,lost:0};
-
-const iso=d=>{const t=new Date(d);t.setMinutes(t.getMinutes()-t.getTimezoneOffset());return t.toISOString().slice(0,10)};
-const TODAY=iso(new Date());
-const shift=(s,n)=>{const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return iso(d)};
-function monday(s){const d=new Date(s+'T12:00:00');d.setDate(d.getDate()-d.getDay());return iso(d)}
-const MON=monday(TODAY),PREV=shift(MON,-7),MK=TODAY.slice(0,7);
-if(!S.start)S.start=TODAY;
-const fm=n=>n.toLocaleString();
-
+/* ============ storage ============ */
+const KEY='ngplus.v3';
+let mem=null;
 function load(){
-  try{const r=localStorage.getItem(KEY);if(r)S=Object.assign(S,JSON.parse(r));}catch(e){}
-  if(!S.start)S.start=TODAY;
-  if(!S.work)S.work={squat:115,bench:95,row:95,ohp:65,pull:0};
-  if(!S.sessions)S.sessions=[];
+  try{const r=localStorage.getItem(KEY);return r?JSON.parse(r):null}catch(e){return mem}
 }
 function save(){
-  try{localStorage.setItem(KEY,JSON.stringify(S));document.getElementById('err').classList.add('hide');}
-  catch(e){const el=document.getElementById('err');el.textContent='Not saving. Private browsing blocks storage. Open this outside a private tab.';el.classList.remove('hide');}
+  try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){mem=S}
 }
-function exportData(){
-  const b=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(b);
-  a.download='new-gains-plus-'+TODAY+'.json';a.click();URL.revokeObjectURL(a.href);
-}
-function importData(f){
-  const r=new FileReader();
-  r.onload=()=>{try{S=Object.assign({days:{},lifts:[],levels:[],flasks:{},start:TODAY},JSON.parse(r.result));save();render();toast('Run restored')}
-  catch(e){alert('That file could not be read.')}};
-  r.readAsText(f);
-}
+const DEF={
+  days:{},            // 'YYYY-MM-DD': day
+  weights:{},         // date: lbs
+  waist:{},           // 'YYYY-MM': in
+  grocery:[],         // {t,s,done}
+  lifts:[],           // {date,session,weight,reps}
+  level:1, spent:0,
+  stats:{vigor:1,endurance:1,strength:1,discipline:1},
+  bossesWon:[],
+  batch:{}            // 'YYYY-MM-DD'(sunday): true
+};
+let S=Object.assign({},DEF,load()||{});
+S.stats=Object.assign({vigor:1,endurance:1,strength:1,discipline:1},S.stats||{});
 
-const day=s=>S.days[s]||{};
-function earned(s){const d=day(s);let n=0;for(const k in R)if(d[k])n+=R[k];return n+STEPR[d.steps||0]}
-function alive(s){return earned(s)>0||day(s).flask}
+/* ============ dates ============ */
+const pad=n=>String(n).padStart(2,'0');
+const iso=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const parse=s=>{const[a,b,c]=s.split('-').map(Number);return new Date(a,b-1,c)};
+const TODAY=iso(new Date());
+const shift=(s,n)=>{const d=parse(s);d.setDate(d.getDate()+n);return iso(d)};
+const fmt=n=>n.toLocaleString('en-US');
+const isSunday=s=>parse(s).getDay()===0;
 
-function derive(){
-  D={pool:0,spent:0,cache:0,cacheFrom:null,lost:0};
-  let c=S.start;
-  while(c<=TODAY){
-    const e=earned(c);
-    if(e===0&&!day(c).flask){
-      if(D.cache>0){D.lost+=D.cache;D.cache=0;D.cacheFrom=null}
-      if(D.pool-D.spent>0){D.cache=D.pool-D.spent;D.pool-=D.cache;D.cacheFrom=c}
-    }else{
-      D.pool+=e;
-      if(D.cache>0&&day(c).floor){D.pool+=D.cache;D.cache=0;D.cacheFrom=null}
-    }
-    c=shift(c,1);
+/* ============ day model ============ */
+function blank(){return{s2k:0,protein:0,dinner:0,s7k:0,s10k:0,lift:0,lunchMade:0,flask:0,boss:0,meals:{b:'',l:'',d:''}}}
+function day(d){if(!S.days[d])S.days[d]=blank();const x=S.days[d];if(!x.meals)x.meals={b:'',l:'',d:''};return x}
+function has(d){return !!S.days[d]}
+
+const stepMin=()=>2000+500*(S.stats.vigor-1);
+const weekSteps=()=>[49,55,60,65,70][Math.min(S.stats.endurance-1,4)]*1000;
+const liftsWeek=()=>1+S.stats.strength;
+const RULES=['Dinner plated in the kitchen','No seconds','Snacks portioned into bags on shopping day','Nothing eaten standing at the counter'];
+const rules=()=>RULES.slice(0,S.stats.discipline);
+
+function floorDone(x){return (x.s2k||x.s7k||x.s10k)&&x.protein&&x.dinner}
+function floorCount(x){return (x.s2k||x.s7k||x.s10k?1:0)+(x.protein?1:0)+(x.dinner?1:0)}
+function runes(x){
+  if(!x)return 0;let r=0;
+  if(floorDone(x))r+=100;
+  if(x.s10k)r+=200;else if(x.s7k)r+=100;
+  if(x.lift)r+=300;
+  if(x.lunchMade)r+=100;
+  if(x.dinner)r+=100;
+  if(x.boss)r+=500;
+  return r;
+}
+function routine(x){return runes(x)-(x&&x.boss?500:0)}
+
+/* ============ ledger: pool, cache, streak ============ */
+function ledger(){
+  const keys=Object.keys(S.days).sort();
+  if(!keys.length)return{pool:-S.spent,cache:0,cacheLost:0,streak:0,dead:false};
+  let cur=keys[0],pool=0,cache=0,lost=0,prevZero=false;
+  const end=TODAY;
+  while(cur<=end){
+    const x=S.days[cur],r=runes(x),z=(r===0&&!(x&&x.flask))&&cur<end;
+    if(cache&&x&&floorDone(x)){pool+=cache;cache=0}
+    pool+=r;
+    if(z){
+      if(prevZero){cache=0;lost++}
+      else{cache=pool;pool=0}
+      prevZero=true;
+    }else if(cur<end){prevZero=false}
+    cur=shift(cur,1);
   }
-  D.spent=(S.levels||[]).reduce((a,l)=>a+l.cost,0);
+  // streak: consecutive days back from today (today counts only if scored)
+  let st=0,c=TODAY;
+  if(runes(S.days[TODAY])===0&&!(S.days[TODAY]&&S.days[TODAY].flask))c=shift(TODAY,-1);
+  while(true){const x=S.days[c];if(!x)break;if(runes(x)>0||x.flask){st++;c=shift(c,-1)}else break}
+  return{pool:pool-S.spent,cache,cacheLost:lost,streak:st};
 }
-const held=()=>D.pool-D.spent;
-const level=()=>1+(S.levels||[]).length;
-const costNext=()=>1500+500*(level()-1);
-const statLv=k=>(S.levels||[]).filter(l=>l.stat===k).length;
-function canRaise(k){
-  const v=statLv('vigor');
-  if(k==='strength'||k==='endurance')return statLv(k)<v+1;
-  return true;
+const cost=lv=>1500+500*(lv-2);
+const nextCost=()=>cost(S.level+1);
+
+/* ============ flasks ============ */
+function flasksUsed(){
+  const m=TODAY.slice(0,7);
+  return Object.keys(S.days).filter(d=>d.slice(0,7)===m&&S.days[d].flask).length;
 }
-const flasksLeft=()=>2-((S.flasks||{})[MK]||0);
-function streak(){let n=0,c=TODAY;if(!day(c).floor&&!day(c).flask)c=shift(c,-1);
-  while(S.days[c]&&(day(c).floor||day(c).flask)){n++;c=shift(c,-1)}return n}
-const weekDays=m=>[0,1,2,3,4,5,6].map(i=>shift(m,i));
-const weekR=m=>weekDays(m).reduce((a,s)=>a+(s<=TODAY?earned(s):0),0);
 
-const lastLift=()=>S.lifts.length?S.lifts[S.lifts.length-1]:null;
-const nextT=()=>{const l=lastLift();return l?l.w+10:115};
-function plates(t){const per=(t-45)/2,out=[];let r=per;
-  for(const p of[45,35,25,10,5,2.5]){while(r>=p-0.001){out.push(p);r=+(r-p).toFixed(2)}}
-  return{per,list:out,rem:r}}
-const PC={45:'#2E4A7A',35:'#3F5E38',25:'#7A2A24',10:'#1A1710',5:'#B08D1F',2.5:'#C8C0A8'};
-function rig(t){
-  const{per,list}=plates(t),el=document.getElementById('rig');
-  if(per<0){el.innerHTML='<text x="170" y="50" text-anchor="middle" font-family="monospace" font-size="12" fill="#8C8571">Lighter than the bar</text>';return}
-  const cx=170,sl=118,cy=46;let g='';
-  g+=`<rect x="24" y="${cy-3}" width="292" height="6" fill="#4A4436"/>`;
-  g+=`<rect x="${cx-56}" y="${cy-5}" width="112" height="10" fill="#332E22"/>`;
-  [-1,1].forEach(dir=>{
-    let x=cx+dir*sl,off=dir>0?x+7:x-7;
-    g+=`<rect x="${dir>0?x:x-5}" y="${cy-6}" width="5" height="12" fill="#332E22"/>`;
-    list.forEach(p=>{
-      const h=Math.max(19,17+p*1.5),w=p>=25?10:(p>=10?7:5),px=dir>0?off:off-w;
-      g+=`<rect x="${px}" y="${cy-h/2}" width="${w}" height="${h}" fill="${PC[p]}" stroke="#0C0A06" stroke-width="1"/>`;
-      off+=dir*(w+2.5);
-    });
-  });
-  el.innerHTML=g;
+/* ============ bosses ============ */
+const LADDER=[{w:135,n:'First Plate'},{w:155,n:'The Wall of Habit'},{w:185,n:'Old Ground'},{w:205,n:'The Approach'},{w:225,n:'Two Plates'}];
+function lastLift(){return S.lifts.length?S.lifts[S.lifts.length-1]:null}
+function nextSession(){const l=lastLift();return l&&l.session==='A'?'B':'A'}
+function currentBoss(){
+  const l=lastLift();
+  if(!l)return 115;
+  const stall=stalled();
+  return stall?Math.round(l.weight*.85/5)*5:l.weight+10;
 }
-let tt;
-function toast(m){const t=document.getElementById('toast');t.textContent=m;t.classList.add('show');
-  clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2200)}
+function stalled(){
+  const n=S.lifts.length;
+  return n>=2&&S.lifts[n-1].weight===S.lifts[n-2].weight;
+}
+function bossName(w){const b=LADDER.find(b=>b.w===w);return b?b.n:null}
 
-function render(){try{paint()}catch(e){console.error(e)}}
-function paint(){
-  derive();
-  const wk=Math.floor((new Date(MON+'T12:00:00')-new Date(monday(S.start)+'T12:00:00'))/6048e5)+1;
-  document.getElementById('stamp').textContent='Week '+wk+' · '+new Date(TODAY+'T12:00:00').toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
+/* ============ weight ============ */
+function avg7(offset){
+  let sum=0,n=0;
+  for(let i=offset;i<offset+7;i++){const d=shift(TODAY,-i);if(S.weights[d]!=null){sum+=S.weights[d];n++}}
+  return n?{v:sum/n,n}:null;
+}
+function weekRunes(off){
+  // week = Sunday..Saturday; off 0 = current week
+  const d=parse(TODAY);const sun=shift(TODAY,-d.getDay()-7*off);
+  let t=0;for(let i=0;i<7;i++){t+=runes(S.days[shift(sun,i)])}
+  return t;
+}
 
-  document.getElementById('runes').textContent=fm(held());
-  document.getElementById('lvl').textContent='Level '+level();
-  const c=costNext(),h=held();
-  document.getElementById('lvlTrack').style.width=Math.min(100,h/c*100)+'%';
-  document.getElementById('cost').textContent=h>=c?'Ready to level':fm(c-h)+' more to Level '+(level()+1);
-  document.getElementById('levelBtn').disabled=h<c;
+/* ============ render ============ */
+let tab='today';
+const el=id=>document.getElementById(id);
+function render(){
+  el('v-today').innerHTML=vToday();
+  el('v-food').innerHTML=vFood();
+  el('v-work').innerHTML=vWork();
+  el('v-hist').innerHTML=vHist();
+  el('v-stats').innerHTML=vStats();
+  save();
+}
 
-  document.querySelectorAll('.task').forEach(b=>b.classList.toggle('on',!!day(TODAY)[b.dataset.k]));
-  document.querySelectorAll('#steps button').forEach(b=>b.classList.toggle('on',(day(TODAY).steps||0)==+b.dataset.v));
-  document.getElementById('todayR').textContent='+'+fm(earned(TODAY));
-  document.getElementById('floorReq').textContent=STATS[0].req(statLv('vigor'))+' · protein lunch · plate in the kitchen';
-  document.getElementById('liftReq').textContent=STATS[2].req(statLv('strength'));
+/* ---------- TODAY ---------- */
+function vToday(){
+  const x=day(TODAY),L=ledger(),r=runes(x),done=floorDone(x);
+  const ceilMax=x.lift?800:500,cap=routine(x);
+  const on=[floorDone(x),x.s7k||x.s10k,x.s10k,x.lunchMade,x.dinner,x.lift];
+  const blocks=on.map((f,i)=>`<i class="${f?(i===5?'l':'f'):''}" style="${i===5?'flex:3':''}"></i>`).join('');
+  const cacheTxt=L.cache?`<span class="bad">${fmt(L.cache)} dropped</span>`:'<span class="ok">safe</span>';
+  const boss=currentBoss(),bn=bossName(boss);
+  const flasksLeft=2-flasksUsed();
+  const canFlask=r===0&&!x.flask&&flasksLeft>0;
 
-  // death
-  const y=shift(TODAY,-1);
-  const dead=S.days[y]!==undefined&&earned(y)===0&&!day(y).flask&&!day(y).ack;
-  const de=document.getElementById('death');
-  de.classList.toggle('hide',!dead);
-  if(dead){
-    document.getElementById('deathBody').textContent=D.cache>0
-      ? fm(D.cache)+' runes dropped here. Any scoring action today recovers all of them. A second zero day loses them permanently.'
-      : 'Nothing was held, so nothing was lost. Just farm.';
-    const f=flasksLeft();
-    const fb=document.getElementById('useFlask');
-    fb.textContent=f>0?'Drink a flask ('+f+')':'No flasks';fb.disabled=f<=0;
+  return `
+  <div class="readout">
+    <div class="eyebrow">Today &middot; ${parse(TODAY).toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})}</div>
+    <div class="rune-line"><div class="rune-big num">${r?'+'+fmt(r):'0'}</div><div class="rune-unit">runes / ${ceilMax} ceiling</div></div>
+    <div class="ceil">${blocks}</div>
+    <div class="meta">
+      <div><div class="eyebrow">Banked</div><div class="v gold">${fmt(L.pool)}<span style="color:var(--dim)"> / ${fmt(nextCost())}</span></div></div>
+      <div><div class="eyebrow">Cache</div><div class="v">${cacheTxt}</div></div>
+      <div><div class="eyebrow">Streak</div><div class="v">${L.streak}</div></div>
+      <div><div class="eyebrow">Boss</div><div class="v">${boss}</div></div>
+    </div>
+  </div>
+
+  ${L.cache?`<div class="card" style="border-color:#5C2626;background:#1A1215">
+    <div class="hdr"><b>Behind. Just farm.</b><span class="st bad">${fmt(L.cache)} in cache</span></div>
+    <div class="hint" style="color:var(--ash)">Hit the Floor today and the cache returns in full. Miss again and it is gone.</div>
+  </div>`:''}
+
+  ${isSunday(TODAY)?`<div class="card" style="border-color:#54471A">
+    <div class="hdr"><b>Rest Site</b><span class="st">Sunday</span></div>
+    <div class="hint" style="color:var(--ash)">Weekly review, level up, grocery list, five lunches.</div>
+    <button class="btn" data-go="stats">Open review</button>
+  </div>`:''}
+
+  <div class="card floor ${done?'done':''}">
+    <div class="hdr"><b>Floor: minimum day</b>
+      <span class="st ${done?'ok':''}">${done?'Complete &middot; +100':floorCount(x)+' of 3'}</span></div>
+    ${row('s2k',fmt(stepMin())+' steps','','',x.s2k||x.s7k||x.s10k,x.s7k||x.s10k)}
+    ${row('protein','Protein at lunch','','',x.protein)}
+    ${row('dinner','Dinner plated in the kitchen','','',x.dinner)}
+    <div class="hint">${done?'A Floor day is a full success, not a partial one.':'All three is the entire plan on a bad day.'}</div>
+  </div>
+
+  <div class="card">
+    <div class="hdr"><b>Runes</b><span class="st">${fmt(cap)} / ${ceilMax}</span></div>
+    ${row('s7k','7,000 steps','','+100',x.s7k||x.s10k,!!x.s10k)}
+    ${row('s10k','10,000 steps','','+200',x.s10k)}
+    ${row('lift','Lift session logged','Log the top set on Workouts','+300',x.lift,true)}
+    ${row('lunchMade','Lunch was already made','Not a takeout decision','+100',x.lunchMade)}
+    ${row('dinner','Dinner plated in the kitchen','Portion at the counter, rest away','+100',x.dinner)}
+  </div>
+
+  ${canFlask?`<button class="btn" data-flask="${TODAY}" style="border-color:#2C4C69;color:var(--flask)">Spend flask &middot; ${flasksLeft} left</button>`:''}
+  ${x.flask?`<div class="card" style="border-color:#2C4C69"><b class="blue">Flask spent.</b> <span class="hint" style="display:inline">Counts as a Floor day. Cache and streak intact.</span></div>`:''}
+  `;
+}
+function row(k,lbl,sub,val,on,dis){
+  return `<button class="row ${on?'on':''}" data-k="${k}" data-d="${TODAY}" ${dis?'disabled':''}>
+    <span class="box"></span>
+    <span class="lbl">${lbl}${sub?`<span class="sub">${sub}</span>`:''}</span>
+    <span class="val">${val||''}</span></button>`;
+}
+
+/* ---------- FOOD ---------- */
+const SECTIONS=['Produce','Meat & Seafood','Dairy','Frozen','Pantry','Other'];
+function vFood(){
+  const x=day(TODAY);
+  const bySect={};S.grocery.forEach((g,i)=>{(bySect[g.s]=bySect[g.s]||[]).push([g,i])});
+  const sun=shift(TODAY,-parse(TODAY).getDay());
+  return `
+  <h2>Today's meals</h2>
+  <div class="card">
+    <div class="eyebrow">Breakfast</div>
+    <input type="text" data-meal="b" value="${esc(x.meals.b)}" placeholder="Eggs and sausage" style="margin:4px 0 10px">
+    <div class="eyebrow">Lunch</div>
+    <input type="text" data-meal="l" value="${esc(x.meals.l)}" placeholder="What you ate" style="margin:4px 0 10px">
+    <div class="eyebrow">Dinner</div>
+    <input type="text" data-meal="d" value="${esc(x.meals.d)}" placeholder="What you ate" style="margin:4px 0 0">
+  </div>
+
+  <h2>Rules</h2>
+  <div class="card">
+    ${row('lunchMade','Lunch was already made','Leftovers count, wherever they came from','+100',x.lunchMade)}
+    ${row('protein','Protein at lunch','Floor item','',x.protein)}
+    ${row('dinner','Dinner plated in the kitchen','Portion at the counter, rest put away, nothing at the table','+100',x.dinner)}
+    ${S.stats.discipline>1?`<div class="hint">Also in effect: ${rules().slice(1).join(' &middot; ')}</div>`:''}
+  </div>
+
+  <h2>Sunday batch</h2>
+  <div class="card">
+    <button class="row ${S.batch[sun]?'on':''}" data-batch="${sun}">
+      <span class="box"></span>
+      <span class="lbl">Five portioned lunches, 40g protein<span class="sub">Instant Pot, cooking for two, one Kroger shop</span></span>
+    </button>
+  </div>
+
+  <h2>Grocery list</h2>
+  <div class="card">
+    <div class="split">
+      <input type="text" id="gtext" placeholder="Add item">
+      <select id="gsect" style="flex:0 0 42%">${SECTIONS.map(s=>`<option>${s}</option>`).join('')}</select>
+    </div>
+    <button class="btn sm" id="gadd" style="margin-top:8px">Add</button>
+    ${S.grocery.length?SECTIONS.filter(s=>bySect[s]).map(s=>`
+      <div class="sect">${s}</div>
+      ${bySect[s].map(([g,i])=>`<div class="gi ${g.done?'on':''}">
+        <button class="box" data-gtog="${i}" aria-label="toggle"></button>
+        <span>${esc(g.t)}</span><button class="x" data-gdel="${i}">&times;</button></div>`).join('')}
+    `).join(''):'<div class="hint">Empty. Build it Sunday, shop once.</div>'}
+    ${S.grocery.length?`<button class="btn sm" id="gclear" style="margin-top:10px">Clear checked</button>`:''}
+  </div>`;
+}
+
+/* ---------- WORKOUTS ---------- */
+function vWork(){
+  const l=lastLift(),next=nextSession(),boss=currentBoss(),stall=stalled();
+  const won=S.bossesWon;
+  return `
+  <h2>Next session</h2>
+  <div class="card">
+    <div class="hdr"><b style="font-size:22px" class="num">Session ${next}</b>
+      <span class="tag">${l?'Last: '+l.session+' &middot; '+l.date.slice(5):'First session'}</span></div>
+    <div class="kv"><span>Target</span><span class="n gold">${boss} &times; 3</span></div>
+    <div class="kv"><span>Last top set</span><span class="n">${l?l.weight+' &times; '+l.reps:'&mdash;'}</span></div>
+    <div class="kv"><span>Sessions this week</span><span class="n">${liftsThisWeek()} / ${liftsWeek()}</span></div>
+    ${stall?`<div class="hint" style="color:#C05656">Stalled twice at ${l.weight}. Drop to ${boss} and climb back. Stalling is not death.</div>`:''}
+  </div>
+
+  <h2>Log top set</h2>
+  <div class="card">
+    <div class="split">
+      <div><div class="eyebrow">Weight</div><input type="number" id="lw" inputmode="numeric" value="${boss}"></div>
+      <div><div class="eyebrow">Reps</div><input type="number" id="lr" inputmode="numeric" value="3"></div>
+    </div>
+    <div class="split" style="margin-top:8px">
+      <button class="btn gold" data-log="A" style="margin:0">Log as A</button>
+      <button class="btn gold" data-log="B" style="margin:0">Log as B</button>
+    </div>
+    <div class="hint">Logging pays +300. Clearing a named boss pays +500.</div>
+  </div>
+
+  <h2>Boss ladder</h2>
+  <div class="card">
+    ${LADDER.map(b=>`<div class="bossrow ${won.includes(b.w)?'won':(boss>=b.w-9&&boss<=b.w?'cur':'')}">
+      <span class="nm">${b.n}</span><span>${b.w}</span></div>`).join('')}
+    <div class="hint">Restart at 115, +10 per session while it moves. 225 is a rematch.</div>
+  </div>`;
+}
+function liftsThisWeek(){
+  const sun=shift(TODAY,-parse(TODAY).getDay());
+  return S.lifts.filter(l=>l.date>=sun&&l.date<=TODAY).length;
+}
+
+/* ---------- HISTORY ---------- */
+let calM=new Date().getMonth(),calY=new Date().getFullYear();
+function vHist(){
+  const first=new Date(calY,calM,1),days=new Date(calY,calM+1,0).getDate();
+  let cells='';
+  for(let i=0;i<first.getDay();i++)cells+='<button class="pad" disabled></button>';
+  for(let d=1;d<=days;d++){
+    const k=calY+'-'+pad(calM+1)+'-'+pad(d),x=S.days[k],r=runes(x);
+    let c='';
+    if(x&&x.flask)c='flask';
+    else if(r>=200)c='earn';
+    else if(r>0)c='floor';
+    else if(x&&k<TODAY)c='dead';
+    cells+=`<button data-day="${k}" class="${c} ${k===TODAY?'today':''}">
+      <span class="d">${d}</span><span class="r">${r?r:(c==='flask'?'F':(c==='dead'?'0':''))}</span></button>`;
   }
-
-  // bar
-  const l=lastLift(),t=nextT(),show=(l&&l.date===TODAY)?l.w:t;
-  document.getElementById('barTag').textContent=(l&&l.date===TODAY)?'Logged today':'Next session';
-  document.getElementById('barW').innerHTML=show+' <em>lb</em>';
-  const p=plates(show);
-  document.getElementById('barSub').textContent=p.per>=0?'per side  '+p.list.join(' + ')+(p.rem>0.01?'  (+'+p.rem+' short)':''):'';
-  document.getElementById('barMeta').textContent=l?'Last '+l.w:'Start 115';
-  rig(show);
-  const best=S.lifts.length?Math.max(...S.lifts.map(x=>x.w)):0;
-  const nx=BOSS.find(b=>best<b.w);
-  document.getElementById('gates').innerHTML=BOSS.map(b=>{
-    const cl=best>=b.w,isn=nx&&nx.w===b.w;
-    return '<div class="gate'+(cl?' cleared':'')+(isn?' next':'')+'"><span class="w">'+b.w+'</span><span class="n">'+b.n+'</span><span class="s">'+(cl?'Felled':(isn?'Next':'Sealed'))+'</span></div>';
-  }).join('');
-  document.getElementById('liftIn').placeholder=t+'?';
-
-  paintSession();
-  paintHistory();
-
-  // stats
-  document.getElementById('statList').innerHTML=STATS.map(s=>{
-    const lv=statLv(s.k);
-    return '<div class="stat-line"><span class="nm">'+s.n+'</span><span class="pips">'+
-      [0,1,2,3,4].map(i=>'<span class="pip'+(i<lv?' on':'')+'"></span>').join('')+
-      '</span><span class="req">'+s.req(lv)+'</span></div>';
-  }).join('');
-
-  // week
-  const names=['S','M','T','W','T','F','S'];
-  document.getElementById('strip').innerHTML=weekDays(MON).map((s,i)=>{
-    const e=s<=TODAY?earned(s):0,ht=Math.min(100,e/800*100);
-    const cls=[s===TODAY?'today':'',day(s).flask?'flasked':'',(S.days[s]&&e===0&&!day(s).flask)?'dead':''].join(' ');
-    return '<div class="day '+cls+'"><div class="bar"><i style="height:'+ht+'%"></i></div><div class="d">'+names[i]+'</div></div>';
-  }).join('');
-  const now=weekR(MON),pr=weekR(PREV),v=document.getElementById('verdict');
-  if(pr<=0)v.innerHTML='<b>'+fm(now)+'</b> this week. No mark to beat yet.';
-  else if(now>pr)v.innerHTML='<b>'+fm(now-pr)+'</b> ahead of last week.';
-  else v.innerHTML='<b>'+fm(pr-now+1)+'</b> behind last week. Just farm.';
-
-  document.getElementById('streak').innerHTML=streak()+'<small> d</small>';
-  const fl=flasksLeft();
-  document.getElementById('flaskRow').innerHTML=[0,1].map(i=>'<div class="flask'+(i<2-fl?' spent':'')+'"></div>').join('');
-
-  const avg=r=>{const a=[];for(let i=0;i<7;i++){const w=day(shift(TODAY,-i-r*7)).weight;if(w)a.push(w)}return a.length?a.reduce((x,y)=>x+y)/a.length:null};
-  const a0=avg(0),a1=avg(1);
-  document.getElementById('avgW').textContent=a0?a0.toFixed(1):'—';
-  if(a0&&a1){const d=a0-a1;
-    document.getElementById('trend').textContent=(d<0?'Down ':'Up ')+Math.abs(d).toFixed(1)+' lb on the 7-day average. Target is 0.5 to 1.0 down.';}
+  return `
+  <div class="hdr">
+    <button class="btn sm" data-cal="-1">&larr;</button>
+    <b class="num">${first.toLocaleDateString('en-US',{month:'long',year:'numeric'})}</b>
+    <button class="btn sm" data-cal="1">&rarr;</button>
+  </div>
+  <div class="cal">${'SMTWTFS'.split('').map(d=>`<div class="dow">${d}</div>`).join('')}${cells}</div>
+  <div class="legend eyebrow">
+    <span><i style="background:#54471A"></i>Runes</span>
+    <span><i style="background:#2F5942"></i>Floor</span>
+    <span><i style="background:#5C2626"></i>Death</span>
+    <span><i style="background:#2C4C69"></i>Flask</span>
+  </div>
+  <div class="hint">Tap any day to backfill or correct it.</div>`;
+}
+function sheetDay(k){
+  const x=day(k),r=runes(x),flasksLeft=2-flasksUsed();
+  const R=(kk,l,s,v,on,dis)=>`<button class="row ${on?'on':''}" data-k="${kk}" data-d="${k}" ${dis?'disabled':''}>
+    <span class="box"></span><span class="lbl">${l}${s?`<span class="sub">${s}</span>`:''}</span><span class="val">${v||''}</span></button>`;
+  el('sheet').innerHTML=`<div class="grip"></div>
+    <div class="hdr"><b>${parse(k).toLocaleDateString('en-US',{weekday:'short',month:'short',day:'numeric'})}</b>
+      <span class="st gold num">${r?'+'+fmt(r):'0'} runes</span></div>
+    <div class="card" style="margin:0 0 10px">
+      ${R('s2k',fmt(stepMin())+' steps','Floor','',x.s2k||x.s7k||x.s10k,x.s7k||x.s10k)}
+      ${R('protein','Protein at lunch','Floor','',x.protein)}
+      ${R('dinner','Dinner plated in the kitchen','Floor','+100',x.dinner)}
+      ${R('s7k','7,000 steps','','+100',x.s7k||x.s10k,!!x.s10k)}
+      ${R('s10k','10,000 steps','','+200',x.s10k)}
+      ${R('lift','Lift session','','+300',x.lift)}
+      ${R('lunchMade','Lunch was already made','','+100',x.lunchMade)}
+    </div>
+    ${r===0&&flasksLeft>0||x.flask?`<button class="btn" data-flask="${k}" style="border-color:#2C4C69;color:var(--flask)">
+      ${x.flask?'Undo flask':'Spend flask &middot; '+flasksLeft+' left'}</button>`:''}
+    <button class="btn" id="closeSheet">Done</button>`;
+  el('scrim').classList.add('on');
 }
 
-function set(k,v){const d=S.days[TODAY]||(S.days[TODAY]={});d[k]=v;save();
-  const el=document.getElementById('runes');el.classList.remove('pulse');void el.offsetWidth;el.classList.add('pulse');render()}
+/* ---------- STATS ---------- */
+function vStats(){
+  const L=ledger(),a=avg7(0),b=avg7(7),d=(a&&b)?b.v-a.v:null;
+  const wk=weekRunes(0),lw=weekRunes(1);
+  const m=TODAY.slice(0,7);
+  const afford=L.pool>=nextCost();
+  const st=S.stats,capd=(k)=>(k==='strength'||k==='endurance')&&st[k]>=st.vigor+1;
+  const btn=(k,lbl)=>`<button class="btn sm" data-lvl="${k}" ${(!afford||capd(k))?'disabled':''}>${lbl}</button>`;
+  return `
+  <h2>Weight</h2>
+  <div class="card">
+    <div class="split"><input type="number" step="0.1" id="wt" inputmode="decimal" placeholder="${S.weights[TODAY]!=null?S.weights[TODAY]:'lbs today'}">
+      <button class="btn sm" id="wsave" style="flex:0 0 32%">Save</button></div>
+    <div class="kv" style="margin-top:8px"><span>7-day average</span><span class="n">${a?a.v.toFixed(1)+' lb':'&mdash;'}</span></div>
+    <div class="kv"><span>Prior 7-day</span><span class="n">${b?b.v.toFixed(1)+' lb':'&mdash;'}</span></div>
+    <div class="kv"><span>Change</span><span class="n ${d==null?'':(d>=0.5?'ok':(d<0?'bad':''))}">${d==null?'&mdash;':(d>0?'-':'+')+Math.abs(d).toFixed(1)+' lb'}</span></div>
+    <div class="hint">Target 0.5 to 1.0 lb down per week. Single days mean nothing.</div>
+  </div>
 
-document.querySelectorAll('.task').forEach(b=>b.addEventListener('click',()=>set(b.dataset.k,!day(TODAY)[b.dataset.k])));
-document.querySelectorAll('#steps button').forEach(b=>b.addEventListener('click',()=>set('steps',+b.dataset.v)));
+  <h2>Runes</h2>
+  <div class="card">
+    <div class="kv"><span>This week</span><span class="n gold">${fmt(wk)}</span></div>
+    <div class="kv"><span>Last week</span><span class="n">${fmt(lw)}</span></div>
+    <div class="kv"><span>Banked</span><span class="n">${fmt(L.pool)} / ${fmt(nextCost())} to Level ${S.level+1}</span></div>
+    ${L.cacheLost?`<div class="kv"><span>Caches lost</span><span class="n bad">${L.cacheLost}</span></div>`:''}
+    <div class="hint">${wk>lw?'Beating last week is the only weekly target.':'Behind last week. Just farm.'}</div>
+  </div>
 
-document.getElementById('levelBtn').addEventListener('click',()=>{
-  const opts=STATS.filter(s=>canRaise(s.k));
-  const pick=prompt('Raise which stat?\n\n'+opts.map((s,i)=>(i+1)+'. '+s.n+'  ('+s.req(statLv(s.k)+1)+')').join('\n'));
-  const i=parseInt(pick,10)-1;
-  if(isNaN(i)||!opts[i])return;
-  S.levels=S.levels||[];S.levels.push({stat:opts[i].k,cost:costNext(),date:TODAY});
-  save();render();toast(opts[i].n+' raised');
-});
-document.getElementById('logLift').addEventListener('click',()=>{
-  const el=document.getElementById('liftIn'),w=parseFloat(el.value);
-  if(!w||w<45)return;
-  const before=S.lifts.length?Math.max(...S.lifts.map(x=>x.w)):0;
-  S.lifts=S.lifts.filter(x=>x.date!==TODAY);S.lifts.push({date:TODAY,w});
-  (S.days[TODAY]||(S.days[TODAY]={})).lift=true;
-  el.value='';save();render();
-  const felled=BOSS.filter(b=>b.w>before&&b.w<=w);
-  if(felled.length)toast(felled[felled.length-1].n+' felled');
-});
-document.getElementById('logW').addEventListener('click',()=>{
-  const el=document.getElementById('wIn'),w=parseFloat(el.value);
-  if(!w)return;set('weight',w);el.value='';
-});
-document.getElementById('useFlask').addEventListener('click',()=>{
-  if(flasksLeft()<=0)return;const y=shift(TODAY,-1);
-  S.flasks=S.flasks||{};S.flasks[MK]=(S.flasks[MK]||0)+1;
-  S.days[y]=Object.assign(S.days[y]||{},{flask:true});
-  save();render();toast('Flask drunk');
-});
-document.getElementById('ackDeath').addEventListener('click',()=>{
-  const y=shift(TODAY,-1);S.days[y]=Object.assign(S.days[y]||{},{ack:true});save();render();
-});
+  <h2>Level ${S.level}</h2>
+  <div class="card">
+    <div class="kv"><span>Vigor ${st.vigor}<span class="sub" style="color:var(--dim)"> &middot; floor ${fmt(stepMin())} steps</span></span>${btn('vigor','+1')}</div>
+    <div class="kv"><span>Endurance ${st.endurance}<span class="sub" style="color:var(--dim)"> &middot; ${fmt(weekSteps())} steps/wk</span></span>${btn('endurance','+1')}</div>
+    <div class="kv"><span>Strength ${st.strength}<span class="sub" style="color:var(--dim)"> &middot; ${liftsWeek()} lifts/wk</span></span>${btn('strength','+1')}</div>
+    <div class="kv"><span>Discipline ${st.discipline}<span class="sub" style="color:var(--dim)"> &middot; ${rules().length} kitchen rule${rules().length>1?'s':''}</span></span>${btn('discipline','+1')}</div>
+    <div class="hint">${afford?'Spending '+fmt(nextCost())+' banks the runes permanently and raises the requirement.':'Need '+fmt(Math.max(0,nextCost()-L.pool))+' more runes. Consistency stat leads: Strength and Endurance cannot pass Vigor +1.'}</div>
+  </div>
 
-const PLANS={A:[['squat','Squat','3x5'],['bench','Bench','3x5'],['row','Barbell row','3x8']],
-             B:[['squat','Squat','3x5'],['ohp','Overhead press','3x5'],['pull','Chin-up','3x8']]};
-const BUMP={squat:10,bench:5,row:5,ohp:5,pull:0};
-function nextType(){const s=S.sessions||[];return (s.length&&s[s.length-1].type==='A')?'B':'A'}
-function paintSession(){
-  const t=nextType();
-  document.getElementById('sessName').textContent='Workout '+t;
-  document.getElementById('sessMeta').textContent=(S.sessions||[]).length+' logged';
-  document.getElementById('sessList').innerHTML=PLANS[t].map(function(m){
-    const k=m[0],w=S.work[k];
-    return '<div class="gate act" data-lift="'+k+'"><span class="w">'+(w?w:'BW')+'</span><span class="n">'+m[1]+'</span><span class="s">'+m[2]+'</span></div>';
-  }).join('');
+  <h2>Waist &middot; ${m}</h2>
+  <div class="card">
+    <div class="split"><input type="number" step="0.1" id="wa" inputmode="decimal" placeholder="${S.waist[m]!=null?S.waist[m]:'inches at navel'}">
+      <button class="btn sm" id="wasave" style="flex:0 0 32%">Save</button></div>
+    ${Object.keys(S.waist).sort().reverse().slice(0,3).map(k=>`<div class="kv"><span>${k}</span><span class="n">${S.waist[k]}"</span></div>`).join('')}
+  </div>
+
+  <div class="split">
+    <button class="btn sm" id="exp" style="flex:1">Export JSON</button>
+    <button class="btn sm" id="imp" style="flex:1">Import JSON</button>
+  </div>
+  <div style="height:14px"></div>`;
 }
-document.getElementById('sessList').addEventListener('click',function(e){
-  const el=e.target.closest('[data-lift]');if(!el)return;
-  const k=el.dataset.lift;
-  const v=prompt('Working weight for this lift (0 for bodyweight)',S.work[k]);
-  if(v===null)return;
-  const n=parseFloat(v);if(isNaN(n)||n<0)return;
-  S.work[k]=n;save();render();
-});
-document.getElementById('doneSess').addEventListener('click',function(){
-  const t=nextType();
-  const before=S.lifts.length?Math.max.apply(null,S.lifts.map(function(x){return x.w})):0;
-  S.sessions=S.sessions||[];S.sessions.push({date:TODAY,type:t});
-  S.lifts=S.lifts.filter(function(x){return x.date!==TODAY});
-  S.lifts.push({date:TODAY,w:S.work.squat});
-  (S.days[TODAY]||(S.days[TODAY]={})).lift=true;
-  const w=S.work.squat;
-  PLANS[t].forEach(function(m){S.work[m[0]]=S.work[m[0]]+BUMP[m[0]]});
-  save();render();
-  const felled=BOSS.filter(function(b){return b.w>before&&b.w<=w});
-  toast(felled.length?felled[felled.length-1].n+' felled':'Workout '+t+' logged');
-});
 
+/* ============ events ============ */
+function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
-document.addEventListener('click',function(e){
-  const b=e.target.closest('.info');if(!b)return;
-  e.preventDefault();e.stopPropagation();
-  const t=document.getElementById('tip-'+b.dataset.tip);if(!t)return;
-  const open=!t.classList.contains('hide');
-  document.querySelectorAll('.tip').forEach(function(x){x.classList.add('hide')});
-  document.querySelectorAll('.info').forEach(function(x){x.classList.remove('on')});
-  if(!open){t.classList.remove('hide');b.classList.add('on')}
-},true);
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-t],[data-k],[data-flask],[data-day],[data-cal],[data-log],[data-lvl],[data-gtog],[data-gdel],[data-batch],[data-go],#gadd,#gclear,#wsave,#wasave,#exp,#imp,#closeSheet,#scrim');
+  if(!t)return;
 
+  if(t.dataset.t||t.dataset.go){go(t.dataset.t||t.dataset.go);return}
 
-// date rollover: the app reads the date once, so refresh it when the day turns
-function checkDay(){
-  try{ if(iso(new Date())!==TODAY) location.reload(); }catch(e){}
-}
-setInterval(checkDay,60000);
-document.addEventListener('visibilitychange',function(){if(!document.hidden)checkDay()});
-window.addEventListener('focus',checkDay);
-window.addEventListener('pageshow',function(e){if(e.persisted)checkDay()});
-
-
-var viewM=TODAY.slice(0,7), selDay=null;
-function paintHistory(){
-  var y=+viewM.slice(0,4), mo=+viewM.slice(5,7);
-  document.getElementById('mLabel').textContent=new Date(y,mo-1,1).toLocaleDateString(undefined,{month:'long',year:'numeric'});
-  var first=new Date(y,mo-1,1), lead=first.getDay(), dim=new Date(y,mo,0).getDate(), h='';
-  for(var i=0;i<lead;i++) h+='<div class="cell void"></div>';
-  for(var d=1;d<=dim;d++){
-    var ds=viewM+'-'+String(d).padStart(2,'0'), e=earned(ds), rec=S.days[ds];
-    var cls='cell', st='';
-    if(ds>TODAY) cls+=' fut';
-    else{
-      if(rec&&e===0&&!day(ds).flask) cls+=' dead';
-      if(day(ds).flask) cls+=' fl';
-      if(e>0) st=' style="background:rgba(201,162,39,'+(0.10+0.55*Math.min(1,e/800)).toFixed(2)+');color:#131109"';
-    }
-    if(ds===TODAY) cls+=' now';
-    if(ds===selDay) cls+=' sel';
-    var lift=S.lifts.some(function(x){return x.date===ds});
-    h+='<div class="'+cls+'" data-d="'+ds+'"'+st+'>'+d+(lift?'<b></b>':'')+'</div>';
+  if(t.dataset.k){
+    const x=day(t.dataset.d),k=t.dataset.k;
+    x[k]=x[k]?0:1;
+    if(k==='s10k'&&x.s10k)x.s7k=0;
+    if((k==='s7k'||k==='s10k')&&(x.s7k||x.s10k))x.s2k=1;
+    afterEdit(t.dataset.d);return;
   }
-  document.getElementById('cal').innerHTML=h;
-  var logged=Object.keys(S.days).filter(function(k){return earned(k)>0}).length;
-  document.getElementById('histMeta').textContent=logged+' days logged';
-  if(selDay) showDay(selDay);
+  if(t.dataset.flask){
+    const k=t.dataset.flask,x=day(k);
+    if(!x.flask&&flasksUsed()>=2)return;
+    x.flask=x.flask?0:1;afterEdit(k);return;
+  }
+  if(t.dataset.day){sheetDay(t.dataset.day);return}
+  if(t.dataset.cal){calM+=+t.dataset.cal;if(calM<0){calM=11;calY--}if(calM>11){calM=0;calY++}render();return}
+  if(t.id==='closeSheet'||(t.id==='scrim'&&e.target.id==='scrim')){el('scrim').classList.remove('on');return}
+  if(t.id==='scrim')return;
 
-  var L=(S.sessions||[]).slice().reverse();
-  document.getElementById('logList').innerHTML=L.length?L.map(function(s){
-    var lf=S.lifts.filter(function(x){return x.date===s.date})[0];
-    var dd=new Date(s.date+'T12:00:00').toLocaleDateString(undefined,{month:'short',day:'numeric'});
-    return '<div class="gate act"><span class="w">'+(lf?lf.w:'—')+'</span><span class="n">Workout '+s.type+'</span><span class="s">'+dd+'</span></div>';
-  }).join(''):'<div class="note">No workouts logged yet.</div>';
-}
-function showDay(ds){
-  var e=earned(ds), d=day(ds), parts=[];
-  if(d.floor)parts.push('Floor');
-  if(d.steps===1)parts.push('7k');
-  if(d.steps===2)parts.push('10k');
-  if(d.lift)parts.push('Lift');
-  if(d.lunch)parts.push('Lunch');
-  if(d.dinner)parts.push('Dinner');
-  if(d.flask)parts.push('Flask used');
-  var lf=S.lifts.filter(function(x){return x.date===ds})[0];
-  if(lf)parts.push(lf.w+' lb');
-  if(d.weight)parts.push(d.weight+' lb bw');
-  var lbl=new Date(ds+'T12:00:00').toLocaleDateString(undefined,{weekday:'short',month:'short',day:'numeric'});
-  document.getElementById('calDetail').innerHTML=
-    '<span>'+(parts.length?parts.join(', '):'nothing logged')+'</span>'+editPanel(ds);
-}
-document.getElementById('cal').addEventListener('click',function(e){
-  var c=e.target.closest('[data-d]');if(!c||c.classList.contains('fut'))return;
-  selDay=(selDay===c.dataset.d)?null:c.dataset.d;
-  if(!selDay)document.getElementById('calDetail').innerHTML='Tap any past day to log or correct it.';
-  paintHistory();
+  if(t.dataset.log){
+    const w=+el('lw').value,r=+el('lr').value;
+    if(!w||!r)return;
+    S.lifts.push({date:TODAY,session:t.dataset.log,weight:w,reps:r});
+    day(TODAY).lift=1;
+    const b=LADDER.find(b=>b.w===w);
+    if(b&&!S.bossesWon.includes(w)&&r>=1){S.bossesWon.push(w);day(TODAY).boss=1}
+    render();return;
+  }
+  if(t.dataset.lvl){
+    const k=t.dataset.lvl;
+    S.spent+=nextCost();S.level++;S.stats[k]++;render();return;
+  }
+  if(t.dataset.gtog!=null){S.grocery[+t.dataset.gtog].done=!S.grocery[+t.dataset.gtog].done;render();return}
+  if(t.dataset.gdel!=null){S.grocery.splice(+t.dataset.gdel,1);render();return}
+  if(t.dataset.batch){const k=t.dataset.batch;S.batch[k]=!S.batch[k];render();return}
+  if(t.id==='gadd'){
+    const v=el('gtext').value.trim();if(!v)return;
+    S.grocery.push({t:v,s:el('gsect').value,done:false});render();
+    const i=el('gtext');if(i){i.focus()}return;
+  }
+  if(t.id==='gclear'){S.grocery=S.grocery.filter(g=>!g.done);render();return}
+  if(t.id==='wsave'){const v=parseFloat(el('wt').value);if(!isNaN(v)){S.weights[TODAY]=v;render()}return}
+  if(t.id==='wasave'){const v=parseFloat(el('wa').value);if(!isNaN(v)){S.waist[TODAY.slice(0,7)]=v;render()}return}
+  if(t.id==='exp'){
+    const blob=new Blob([JSON.stringify(S)],{type:'application/json'});
+    const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ng-plus-'+TODAY+'.json';a.click();return;
+  }
+  if(t.id==='imp'){
+    const i=document.createElement('input');i.type='file';i.accept='.json';
+    i.onchange=()=>{const f=i.files[0];if(!f)return;const rd=new FileReader();
+      rd.onload=()=>{try{S=Object.assign({},DEF,JSON.parse(rd.result));render()}catch(e){alert('Bad file.')}};rd.readAsText(f)};
+    i.click();return;
+  }
 });
-function stepM(n){
-  var y=+viewM.slice(0,4), m=+viewM.slice(5,7)+n;
-  if(m<1){m=12;y--} if(m>12){m=1;y++}
-  viewM=y+'-'+String(m).padStart(2,'0'); selDay=null; paintHistory();
+document.addEventListener('input',e=>{
+  const m=e.target.dataset.meal;
+  if(m){day(TODAY).meals[m]=e.target.value;save()}
+});
+function afterEdit(d){
+  const openSheet=el('scrim').classList.contains('on');
+  render();
+  if(openSheet)sheetDay(d);
 }
-document.getElementById('mPrev').addEventListener('click',function(){stepM(-1)});
-document.getElementById('mNext').addEventListener('click',function(){stepM(1)});
-
-
-document.querySelectorAll('.pg').forEach(function(b){
-  b.addEventListener('click',function(){
-    document.querySelectorAll('.pg').forEach(function(x){x.classList.toggle('on',x===b)});
-    document.querySelectorAll('[data-page]').forEach(function(sec){
-      sec.classList.toggle('hide',sec.dataset.page!==b.dataset.pg);
-    });
-    window.scrollTo(0,0);
-  });
-});
-
-var EDIT=[['floor','Floor'],['steps1','7k'],['steps2','10k'],['lift','Lift'],['lunch','Lunch'],['dinner','Dinner'],['flask','Flask']];
-function editPanel(ds){
-  var d=day(ds), h='';
-  EDIT.forEach(function(m){
-    var on = m[0]==='steps1' ? d.steps===1 : m[0]==='steps2' ? d.steps===2 : !!d[m[0]];
-    h+='<button class="chip'+(on?' on':'')+'" data-ek="'+m[0]+'">'+m[1]+'</button>';
-  });
-  var lbl=new Date(ds+'T12:00:00').toLocaleDateString(undefined,{weekday:'long',month:'short',day:'numeric'});
-  return '<div class="edit"><div class="eh">'+lbl+' &middot; '+fm(earned(ds))+' runes</div><div class="chips" id="chips" data-ds="'+ds+'">'+h+'</div></div>';
+function go(t){
+  tab=t;
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+  document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+t));
+  document.querySelector('main').scrollTop=0;
 }
-document.addEventListener('click',function(e){
-  var c=e.target.closest('.chip');if(!c)return;
-  var ds=c.parentNode.dataset.ds, k=c.dataset.ek;
-  var d=S.days[ds]||(S.days[ds]={});
-  if(k==='steps1') d.steps = d.steps===1?0:1;
-  else if(k==='steps2') d.steps = d.steps===2?0:2;
-  else d[k]=!d[k];
-  save();render();
-});
-
-document.getElementById('resetBtn').addEventListener('click',()=>{
-  if(!confirm('Abandon the run? Every day, lift, and level is erased.'))return;
-  S={days:{},lifts:[],levels:[],flasks:{},start:TODAY};save();render();
-});
-
-document.querySelectorAll('[data-page="history"]').forEach(function(x){x.classList.add('hide')});load();if(S.days[TODAY]===undefined)S.days[TODAY]={};render();if(!S.tipShown){var t0=document.getElementById('tip-floor');if(t0){t0.classList.remove('hide');var b0=document.querySelector('.info[data-tip="floor"]');if(b0)b0.classList.add('on')}S.tipShown=true;save()};
-document.getElementById('exportBtn').addEventListener('click',exportData);
-document.getElementById('importIn').addEventListener('change',e=>{if(e.target.files[0])importData(e.target.files[0])});
-if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
+day(TODAY);
+render();
 </script>
 </body>
 </html>
