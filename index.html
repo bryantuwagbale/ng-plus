@@ -41,7 +41,9 @@ body::before{
 button,input,select,textarea{font:inherit;color:inherit}
 button{background:none;border:none;padding:0;cursor:pointer}
 
-#statusbar{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top);background:var(--bg);z-index:40}
+#statusbar{position:fixed;top:0;left:0;right:0;height:calc(env(safe-area-inset-top) + 40px);
+  background:linear-gradient(180deg,var(--bg) 0,var(--bg) env(safe-area-inset-top),transparent 100%);
+  z-index:40;pointer-events:none}
 #app{max-width:520px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;position:relative;
   padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
 main{flex:1;overflow-y:auto;padding:calc(12px + env(safe-area-inset-top)) 13px calc(88px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
@@ -933,6 +935,57 @@ function afterEdit(d){
   render();
   if(openSheet)sheetDay(d);
 }
+/* ============ sheet: swipe down to dismiss ============ */
+(function(){
+  const sheetEl=el('sheet'),scrimEl=el('scrim');
+  let startY=0,curY=0,dragging=false,startedAtTop=false;
+  sheetEl.addEventListener('touchstart',e=>{
+    if(!scrimEl.classList.contains('on'))return;
+    startY=curY=e.touches[0].clientY;
+    startedAtTop=sheetEl.scrollTop<=0;
+    dragging=false;
+    sheetEl.style.transition='none';
+  },{passive:true});
+  sheetEl.addEventListener('touchmove',e=>{
+    if(!scrimEl.classList.contains('on'))return;
+    curY=e.touches[0].clientY;
+    const dy=curY-startY;
+    if(!dragging){
+      if(startedAtTop&&dy>6)dragging=true;
+      else return;
+    }
+    if(dy>0){
+      e.preventDefault();
+      sheetEl.style.transform='translateY('+dy+'px)';
+      scrimEl.style.opacity=String(Math.max(.35,1-dy/420));
+    }
+  },{passive:false});
+  function release(){
+    if(!dragging)return;
+    const dy=Math.max(0,curY-startY);
+    dragging=false;
+    if(dy>90){
+      sheetEl.style.transition='transform .3s cubic-bezier(.32,0,.67,0)';
+      sheetEl.style.transform='translateY(100%)';
+      scrimEl.style.transition='opacity .3s ease';
+      scrimEl.style.opacity='0';
+      setTimeout(()=>{
+        scrimEl.classList.remove('on');
+        sheetEl.style.transition='';sheetEl.style.transform='';
+        scrimEl.style.transition='';scrimEl.style.opacity='';
+      },300);
+    }else{
+      sheetEl.style.transition='transform .32s cubic-bezier(.34,1.5,.44,1)';
+      sheetEl.style.transform='';
+      scrimEl.style.transition='opacity .25s ease';
+      scrimEl.style.opacity='';
+      setTimeout(()=>{sheetEl.style.transition='';scrimEl.style.transition=''},320);
+    }
+  }
+  sheetEl.addEventListener('touchend',release);
+  sheetEl.addEventListener('touchcancel',release);
+})();
+
 const TABS=['today','food','work','hist','stats'];
 function go(t){
   const dir=TABS.indexOf(t)>TABS.indexOf(tab)?1:-1, changed=t!==tab;
