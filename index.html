@@ -10,125 +10,202 @@
 <link rel="manifest" href='data:application/manifest+json,{"name":"New Gains%2B","short_name":"NG%2B","display":"standalone","background_color":"%230E1116","theme_color":"%230E1116","start_url":"."}'>
 <style>
 :root{
-  --ink:#0E1116; --panel:#161B22; --panel2:#1B222B; --line:#252D38;
-  --bone:#E6E9EC; --ash:#8B95A1; --dim:#5B6673;
-  --gold:#C9A227; --goldsoft:#E0BE4A; --golddim:#4A3F17;
-  --jade:#4E8C6A; --blood:#9E3535; --flask:#4A7FB5;
-  --r:10px;
+  --bg:#080A0E;
+  --bone:#F2F4F7; --ash:#9AA4B2; --dim:#69737F;
+  --gold:#D9B23C; --goldsoft:#F0CE63; --jade:#5FB489; --blood:#D9605C; --flask:#61A5E8;
+  --glass:rgba(255,255,255,.055);
+  --glass2:rgba(255,255,255,.09);
+  --edge:rgba(255,255,255,.11);
+  --edge-top:rgba(255,255,255,.20);
+  --blur:saturate(180%) blur(26px);
+  --r:22px; --r-in:15px;
+  --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
   --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
-  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --sans:-apple-system,BlinkMacSystemFont,system-ui,"Segoe UI",Roboto,sans-serif;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{height:100%}
 body{
-  margin:0;background:var(--ink);color:var(--bone);font-family:var(--sans);
-  font-size:15px;line-height:1.35;overscroll-behavior:none;
+  margin:0;color:var(--bone);font-family:var(--sans);font-size:15px;line-height:1.35;
+  background:var(--bg);overscroll-behavior:none;-webkit-font-smoothing:antialiased;
+}
+/* ambient field: gives the glass something to refract */
+body::before{
+  content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(48% 38% at 18% 8%, rgba(217,178,60,.20), transparent 70%),
+    radial-gradient(45% 40% at 88% 22%, rgba(97,165,232,.16), transparent 70%),
+    radial-gradient(60% 45% at 50% 108%, rgba(95,180,137,.14), transparent 70%);
+  filter:blur(30px);
 }
 button,input,select,textarea{font:inherit;color:inherit}
 button{background:none;border:none;padding:0;cursor:pointer}
 
-#app{max-width:520px;margin:0 auto;height:100dvh;display:flex;flex-direction:column}
-main{flex:1;overflow-y:auto;padding:10px 14px 8px;-webkit-overflow-scrolling:touch}
-.view{display:none}.view.on{display:block}
+#app{max-width:520px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;position:relative}
+main{flex:1;overflow-y:auto;padding:14px 14px calc(104px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+.view{display:none}.view.on{display:block;animation:in .22s ease}
+@keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
 /* ---- type ---- */
 .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-h2{margin:0 0 8px;font-size:13px;letter-spacing:.1em;text-transform:uppercase;font-family:var(--mono);color:var(--ash);font-weight:500}
+h2{margin:14px 4px 7px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-family:var(--mono);color:var(--ash);font-weight:500}
+h2:first-child{margin-top:2px}
 
-/* ---- readout (signature) ---- */
-.readout{padding:2px 0 10px;border-bottom:1px solid var(--line);margin-bottom:10px}
-.rune-line{display:flex;align-items:baseline;gap:8px}
-.rune-big{font-family:var(--mono);font-size:44px;line-height:1;font-weight:600;color:var(--gold);letter-spacing:-.04em}
-.rune-unit{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--golddim);color:#8A7526}
-.ceil{display:flex;gap:3px;margin-top:9px}
-.ceil i{flex:1;height:3px;background:var(--line);border-radius:2px}
-.ceil i.f{background:var(--gold)}
-.ceil i.l{background:var(--goldsoft)}
-.meta{display:flex;gap:0;margin-top:11px;border-top:1px solid var(--line);padding-top:9px}
+/* ---- glass primitive ---- */
+.card,.sheet,nav,.cal button,.btn,input,select,textarea{
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+}
+.card{
+  background:var(--glass);border:.5px solid var(--edge);border-radius:var(--r);
+  padding:13px 14px;margin-bottom:11px;position:relative;overflow:hidden;
+  box-shadow:0 1px 0 var(--edge-top) inset,0 8px 26px rgba(0,0,0,.32);
+}
+.card.floor.done{background:linear-gradient(180deg,rgba(95,180,137,.16),rgba(255,255,255,.05) 70%);border-color:rgba(95,180,137,.34)}
+
+/* ---- readout ---- */
+.readout{padding:4px 4px 14px;margin-bottom:4px}
+.rune-line{display:flex;align-items:baseline;gap:9px}
+.rune-big{font-family:var(--mono);font-size:46px;line-height:1;font-weight:600;letter-spacing:-.045em;
+  background:linear-gradient(180deg,#F6DE93,#C99B22);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rune-unit{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
+.ceil{display:flex;gap:4px;margin-top:11px}
+.ceil i{flex:1;height:4px;background:rgba(255,255,255,.10);border-radius:3px;transition:.25s}
+.ceil i.f{background:var(--gold);box-shadow:0 0 10px rgba(217,178,60,.5)}
+.ceil i.l{background:var(--goldsoft);box-shadow:0 0 10px rgba(240,206,99,.55)}
+.meta{display:flex;margin-top:13px;padding-top:11px;border-top:.5px solid var(--edge)}
 .meta div{flex:1;min-width:0}
-.meta .v{font-family:var(--mono);font-size:14px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta .v{font-family:var(--mono);font-size:14px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ok{color:var(--jade)}.bad{color:var(--blood)}.gold{color:var(--gold)}.blue{color:var(--flask)}
 
-/* ---- cards ---- */
-.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:11px 12px;margin-bottom:10px}
-.card.floor{border-color:#2E3745}
-.card.floor.done{border-color:#2F5942;background:linear-gradient(180deg,#16241C,#161B22 60%)}
-.hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.hdr .st{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ash)}
+.hdr{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}
+.hdr .st{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ash);white-space:nowrap}
 
 /* ---- rows ---- */
-.row{display:flex;align-items:center;gap:11px;padding:9px 2px;border-top:1px solid var(--line);width:100%;text-align:left}
+.row{display:flex;align-items:center;gap:12px;padding:11px 2px;border-top:.5px solid var(--edge);width:100%;text-align:left}
 .row:first-of-type{border-top:none}
-.box{width:19px;height:19px;flex:0 0 19px;border:1.5px solid #3A4553;border-radius:5px;position:relative;transition:.12s}
-.row.on .box{background:var(--jade);border-color:var(--jade)}
-.row.on .box::after{content:"";position:absolute;left:5.5px;top:2px;width:4px;height:9px;border:solid #0E1116;border-width:0 2px 2px 0;transform:rotate(42deg)}
+.box{width:22px;height:22px;flex:0 0 22px;border:1.5px solid rgba(255,255,255,.26);border-radius:8px;position:relative;
+  background:rgba(255,255,255,.05);transition:transform .18s cubic-bezier(.3,1.4,.5,1),background .18s}
+.row.on .box,.gi.on .box{background:var(--jade);border-color:rgba(255,255,255,.5);transform:scale(1.06)}
+.row.on .box::after,.gi.on .box::after{content:"";position:absolute;left:7px;top:3.5px;width:4px;height:10px;
+  border:solid #08120D;border-width:0 2.2px 2.2px 0;transform:rotate(42deg)}
 .row .lbl{flex:1;min-width:0}
-.row .sub{font-size:11.5px;color:var(--dim);margin-top:1px}
-.row .val{font-family:var(--mono);font-size:12px;color:var(--dim);letter-spacing:.02em}
+.row .sub{display:block;font-size:11.5px;color:var(--dim);margin-top:2px}
+.row .val{font-family:var(--mono);font-size:12px;color:var(--dim)}
 .row.on .val{color:var(--gold)}
-.row:disabled{opacity:.35}
+.row:active{opacity:.6}
+.row:disabled{opacity:.4}
 
-/* ---- generic ---- */
-.btn{display:block;width:100%;padding:11px;border:1px solid var(--line);border-radius:var(--r);background:var(--panel2);
-  font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--bone);margin-top:8px}
-.btn.gold{border-color:#6B5A1E;color:var(--goldsoft);background:#1E1A0E}
-.btn.sm{width:auto;padding:7px 11px;margin:0;font-size:11px}
-.btn:disabled{opacity:.32}
-.split{display:flex;gap:8px}.split>*{flex:1}
+/* ---- controls ---- */
+.btn{display:block;width:100%;padding:12px;border:.5px solid var(--edge);border-radius:var(--r-in);
+  background:var(--glass2);box-shadow:0 1px 0 var(--edge-top) inset;
+  font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;margin-top:9px}
+.btn:active{transform:scale(.985)}
+.btn.gold{border-color:rgba(217,178,60,.4);color:var(--goldsoft);background:rgba(217,178,60,.14)}
+.btn.sm{width:auto;padding:8px 13px;margin:0;font-size:11px;border-radius:12px}
+.btn:disabled{opacity:.3}
+.split{display:flex;gap:9px}.split>*{flex:1}
 input[type=text],input[type=number],select,textarea{
-  width:100%;background:#0B0E13;border:1px solid var(--line);border-radius:8px;padding:9px 10px;font-size:15px}
-textarea{resize:none;font-size:14px}
-input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--gold);outline-offset:1px}
-.hint{font-size:11.5px;color:var(--dim);margin-top:6px}
-.kv{display:flex;justify-content:space-between;align-items:baseline;padding:7px 0;border-top:1px solid var(--line);font-size:14px}
+  width:100%;background:rgba(255,255,255,.06);border:.5px solid var(--edge);border-radius:13px;padding:11px 12px;font-size:16px}
+input::placeholder{color:var(--dim)}
+input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--goldsoft);outline-offset:2px}
+.hint{font-size:11.5px;color:var(--dim);margin-top:8px;line-height:1.4}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:.5px solid var(--edge);font-size:14px}
 .kv:first-child{border-top:none}
-.kv .n{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.kv .n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.kv .sub{font-size:11.5px}
 
-/* ---- tabs ---- */
-nav{display:flex;border-top:1px solid var(--line);background:#0B0E13;padding-bottom:env(safe-area-inset-bottom)}
-nav button{flex:1;padding:9px 2px 10px;font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--dim)}
-nav button.on{color:var(--gold)}
-nav button span{display:block;font-size:17px;line-height:1;margin-bottom:4px;filter:grayscale(1) opacity(.55)}
-nav button.on span{filter:none}
+/* ---- floating glass tab bar ---- */
+nav{
+  position:fixed;left:0;right:0;bottom:calc(10px + env(safe-area-inset-bottom));
+  width:calc(100% - 24px);max-width:496px;margin:0 auto;display:flex;
+  background:rgba(15,19,26,.86);border:.5px solid var(--edge);border-radius:28px;padding:5px;
+  box-shadow:0 1px 0 var(--edge-top) inset,0 10px 34px rgba(0,0,0,.5);z-index:10;
+}
+nav button{flex:1;padding:8px 2px 7px;border-radius:23px;font-family:var(--mono);font-size:9px;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--dim);transition:.22s}
+nav button span{display:block;font-size:16px;line-height:1;margin-bottom:4px;opacity:.5}
+nav button.on{color:#0A0C10;background:linear-gradient(180deg,#F0CE63,#C99B22);
+  box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 3px 12px rgba(217,178,60,.35)}
+nav button.on span{opacity:1}
+nav button:active{transform:scale(.96)}
 
 /* ---- calendar ---- */
-.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-.cal .dow{text-align:center;font-family:var(--mono);font-size:9px;color:var(--dim);padding-bottom:2px}
-.cal button{aspect-ratio:1;border:1px solid var(--line);border-radius:7px;display:flex;flex-direction:column;
-  align-items:center;justify-content:center;background:var(--panel);font-family:var(--mono);gap:1px}
-.cal button.pad{border:none;background:none}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .dow{text-align:center;font-family:var(--mono);font-size:9px;color:var(--dim);padding-bottom:3px}
+.cal button{aspect-ratio:1;border:.5px solid var(--edge);border-radius:13px;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;background:var(--glass);font-family:var(--mono);gap:1px}
+.cal button.pad{border:none;background:none;-webkit-backdrop-filter:none;backdrop-filter:none}
 .cal button .d{font-size:11px;color:var(--ash)}
 .cal button .r{font-size:9px;color:var(--dim)}
-.cal button.earn{background:#1E1A0E;border-color:#54471A}.cal button.earn .r{color:var(--goldsoft)}
-.cal button.floor{background:#16241C;border-color:#2F5942}.cal button.floor .r{color:var(--jade)}
-.cal button.dead{background:#231315;border-color:#5C2626}.cal button.dead .r{color:#C05656}
-.cal button.flask{background:#121C26;border-color:#2C4C69}.cal button.flask .r{color:var(--flask)}
-.cal button.today{outline:1.5px solid var(--gold);outline-offset:-1px}
-.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:9px}
-.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px;vertical-align:middle}
+.cal button.earn{background:rgba(217,178,60,.18);border-color:rgba(217,178,60,.36)}.cal button.earn .r{color:var(--goldsoft)}
+.cal button.floor{background:rgba(95,180,137,.16);border-color:rgba(95,180,137,.34)}.cal button.floor .r{color:var(--jade)}
+.cal button.dead{background:rgba(217,96,92,.15);border-color:rgba(217,96,92,.34)}.cal button.dead .r{color:var(--blood)}
+.cal button.flask{background:rgba(97,165,232,.15);border-color:rgba(97,165,232,.36)}.cal button.flask .r{color:var(--flask)}
+.cal button.today{outline:1.5px solid var(--gold);outline-offset:-1.5px}
+.legend{display:flex;flex-wrap:wrap;gap:11px;margin-top:11px;padding:0 4px}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:3px;margin-right:5px;vertical-align:middle}
 
 /* ---- sheet ---- */
-.scrim{position:fixed;inset:0;background:rgba(4,6,9,.7);display:none;z-index:20}
-.scrim.on{display:block}
-.sheet{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;background:var(--panel);
-  border-radius:16px 16px 0 0;border-top:1px solid var(--line);padding:14px 14px calc(14px + env(safe-area-inset-bottom));
-  max-height:88dvh;overflow-y:auto}
-.grip{width:34px;height:4px;background:#333C48;border-radius:2px;margin:0 auto 11px}
+.scrim{position:fixed;inset:0;background:rgba(4,6,9,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);display:none;z-index:30}
+.scrim.on{display:block;animation:in .2s ease}
+.sheet{position:absolute;left:0;right:0;bottom:0;max-width:520px;margin:0 auto;
+  background:rgba(24,28,36,.72);border-radius:30px 30px 0 0;border-top:.5px solid var(--edge-top);
+  padding:14px 14px calc(16px + env(safe-area-inset-bottom));max-height:88dvh;overflow-y:auto;
+  box-shadow:0 -12px 40px rgba(0,0,0,.5)}
+.grip{width:38px;height:5px;background:rgba(255,255,255,.22);border-radius:3px;margin:0 auto 13px}
+
+/* ---- info affordance ---- */
+.i{width:21px;height:21px;flex:0 0 21px;border-radius:50%;border:.5px solid var(--edge);
+  background:var(--glass2);color:var(--ash);font-family:var(--serif);font-size:12px;font-style:italic;
+  line-height:20px;text-align:center;box-shadow:0 1px 0 var(--edge-top) inset}
+.i:active{transform:scale(.9)}
+h2 .i{margin-left:8px;vertical-align:-5px;width:19px;height:19px;line-height:18px;font-size:11px}
+.hdr b,.bossrow .nm,.sheet h3{font-family:var(--serif);font-weight:600;letter-spacing:.01em}
+.hdr b{font-size:16px}
+.sheet h3{margin:0 0 3px;font-size:19px;color:var(--goldsoft)}
+.sheet .kicker{font-family:var(--mono);font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim);margin-bottom:9px}
+.desc{font-family:var(--serif);font-size:15.5px;line-height:1.5;color:#DCE1E8}
+.desc p{margin:0 0 9px}
+.desc p:last-child{margin:0}
+.desc em{color:var(--goldsoft);font-style:italic}
+.rule{height:.5px;background:linear-gradient(90deg,transparent,var(--edge-top),transparent);margin:12px 0}
 
 /* ---- misc ---- */
-.tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:3px 6px;border-radius:4px;border:1px solid var(--line);color:var(--ash)}
-.sect{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin:10px 0 3px}
-.sect:first-child{margin-top:0}
-.gi{display:flex;align-items:center;gap:9px;padding:6px 0;border-top:1px solid var(--line)}
-.gi.on span{text-decoration:line-through;color:var(--dim)}
+.i{width:19px;height:19px;flex:0 0 19px;border-radius:50%;border:.5px solid rgba(217,178,60,.5);
+  background:rgba(217,178,60,.12);color:var(--goldsoft);font-family:var(--mono);font-size:11px;line-height:17px;
+  text-align:center;font-style:italic;margin-left:7px}
+.i:active{transform:scale(.9)}
+.tiptitle{font-size:17px;font-weight:600;letter-spacing:-.01em}
+.tipbody{color:var(--ash);font-size:14px;line-height:1.5;margin-top:10px}
+.tipbody b{color:var(--bone);font-weight:600}
+.tipbody .l{display:flex;gap:9px;padding:6px 0;border-top:.5px solid var(--edge);justify-content:space-between}
+.tipbody .l:first-child{border-top:none}
+.tipbody .l span:last-child{font-family:var(--mono);color:var(--gold);white-space:nowrap}
+.tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;
+  border-radius:9px;border:.5px solid var(--edge);background:var(--glass);color:var(--ash);white-space:nowrap}
+.sect{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin:12px 0 2px}
+.gi{display:flex;align-items:center;gap:11px;padding:8px 0;border-top:.5px solid var(--edge)}
 .gi span{flex:1}
-.x{color:var(--dim);font-family:var(--mono);padding:0 4px}
-.bossrow{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-family:var(--mono);font-size:13px}
-.bossrow.cur{color:var(--gold)}
+.gi.on span{text-decoration:line-through;color:var(--dim)}
+.x{color:var(--dim);font-family:var(--mono);padding:0 6px;font-size:17px}
+.bossrow{display:flex;justify-content:space-between;padding:9px 0;border-top:.5px solid var(--edge);font-family:var(--mono);font-size:13px;color:var(--ash)}
+.bossrow .nm{font-family:var(--sans)}
+.bossrow.cur{color:var(--goldsoft)}
 .bossrow.won{color:var(--dim);text-decoration:line-through}
-.bossrow .nm{font-family:var(--sans);font-size:13px}
-@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---- accessibility / fallbacks ---- */
+@media(prefers-reduced-transparency:reduce){
+  .card,nav,.sheet,.btn,.cal button,input,select,textarea{-webkit-backdrop-filter:none;backdrop-filter:none}
+  .card,.btn,.cal button{background:#171B23}
+  nav{background:#12161D}.sheet{background:#171B23}
+  body::before{opacity:.35}
+}
+@supports not ((-webkit-backdrop-filter:blur(1px)) or (backdrop-filter:blur(1px))){
+  .card,.btn,.cal button{background:#171B23}
+  nav{background:#12161D}.sheet{background:#171B23}
+}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
@@ -163,15 +240,16 @@ function save(){
 const DEF={
   days:{},            // 'YYYY-MM-DD': day
   weights:{},         // date: lbs
-  waist:{},           // 'YYYY-MM': in
   grocery:[],         // {t,s,done}
   lifts:[],           // {date,session,weight,reps}
   level:1, spent:0,
   stats:{vigor:1,endurance:1,strength:1,discipline:1},
   bossesWon:[],
-  batch:{}            // 'YYYY-MM-DD'(sunday): true
+  batch:{},           // 'YYYY-MM-DD'(sunday): true
+  orders:[]           // {p:place,o:order}
 };
 let S=Object.assign({},DEF,load()||{});
+S.orders=S.orders||[];
 S.stats=Object.assign({vigor:1,endurance:1,strength:1,discipline:1},S.stats||{});
 
 /* ============ dates ============ */
@@ -229,7 +307,7 @@ function ledger(){
   let st=0,c=TODAY;
   if(runes(S.days[TODAY])===0&&!(S.days[TODAY]&&S.days[TODAY].flask))c=shift(TODAY,-1);
   while(true){const x=S.days[c];if(!x)break;if(runes(x)>0||x.flask){st++;c=shift(c,-1)}else break}
-  return{pool:pool-S.spent,cache,cacheLost:lost,streak:st};
+  return{pool:Math.max(0,pool-S.spent),cache,cacheLost:lost,streak:st};
 }
 const cost=lv=>1500+500*(lv-2);
 const nextCost=()=>cost(S.level+1);
@@ -269,6 +347,24 @@ function weekRunes(off){
   return t;
 }
 
+/* ============ tooltips ============ */
+const TIP={
+ readout:()=>['The readout','<div class="l"><span>Banked</span><span>runes not yet spent</span></div><div class="l"><span>Cache</span><span>runes dropped on a death</span></div><div class="l"><span>Streak</span><span>consecutive scoring days</span></div><div class="l"><span>Boss</span><span>next weight on the ladder</span></div><br><b>Death and the cache.</b> A day that scores 0 runes is a death, and all unbanked runes drop into the cache. Hit the Floor the next day and the cache returns in full, no penalty, no making it up. <b>Two zero days in a row and it is gone permanently.</b> Never miss twice.<br><br><b>Flasks.</b> Two charges a month, refilled on the 1st. You have '+(2-flasksUsed())+' left. One turns a zero day into a Floor day: no runes, but no death, cache intact, streak intact. Using one is a correct play. Do not spend the second before the 15th.<br><br><b>Banking.</b> Level '+(S.level+1)+' costs '+fmt(nextCost())+'. Leveling spends the pool and makes those runes permanent.'],
+ floor:()=>['The Floor','<b>'+fmt(stepMin())+' steps. Protein at lunch. Dinner plated in the kitchen.</b><br><br>That is the entire plan on a bad day. All three checked is a full success worth 100 runes, not a partial one.<br><br>When you are behind, tired or tilted, the answer is never a bigger play. Behind. Just farm.'],
+ runes:()=>['Runes','<div class="l"><span>Floor</span><span>+100</span></div><div class="l"><span>7,000 steps</span><span>+100</span></div><div class="l"><span>10,000 steps</span><span>+200</span></div><div class="l"><span>Lift session, top set logged</span><span>+300</span></div><div class="l"><span>Lunch was already made</span><span>+100</span></div><div class="l"><span>Dinner plated in the kitchen</span><span>+100</span></div><div class="l"><span>Named boss cleared</span><span>+500</span></div><br>Ceiling is 500 without a lift, 800 with one. Runes stay unbanked until spent on a level.'],
+ kitchen:()=>['Kitchen rules','<b>Lunch</b> scores the decision, not the food. Something that already existed is a pass. Deciding at noon and buying is a fail. Leftovers count wherever they came from.<br><br><b>Dinner:</b> portion at the counter, put the rest away, nothing served at the table. Seconds should require standing up and opening a container.<br><br><b>Snacks</b> are not banned. Formats are. Portion into bags on shopping day.<br><br><b>Sunday batch:</b> five portioned lunches, 40g protein each. One Instant Pot run. This removes the noon decision five times and is the highest leverage thing you do all week.'],
+ eatout:()=>['Eating out','Eating out is not a death and not banned. The leak is deciding while hungry.<div class="l"><span>One item</span><span>no combo</span></div><div class="l"><span>Drink</span><span>zero calorie</span></div><div class="l"><span>Grilled over fried</span><span>when both exist</span></div><div class="l"><span>Sides</span><span>skip or swap</span></div><br>The second item is where the calories are, not the first.<br><br><b>Standing orders</b> are your pre-decided order at each place you actually go. Decide once, not hungry, then never decide at the counter again.<br><br>Protein at lunch still counts here, so the Floor is reachable on a drive-through day. It just does not earn the lunch rune.'],
+ lifting:()=>['Lifting','<b>A / B sessions</b> alternate. Log the top set only, weight and reps. Everything else is optional detail.<br><br><b>Bosses.</b> Start at 115, add 10 lb per session while it keeps moving. Clearing a named weight pays 500 runes.<div class="l"><span>First Plate</span><span>135</span></div><div class="l"><span>The Wall of Habit</span><span>155</span></div><div class="l"><span>Old Ground</span><span>185</span></div><div class="l"><span>The Approach</span><span>205</span></div><div class="l"><span>Two Plates</span><span>225</span></div><br><b>Stalling.</b> Same weight twice means the ladder stopped. Drop to 85 percent and climb back. Stalling is not death and costs nothing.<br><br>225 is a rematch, not a first meeting. Strength returns 3 to 5 times faster than it was built.'],
+ weight:()=>['Weight','The 7-day average is the only number that means anything. A single day is water.<br><br>Target is 0.5 to 1.0 lb down per week. Under 0.25 for three straight weeks with runes at target means change one thing. Over 1.5 means add food back.<br><br>Judge the first three weeks on runes alone.'],
+ progress:()=>['Runes, levels and the Rest Site','<b>Beating last week is the only weekly target.</b> If runes fall week over week, the level is too high, not you. Drop a stat.<br><br><b>Levels.</b> Level 2 costs 1,500 and every level after costs 500 more. Leveling banks the pool permanently and raises one stat. Raising a stat raises the requirement. That is the ramp.<div class="l"><span>Vigor</span><span>floor steps</span></div><div class="l"><span>Endurance</span><span>weekly steps</span></div><div class="l"><span>Strength</span><span>lifts per week</span></div><div class="l"><span>Discipline</span><span>kitchen rules</span></div><br>Strength and Endurance cannot pass Vigor plus 1. The consistency stat leads.<br><br><b>Rest Site</b>, Sundays: runes against last week, weight average, level up if affordable, grocery list, five lunches. Goals are set once. That is the only review.']
+};
+function showTip(k){
+  const [t,b]=TIP[k]();
+  el('sheet').innerHTML='<div class="grip"></div><div class="tiptitle">'+t+'</div><div class="tipbody">'+b+'</div><button class="btn" id="closeSheet">Close</button>';
+  el('scrim').classList.add('on');
+}
+const I=k=>`<button class="i" data-tip="${k}" aria-label="What is this">i</button>`;
+
 /* ============ render ============ */
 let tab='today';
 const el=id=>document.getElementById(id);
@@ -298,11 +394,12 @@ function vToday(){
     <div class="rune-line"><div class="rune-big num">${r?'+'+fmt(r):'0'}</div><div class="rune-unit">runes / ${ceilMax} ceiling</div></div>
     <div class="ceil">${blocks}</div>
     <div class="meta">
-      <div><div class="eyebrow">Banked</div><div class="v gold">${fmt(L.pool)}<span style="color:var(--dim)"> / ${fmt(nextCost())}</span></div></div>
+      <div style="flex:1.25"><div class="eyebrow">Banked</div><div class="v gold">${fmt(L.pool)}</div></div>
       <div><div class="eyebrow">Cache</div><div class="v">${cacheTxt}</div></div>
       <div><div class="eyebrow">Streak</div><div class="v">${L.streak}</div></div>
       <div><div class="eyebrow">Boss</div><div class="v">${boss}</div></div>
     </div>
+    <div class="eyebrow" style="margin-top:9px;display:flex;align-items:center">${fmt(Math.max(0,nextCost()-L.pool))} to Level ${S.level+1} ${I('readout')}</div>
   </div>
 
   ${L.cache?`<div class="card" style="border-color:#5C2626;background:#1A1215">
@@ -317,7 +414,7 @@ function vToday(){
   </div>`:''}
 
   <div class="card floor ${done?'done':''}">
-    <div class="hdr"><b>Floor: minimum day</b>
+    <div class="hdr"><b>Floor: minimum day ${I('floor')}</b>
       <span class="st ${done?'ok':''}">${done?'Complete &middot; +100':floorCount(x)+' of 3'}</span></div>
     ${row('s2k',fmt(stepMin())+' steps','','',x.s2k||x.s7k||x.s10k,x.s7k||x.s10k)}
     ${row('protein','Protein at lunch','','',x.protein)}
@@ -326,7 +423,7 @@ function vToday(){
   </div>
 
   <div class="card">
-    <div class="hdr"><b>Runes</b><span class="st">${fmt(cap)} / ${ceilMax}</span></div>
+    <div class="hdr"><b>Runes ${I('runes')}</b><span class="st">${fmt(cap)} / ${ceilMax}</span></div>
     ${row('s7k','7,000 steps','','+100',x.s7k||x.s10k,!!x.s10k)}
     ${row('s10k','10,000 steps','','+200',x.s10k)}
     ${row('lift','Lift session logged','Log the top set on Workouts','+300',x.lift,true)}
@@ -334,7 +431,7 @@ function vToday(){
     ${row('dinner','Dinner plated in the kitchen','Portion at the counter, rest away','+100',x.dinner)}
   </div>
 
-  ${canFlask?`<button class="btn" data-flask="${TODAY}" style="border-color:#2C4C69;color:var(--flask)">Spend flask &middot; ${flasksLeft} left</button>`:''}
+  ${canFlask?`<button class="btn" data-flask="${TODAY}" style="border-color:rgba(97,165,232,.45);color:var(--flask)">Spend flask &middot; ${flasksLeft} left</button>`:''}
   ${x.flask?`<div class="card" style="border-color:#2C4C69"><b class="blue">Flask spent.</b> <span class="hint" style="display:inline">Counts as a Floor day. Cache and streak intact.</span></div>`:''}
   `;
 }
@@ -362,7 +459,7 @@ function vFood(){
     <input type="text" data-meal="d" value="${esc(x.meals.d)}" placeholder="What you ate" style="margin:4px 0 0">
   </div>
 
-  <h2>Rules</h2>
+  <h2>Kitchen rules ${I('kitchen')}</h2>
   <div class="card">
     ${row('lunchMade','Lunch was already made','Leftovers count, wherever they came from','+100',x.lunchMade)}
     ${row('protein','Protein at lunch','Floor item','',x.protein)}
@@ -376,6 +473,14 @@ function vFood(){
       <span class="box"></span>
       <span class="lbl">Five portioned lunches, 40g protein<span class="sub">Instant Pot, cooking for two, one Kroger shop</span></span>
     </button>
+  </div>
+
+  <h2>Eating out ${I('eatout')}</h2>
+  <div class="card">
+    <div class="hdr"><b>Standing orders</b><span class="st">${S.orders.length} saved</span></div>
+    ${S.orders.length?S.orders.map((o,i)=>`<div class="gi"><span><b>${esc(o.p)}</b><br><span style="color:var(--ash);font-size:13px">${esc(o.o)}</span></span><button class="x" data-odel="${i}">&times;</button></div>`).join(''):'<div class="hint">Empty. Decide your order at each place once, while you are not hungry.</div>'}
+    <div class="split" style="margin-top:9px"><input type="text" id="oplace" placeholder="Place"><input type="text" id="oorder" placeholder="The order"></div>
+    <button class="btn sm" id="oadd" style="margin-top:9px">Save order</button>
   </div>
 
   <h2>Grocery list</h2>
@@ -400,14 +505,14 @@ function vWork(){
   const l=lastLift(),next=nextSession(),boss=currentBoss(),stall=stalled();
   const won=S.bossesWon;
   return `
-  <h2>Next session</h2>
+  <h2>Next session ${I('lifting')}</h2>
   <div class="card">
     <div class="hdr"><b style="font-size:22px" class="num">Session ${next}</b>
       <span class="tag">${l?'Last: '+l.session+' &middot; '+l.date.slice(5):'First session'}</span></div>
     <div class="kv"><span>Target</span><span class="n gold">${boss} &times; 3</span></div>
     <div class="kv"><span>Last top set</span><span class="n">${l?l.weight+' &times; '+l.reps:'&mdash;'}</span></div>
     <div class="kv"><span>Sessions this week</span><span class="n">${liftsThisWeek()} / ${liftsWeek()}</span></div>
-    ${stall?`<div class="hint" style="color:#C05656">Stalled twice at ${l.weight}. Drop to ${boss} and climb back. Stalling is not death.</div>`:''}
+    ${stall?`<div class="hint" style="color:var(--blood)">Stalled twice at ${l.weight}. Drop to ${boss} and climb back. Stalling is not death.</div>`:''}
   </div>
 
   <h2>Log top set</h2>
@@ -445,7 +550,7 @@ function vHist(){
     const k=calY+'-'+pad(calM+1)+'-'+pad(d),x=S.days[k],r=runes(x);
     let c='';
     if(x&&x.flask)c='flask';
-    else if(r>=200)c='earn';
+    else if(r>200)c='earn';
     else if(r>0)c='floor';
     else if(x&&k<TODAY)c='dead';
     cells+=`<button data-day="${k}" class="${c} ${k===TODAY?'today':''}">
@@ -492,12 +597,11 @@ function sheetDay(k){
 function vStats(){
   const L=ledger(),a=avg7(0),b=avg7(7),d=(a&&b)?b.v-a.v:null;
   const wk=weekRunes(0),lw=weekRunes(1);
-  const m=TODAY.slice(0,7);
   const afford=L.pool>=nextCost();
   const st=S.stats,capd=(k)=>(k==='strength'||k==='endurance')&&st[k]>=st.vigor+1;
   const btn=(k,lbl)=>`<button class="btn sm" data-lvl="${k}" ${(!afford||capd(k))?'disabled':''}>${lbl}</button>`;
   return `
-  <h2>Weight</h2>
+  <h2>Weight ${I('weight')}</h2>
   <div class="card">
     <div class="split"><input type="number" step="0.1" id="wt" inputmode="decimal" placeholder="${S.weights[TODAY]!=null?S.weights[TODAY]:'lbs today'}">
       <button class="btn sm" id="wsave" style="flex:0 0 32%">Save</button></div>
@@ -507,7 +611,7 @@ function vStats(){
     <div class="hint">Target 0.5 to 1.0 lb down per week. Single days mean nothing.</div>
   </div>
 
-  <h2>Runes</h2>
+  <h2>Runes ${I('progress')}</h2>
   <div class="card">
     <div class="kv"><span>This week</span><span class="n gold">${fmt(wk)}</span></div>
     <div class="kv"><span>Last week</span><span class="n">${fmt(lw)}</span></div>
@@ -525,13 +629,6 @@ function vStats(){
     <div class="hint">${afford?'Spending '+fmt(nextCost())+' banks the runes permanently and raises the requirement.':'Need '+fmt(Math.max(0,nextCost()-L.pool))+' more runes. Consistency stat leads: Strength and Endurance cannot pass Vigor +1.'}</div>
   </div>
 
-  <h2>Waist &middot; ${m}</h2>
-  <div class="card">
-    <div class="split"><input type="number" step="0.1" id="wa" inputmode="decimal" placeholder="${S.waist[m]!=null?S.waist[m]:'inches at navel'}">
-      <button class="btn sm" id="wasave" style="flex:0 0 32%">Save</button></div>
-    ${Object.keys(S.waist).sort().reverse().slice(0,3).map(k=>`<div class="kv"><span>${k}</span><span class="n">${S.waist[k]}"</span></div>`).join('')}
-  </div>
-
   <div class="split">
     <button class="btn sm" id="exp" style="flex:1">Export JSON</button>
     <button class="btn sm" id="imp" style="flex:1">Import JSON</button>
@@ -543,9 +640,10 @@ function vStats(){
 function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-t],[data-k],[data-flask],[data-day],[data-cal],[data-log],[data-lvl],[data-gtog],[data-gdel],[data-batch],[data-go],#gadd,#gclear,#wsave,#wasave,#exp,#imp,#closeSheet,#scrim');
+  const t=e.target.closest('[data-tip],[data-t],[data-k],[data-flask],[data-day],[data-cal],[data-log],[data-lvl],[data-gtog],[data-gdel],[data-odel],[data-batch],[data-go],#gadd,#gclear,#oadd,#wsave,#wasave,#exp,#imp,#closeSheet,#scrim');
   if(!t)return;
 
+  if(t.dataset.tip){showTip(t.dataset.tip);return}
   if(t.dataset.t||t.dataset.go){go(t.dataset.t||t.dataset.go);return}
 
   if(t.dataset.k){
@@ -560,6 +658,7 @@ document.addEventListener('click',e=>{
     if(!x.flask&&flasksUsed()>=2)return;
     x.flask=x.flask?0:1;afterEdit(k);return;
   }
+  if(t.dataset.info){sheetInfo(t.dataset.info);return}
   if(t.dataset.day){sheetDay(t.dataset.day);return}
   if(t.dataset.cal){calM+=+t.dataset.cal;if(calM<0){calM=11;calY--}if(calM>11){calM=0;calY++}render();return}
   if(t.id==='closeSheet'||(t.id==='scrim'&&e.target.id==='scrim')){el('scrim').classList.remove('on');return}
@@ -586,9 +685,13 @@ document.addEventListener('click',e=>{
     S.grocery.push({t:v,s:el('gsect').value,done:false});render();
     const i=el('gtext');if(i){i.focus()}return;
   }
+  if(t.dataset.odel!=null){S.orders.splice(+t.dataset.odel,1);render();return}
+  if(t.id==='oadd'){
+    const pl=el('oplace').value.trim(),or=el('oorder').value.trim();
+    if(!pl||!or)return;S.orders.push({p:pl,o:or});render();return;
+  }
   if(t.id==='gclear'){S.grocery=S.grocery.filter(g=>!g.done);render();return}
   if(t.id==='wsave'){const v=parseFloat(el('wt').value);if(!isNaN(v)){S.weights[TODAY]=v;render()}return}
-  if(t.id==='wasave'){const v=parseFloat(el('wa').value);if(!isNaN(v)){S.waist[TODAY.slice(0,7)]=v;render()}return}
   if(t.id==='exp'){
     const blob=new Blob([JSON.stringify(S)],{type:'application/json'});
     const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='ng-plus-'+TODAY+'.json';a.click();return;
