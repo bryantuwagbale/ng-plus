@@ -42,14 +42,14 @@ button,input,select,textarea{font:inherit;color:inherit}
 button{background:none;border:none;padding:0;cursor:pointer}
 
 #app{max-width:520px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;position:relative}
-main{flex:1;overflow-y:auto;padding:14px 14px calc(104px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+main{flex:1;overflow-y:auto;padding:10px 13px calc(96px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
 .view{display:none}.view.on{display:block;animation:in .22s ease}
 @keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
 /* ---- type ---- */
 .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-h2{margin:14px 4px 7px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;font-family:var(--mono);color:var(--ash);font-weight:500}
+h2{margin:11px 4px 5px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-family:var(--mono);color:var(--ash);font-weight:500}
 h2:first-child{margin-top:2px}
 
 /* ---- glass primitive ---- */
@@ -58,31 +58,31 @@ h2:first-child{margin-top:2px}
 }
 .card{
   background:var(--glass);border:.5px solid var(--edge);border-radius:var(--r);
-  padding:13px 14px;margin-bottom:11px;position:relative;overflow:hidden;
+  padding:10px 12px;margin-bottom:8px;position:relative;overflow:hidden;
   box-shadow:0 1px 0 var(--edge-top) inset,0 8px 26px rgba(0,0,0,.32);
 }
 .card.floor.done{background:linear-gradient(180deg,rgba(95,180,137,.16),rgba(255,255,255,.05) 70%);border-color:rgba(95,180,137,.34)}
 
 /* ---- readout ---- */
-.readout{padding:4px 4px 14px;margin-bottom:4px}
+.readout{padding:2px 4px 10px;margin-bottom:2px}
 .rune-line{display:flex;align-items:baseline;gap:9px}
-.rune-big{font-family:var(--mono);font-size:46px;line-height:1;font-weight:600;letter-spacing:-.045em;
+.rune-big{font-family:var(--mono);font-size:36px;line-height:1;font-weight:600;letter-spacing:-.045em;
   background:linear-gradient(180deg,#F6DE93,#C99B22);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rune-unit{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
-.ceil{display:flex;gap:4px;margin-top:11px}
-.ceil i{flex:1;height:4px;background:rgba(255,255,255,.10);border-radius:3px;transition:.25s}
+.ceil{display:flex;gap:4px;margin-top:9px}
+.ceil i{flex:1;height:3px;background:rgba(255,255,255,.10);border-radius:3px;transition:.25s}
 .ceil i.f{background:var(--gold);box-shadow:0 0 10px rgba(217,178,60,.5)}
 .ceil i.l{background:var(--goldsoft);box-shadow:0 0 10px rgba(240,206,99,.55)}
-.meta{display:flex;margin-top:13px;padding-top:11px;border-top:.5px solid var(--edge)}
+.meta{display:flex;margin-top:10px;padding-top:9px;border-top:.5px solid var(--edge)}
 .meta div{flex:1;min-width:0}
 .meta .v{font-family:var(--mono);font-size:14px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ok{color:var(--jade)}.bad{color:var(--blood)}.gold{color:var(--gold)}.blue{color:var(--flask)}
 
-.hdr{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}
+.hdr{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:7px}
 .hdr .st{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ash);white-space:nowrap}
 
 /* ---- rows ---- */
-.row{display:flex;align-items:center;gap:12px;padding:11px 2px;border-top:.5px solid var(--edge);width:100%;text-align:left}
+.row{display:flex;align-items:center;gap:11px;padding:8px 2px;border-top:.5px solid var(--edge);width:100%;text-align:left}
 .row:first-of-type{border-top:none}
 .box{width:22px;height:22px;flex:0 0 22px;border:1.5px solid rgba(255,255,255,.26);border-radius:8px;position:relative;
   background:rgba(255,255,255,.05);transition:transform .18s cubic-bezier(.3,1.4,.5,1),background .18s}
@@ -97,7 +97,7 @@ h2:first-child{margin-top:2px}
 .row:disabled{opacity:.4}
 
 /* ---- controls ---- */
-.btn{display:block;width:100%;padding:12px;border:.5px solid var(--edge);border-radius:var(--r-in);
+.btn{display:block;width:100%;padding:11px;border:.5px solid var(--edge);border-radius:var(--r-in);
   background:var(--glass2);box-shadow:0 1px 0 var(--edge-top) inset;
   font-family:var(--mono);font-size:12px;letter-spacing:.09em;text-transform:uppercase;margin-top:9px}
 .btn:active{transform:scale(.985)}
@@ -109,8 +109,8 @@ input[type=text],input[type=number],select,textarea{
   width:100%;background:rgba(255,255,255,.06);border:.5px solid var(--edge);border-radius:13px;padding:11px 12px;font-size:16px}
 input::placeholder{color:var(--dim)}
 input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--goldsoft);outline-offset:2px}
-.hint{font-size:11.5px;color:var(--dim);margin-top:8px;line-height:1.4}
-.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:9px 0;border-top:.5px solid var(--edge);font-size:14px}
+.hint{font-size:11.5px;color:var(--dim);margin-top:7px;line-height:1.35}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:7px 0;border-top:.5px solid var(--edge);font-size:14px}
 .kv:first-child{border-top:none}
 .kv .n{font-family:var(--mono);font-variant-numeric:tabular-nums;white-space:nowrap}
 .kv .sub{font-size:11.5px}
@@ -182,6 +182,10 @@ h2 .i{margin-left:8px;vertical-align:-5px;width:19px;height:19px;line-height:18p
 .tipbody .l{display:flex;gap:9px;padding:6px 0;border-top:.5px solid var(--edge);justify-content:space-between}
 .tipbody .l:first-child{border-top:none}
 .tipbody .l span:last-child{font-family:var(--mono);color:var(--gold);white-space:nowrap}
+.fold>.hdr{margin-bottom:0;cursor:pointer}
+.fold.open>.hdr{margin-bottom:7px}
+.chev{color:var(--dim);font-family:var(--mono);font-size:12px;transition:.2s}
+.fold.open .chev{transform:rotate(90deg);color:var(--gold)}
 .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;
   border-radius:9px;border:.5px solid var(--edge);background:var(--glass);color:var(--ash);white-space:nowrap}
 .sect{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin:12px 0 2px}
@@ -419,16 +423,16 @@ function vToday(){
     ${row('s2k',fmt(stepMin())+' steps','','',x.s2k||x.s7k||x.s10k,x.s7k||x.s10k)}
     ${row('protein','Protein at lunch','','',x.protein)}
     ${row('dinner','Dinner plated in the kitchen','','',x.dinner)}
-    <div class="hint">${done?'A Floor day is a full success, not a partial one.':'All three is the entire plan on a bad day.'}</div>
+${done?'':'<div class="hint">All three is the entire plan on a bad day.</div>'}
   </div>
 
   <div class="card">
     <div class="hdr"><b>Runes ${I('runes')}</b><span class="st">${fmt(cap)} / ${ceilMax}</span></div>
     ${row('s7k','7,000 steps','','+100',x.s7k||x.s10k,!!x.s10k)}
     ${row('s10k','10,000 steps','','+200',x.s10k)}
-    ${row('lift','Lift session logged','Log the top set on Workouts','+300',x.lift,true)}
-    ${row('lunchMade','Lunch was already made','Not a takeout decision','+100',x.lunchMade)}
-    ${row('dinner','Dinner plated in the kitchen','Portion at the counter, rest away','+100',x.dinner)}
+    ${row('lift','Lift session logged','','+300',x.lift,true)}
+    ${row('lunchMade','Lunch was already made','','+100',x.lunchMade)}
+    ${row('dinner','Dinner plated in the kitchen','','+100',x.dinner)}
   </div>
 
   ${canFlask?`<button class="btn" data-flask="${TODAY}" style="border-color:rgba(97,165,232,.45);color:var(--flask)">Spend flask &middot; ${flasksLeft} left</button>`:''}
@@ -444,51 +448,43 @@ function row(k,lbl,sub,val,on,dis){
 
 /* ---------- FOOD ---------- */
 const SECTIONS=['Produce','Meat & Seafood','Dairy','Frozen','Pantry','Other'];
+let OPEN={meals:1,rules:1,eat:0,groc:0};
+function fold(id,title,tip,badge,body){
+  const o=OPEN[id];
+  return `<div class="card fold ${o?'open':''}">
+    <div class="hdr" data-fold="${id}"><b>${title}${tip?I(tip):''}</b>
+      <span class="st">${badge||''} <span class="chev">&rsaquo;</span></span></div>
+    ${o?body:''}</div>`;
+}
 function vFood(){
   const x=day(TODAY);
   const bySect={};S.grocery.forEach((g,i)=>{(bySect[g.s]=bySect[g.s]||[]).push([g,i])});
   const sun=shift(TODAY,-parse(TODAY).getDay());
+  const left=S.grocery.filter(g=>!g.done).length;
   return `
-  <h2>Today's meals</h2>
-  <div class="card">
+  ${fold('meals',"Today's meals",'',[x.meals.b,x.meals.l,x.meals.d].filter(Boolean).length+'/3',`
     <div class="eyebrow">Breakfast</div>
-    <input type="text" data-meal="b" value="${esc(x.meals.b)}" placeholder="Eggs and sausage" style="margin:4px 0 10px">
+    <input type="text" data-meal="b" value="${esc(x.meals.b)}" placeholder="Eggs and sausage" style="margin:3px 0 8px">
     <div class="eyebrow">Lunch</div>
-    <input type="text" data-meal="l" value="${esc(x.meals.l)}" placeholder="What you ate" style="margin:4px 0 10px">
+    <input type="text" data-meal="l" value="${esc(x.meals.l)}" placeholder="What you ate" style="margin:3px 0 8px">
     <div class="eyebrow">Dinner</div>
-    <input type="text" data-meal="d" value="${esc(x.meals.d)}" placeholder="What you ate" style="margin:4px 0 0">
-  </div>
+    <input type="text" data-meal="d" value="${esc(x.meals.d)}" placeholder="What you ate" style="margin:3px 0 0">`)}
 
-  <h2>Kitchen rules ${I('kitchen')}</h2>
-  <div class="card">
-    ${row('lunchMade','Lunch was already made','Leftovers count, wherever they came from','+100',x.lunchMade)}
-    ${row('protein','Protein at lunch','Floor item','',x.protein)}
-    ${row('dinner','Dinner plated in the kitchen','Portion at the counter, rest put away, nothing at the table','+100',x.dinner)}
-    ${S.stats.discipline>1?`<div class="hint">Also in effect: ${rules().slice(1).join(' &middot; ')}</div>`:''}
-  </div>
-
-  <h2>Sunday batch</h2>
-  <div class="card">
+  ${fold('rules','Kitchen rules','kitchen','',`
+    ${row('lunchMade','Lunch was already made','Leftovers count, wherever from','+100',x.lunchMade)}
+    ${row('protein','Protein at lunch','','',x.protein)}
+    ${row('dinner','Dinner plated in the kitchen','','+100',x.dinner)}
     <button class="row ${S.batch[sun]?'on':''}" data-batch="${sun}">
-      <span class="box"></span>
-      <span class="lbl">Five portioned lunches, 40g protein<span class="sub">Instant Pot, cooking for two, one Kroger shop</span></span>
-    </button>
-  </div>
+      <span class="box"></span><span class="lbl">Five portioned lunches, 40g protein<span class="sub">Sunday batch, Instant Pot</span></span></button>`)}
 
-  <h2>Eating out ${I('eatout')}</h2>
-  <div class="card">
-    <div class="hdr"><b>Standing orders</b><span class="st">${S.orders.length} saved</span></div>
-    ${S.orders.length?S.orders.map((o,i)=>`<div class="gi"><span><b>${esc(o.p)}</b><br><span style="color:var(--ash);font-size:13px">${esc(o.o)}</span></span><button class="x" data-odel="${i}">&times;</button></div>`).join(''):'<div class="hint">Empty. Decide your order at each place once, while you are not hungry.</div>'}
-    <div class="split" style="margin-top:9px"><input type="text" id="oplace" placeholder="Place"><input type="text" id="oorder" placeholder="The order"></div>
-    <button class="btn sm" id="oadd" style="margin-top:9px">Save order</button>
-  </div>
+  ${fold('eat','Eating out','eatout',S.orders.length+' orders',`
+    ${S.orders.length?S.orders.map((o,i)=>`<div class="gi"><span><b>${esc(o.p)}</b><br><span style="color:var(--ash);font-size:13px">${esc(o.o)}</span></span><button class="x" data-odel="${i}">&times;</button></div>`).join(''):'<div class="hint">Decide your order at each place once, while you are not hungry.</div>'}
+    <div class="split" style="margin-top:8px"><input type="text" id="oplace" placeholder="Place"><input type="text" id="oorder" placeholder="The order"></div>
+    <button class="btn sm" id="oadd" style="margin-top:8px">Save order</button>`)}
 
-  <h2>Grocery list</h2>
-  <div class="card">
-    <div class="split">
-      <input type="text" id="gtext" placeholder="Add item">
-      <select id="gsect" style="flex:0 0 42%">${SECTIONS.map(s=>`<option>${s}</option>`).join('')}</select>
-    </div>
+  ${fold('groc','Grocery list','',left?left+' left':'',`
+    <div class="split"><input type="text" id="gtext" placeholder="Add item">
+      <select id="gsect" style="flex:0 0 42%">${SECTIONS.map(s=>`<option>${s}</option>`).join('')}</select></div>
     <button class="btn sm" id="gadd" style="margin-top:8px">Add</button>
     ${S.grocery.length?SECTIONS.filter(s=>bySect[s]).map(s=>`
       <div class="sect">${s}</div>
@@ -496,8 +492,8 @@ function vFood(){
         <button class="box" data-gtog="${i}" aria-label="toggle"></button>
         <span>${esc(g.t)}</span><button class="x" data-gdel="${i}">&times;</button></div>`).join('')}
     `).join(''):'<div class="hint">Empty. Build it Sunday, shop once.</div>'}
-    ${S.grocery.length?`<button class="btn sm" id="gclear" style="margin-top:10px">Clear checked</button>`:''}
-  </div>`;
+    ${S.grocery.length?`<button class="btn sm" id="gclear" style="margin-top:9px">Clear checked</button>`:''}`)}
+  `;
 }
 
 /* ---------- WORKOUTS ---------- */
@@ -613,8 +609,7 @@ function vStats(){
 
   <h2>Runes ${I('progress')}</h2>
   <div class="card">
-    <div class="kv"><span>This week</span><span class="n gold">${fmt(wk)}</span></div>
-    <div class="kv"><span>Last week</span><span class="n">${fmt(lw)}</span></div>
+    <div class="kv"><span>This week vs last</span><span class="n gold">${fmt(wk)} <span style="color:var(--dim)">/ ${fmt(lw)}</span></span></div>
     <div class="kv"><span>Banked</span><span class="n">${fmt(L.pool)} / ${fmt(nextCost())} to Level ${S.level+1}</span></div>
     ${L.cacheLost?`<div class="kv"><span>Caches lost</span><span class="n bad">${L.cacheLost}</span></div>`:''}
     <div class="hint">${wk>lw?'Beating last week is the only weekly target.':'Behind last week. Just farm.'}</div>
@@ -640,9 +635,10 @@ function vStats(){
 function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-tip],[data-t],[data-k],[data-flask],[data-day],[data-cal],[data-log],[data-lvl],[data-gtog],[data-gdel],[data-odel],[data-batch],[data-go],#gadd,#gclear,#oadd,#wsave,#wasave,#exp,#imp,#closeSheet,#scrim');
+  const t=e.target.closest('[data-fold],[data-tip],[data-t],[data-k],[data-flask],[data-day],[data-cal],[data-log],[data-lvl],[data-gtog],[data-gdel],[data-odel],[data-batch],[data-go],#gadd,#gclear,#oadd,#wsave,#wasave,#exp,#imp,#closeSheet,#scrim');
   if(!t)return;
 
+  if(t.dataset.fold){OPEN[t.dataset.fold]=OPEN[t.dataset.fold]?0:1;render();return}
   if(t.dataset.tip){showTip(t.dataset.tip);return}
   if(t.dataset.t||t.dataset.go){go(t.dataset.t||t.dataset.go);return}
 
