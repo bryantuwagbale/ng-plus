@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
 <meta name="theme-color" content="#0E1116">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>New Gains+</title>
 <link rel="manifest" href='data:application/manifest+json,{"name":"New Gains%2B","short_name":"NG%2B","display":"standalone","background_color":"%230E1116","theme_color":"%230E1116","start_url":"."}'>
 <style>
@@ -31,7 +31,7 @@ body{
 }
 /* ambient field: gives the glass something to refract */
 body::before{
-  content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;
+  content:"";position:fixed;inset:0 -20% -20%;z-index:-1;pointer-events:none;
   background:
     radial-gradient(48% 38% at 18% 8%, rgba(217,178,60,.20), transparent 70%),
     radial-gradient(45% 40% at 88% 22%, rgba(97,165,232,.16), transparent 70%),
@@ -41,15 +41,17 @@ body::before{
 button,input,select,textarea{font:inherit;color:inherit}
 button{background:none;border:none;padding:0;cursor:pointer}
 
-#app{max-width:520px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;position:relative}
-main{flex:1;overflow-y:auto;padding:10px 13px calc(96px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
+#statusbar{position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top);background:var(--bg);z-index:40}
+#app{max-width:520px;margin:0 auto;height:100dvh;display:flex;flex-direction:column;position:relative;
+  padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right)}
+main{flex:1;overflow-y:auto;padding:calc(12px + env(safe-area-inset-top)) 13px calc(88px + env(safe-area-inset-bottom));-webkit-overflow-scrolling:touch}
 .view{display:none}.view.on{display:block;animation:in .22s ease}
 @keyframes in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
 
 /* ---- type ---- */
 .eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
 .num{font-family:var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
-h2{margin:11px 4px 5px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-family:var(--mono);color:var(--ash);font-weight:500}
+h2{margin:9px 4px 4px;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-family:var(--mono);color:var(--ash);font-weight:500}
 h2:first-child{margin-top:2px}
 
 /* ---- glass primitive ---- */
@@ -58,31 +60,31 @@ h2:first-child{margin-top:2px}
 }
 .card{
   background:var(--glass);border:.5px solid var(--edge);border-radius:var(--r);
-  padding:10px 12px;margin-bottom:8px;position:relative;overflow:hidden;
+  padding:9px 12px;margin-bottom:6px;position:relative;overflow:hidden;
   box-shadow:0 1px 0 var(--edge-top) inset,0 8px 26px rgba(0,0,0,.32);
 }
 .card.floor.done{background:linear-gradient(180deg,rgba(95,180,137,.16),rgba(255,255,255,.05) 70%);border-color:rgba(95,180,137,.34)}
 
 /* ---- readout ---- */
-.readout{padding:2px 4px 10px;margin-bottom:2px}
+.readout{padding:0 4px 6px;margin-bottom:0}
 .rune-line{display:flex;align-items:baseline;gap:9px}
-.rune-big{font-family:var(--mono);font-size:36px;line-height:1;font-weight:600;letter-spacing:-.045em;
+.rune-big{font-family:var(--mono);font-size:30px;line-height:1;font-weight:600;letter-spacing:-.045em;
   background:linear-gradient(180deg,#F6DE93,#C99B22);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rune-unit{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
-.ceil{display:flex;gap:4px;margin-top:9px}
+.ceil{display:flex;gap:3px;margin-top:6px}
 .ceil i{flex:1;height:3px;background:rgba(255,255,255,.10);border-radius:3px;transition:.25s}
 .ceil i.f{background:var(--gold);box-shadow:0 0 10px rgba(217,178,60,.5)}
 .ceil i.l{background:var(--goldsoft);box-shadow:0 0 10px rgba(240,206,99,.55)}
-.meta{display:flex;margin-top:10px;padding-top:9px;border-top:.5px solid var(--edge)}
+.meta{display:flex;margin-top:8px;padding-top:7px;border-top:.5px solid var(--edge)}
 .meta div{flex:1;min-width:0}
-.meta .v{font-family:var(--mono);font-size:14px;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta .v{font-family:var(--mono);font-size:13px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ok{color:var(--jade)}.bad{color:var(--blood)}.gold{color:var(--gold)}.blue{color:var(--flask)}
 
 .hdr{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:7px}
 .hdr .st{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ash);white-space:nowrap}
 
 /* ---- rows ---- */
-.row{display:flex;align-items:center;gap:11px;padding:8px 2px;border-top:.5px solid var(--edge);width:100%;text-align:left}
+.row{display:flex;align-items:center;gap:11px;padding:6px 2px;border-top:.5px solid var(--edge);width:100%;text-align:left}
 .row:first-of-type{border-top:none}
 .box{width:22px;height:22px;flex:0 0 22px;border:1.5px solid rgba(255,255,255,.26);border-radius:8px;position:relative;
   background:rgba(255,255,255,.05);transition:transform .18s cubic-bezier(.3,1.4,.5,1),background .18s}
@@ -106,7 +108,7 @@ h2:first-child{margin-top:2px}
 .btn:disabled{opacity:.3}
 .split{display:flex;gap:9px}.split>*{flex:1}
 input[type=text],input[type=number],select,textarea{
-  width:100%;background:rgba(255,255,255,.06);border:.5px solid var(--edge);border-radius:13px;padding:11px 12px;font-size:16px}
+  width:100%;background:rgba(255,255,255,.06);border:.5px solid var(--edge);border-radius:12px;padding:9px 11px;font-size:16px}
 input::placeholder{color:var(--dim)}
 input:focus,select:focus,textarea:focus,button:focus-visible{outline:2px solid var(--goldsoft);outline-offset:2px}
 .hint{font-size:11.5px;color:var(--dim);margin-top:7px;line-height:1.35}
@@ -122,9 +124,9 @@ nav{
   background:rgba(15,19,26,.86);border:.5px solid var(--edge);border-radius:28px;padding:5px;
   box-shadow:0 1px 0 var(--edge-top) inset,0 10px 34px rgba(0,0,0,.5);z-index:10;
 }
-nav button{flex:1;padding:8px 2px 7px;border-radius:23px;font-family:var(--mono);font-size:9px;
+nav button{flex:1;padding:7px 2px 6px;border-radius:23px;font-family:var(--mono);font-size:9px;
   letter-spacing:.09em;text-transform:uppercase;color:var(--dim);transition:.22s}
-nav button span{display:block;font-size:16px;line-height:1;margin-bottom:4px;opacity:.5}
+nav button span{display:block;font-size:15px;line-height:1;margin-bottom:3px;opacity:.5}
 nav button.on{color:#0A0C10;background:linear-gradient(180deg,#F0CE63,#C99B22);
   box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 3px 12px rgba(217,178,60,.35)}
 nav button.on span{opacity:1}
@@ -186,6 +188,22 @@ h2 .i{margin-left:8px;vertical-align:-5px;width:19px;height:19px;line-height:18p
 .fold.open>.hdr{margin-bottom:7px}
 .chev{color:var(--dim);font-family:var(--mono);font-size:12px;transition:.2s}
 .fold.open .chev{transform:rotate(90deg);color:var(--gold)}
+#tour{position:fixed;inset:0;z-index:50;display:none}
+#tour.on{display:block}
+#hole{position:absolute;border-radius:18px;border:1.5px solid var(--goldsoft);pointer-events:none;
+  box-shadow:0 0 0 9999px rgba(5,7,11,.82),0 0 22px rgba(217,178,60,.45);transition:.22s}
+#tcard{position:absolute;left:12px;right:12px;background:rgba(26,31,40,.94);
+  -webkit-backdrop-filter:var(--blur);backdrop-filter:var(--blur);
+  border:.5px solid var(--edge);border-radius:20px;padding:14px;box-shadow:0 12px 40px rgba(0,0,0,.6)}
+#tcard h4{margin:0;font-size:16px}
+#tcard p{margin:7px 0 0;font-size:13.5px;color:var(--ash);line-height:1.45}
+#trow{display:flex;align-items:center;gap:9px;margin-top:13px}
+#trow .step{font-family:var(--mono);font-size:11px;color:var(--dim);margin-right:auto}
+#trow .btn{margin:0;width:auto;padding:9px 15px}
+.help{position:absolute;top:0;right:0;width:22px;height:22px;border-radius:50%;
+  border:.5px solid var(--edge);background:rgba(255,255,255,.06);color:var(--dim);
+  font-family:var(--mono);font-size:12px;line-height:20px;text-align:center}
+.help:active{transform:scale(.9)}
 .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;
   border-radius:9px;border:.5px solid var(--edge);background:var(--glass);color:var(--ash);white-space:nowrap}
 .sect{font-family:var(--mono);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);margin:12px 0 2px}
@@ -213,6 +231,7 @@ h2 .i{margin-left:8px;vertical-align:-5px;width:19px;height:19px;line-height:18p
 </style>
 </head>
 <body>
+<div id="statusbar"></div>
 <div id="app">
   <main>
     <section id="v-today" class="view on"></section>
@@ -229,6 +248,7 @@ h2 .i{margin-left:8px;vertical-align:-5px;width:19px;height:19px;line-height:18p
     <button data-t="stats"><span>◈</span>Stats</button>
   </nav>
 </div>
+<div id="tour"><div id="hole"></div><div id="tcard"></div></div>
 <div class="scrim" id="scrim"><div class="sheet" id="sheet"></div></div>
 
 <script>
@@ -250,7 +270,8 @@ const DEF={
   stats:{vigor:1,endurance:1,strength:1,discipline:1},
   bossesWon:[],
   batch:{},           // 'YYYY-MM-DD'(sunday): true
-  orders:[]           // {p:place,o:order}
+  orders:[],          // {p:place,o:order}
+  tourDone:0
 };
 let S=Object.assign({},DEF,load()||{});
 S.orders=S.orders||[];
@@ -369,6 +390,49 @@ function showTip(k){
 }
 const I=k=>`<button class="i" data-tip="${k}" aria-label="What is this">i</button>`;
 
+
+/* ============ walkthrough ============ */
+const TOUR=[
+ {tab:'today',sel:'#t-readout',t:'The tally',b:'Runes earned today against the ceiling. Below it: banked runes, the cache, your streak and the next boss weight.'},
+ {tab:'today',sel:'#t-floor',t:'The Floor',b:'Three checkboxes. That is the whole program on a bad day, and hitting all three is a full success worth 100 runes.'},
+ {tab:'today',sel:'#t-runes',t:'Everything else',b:'Optional runes on top of the Floor. Tap a row when it happens. Nothing here is required.'},
+ {tab:'today',sel:'#t-readout .i',t:'The i buttons',b:'Every section has one. Tap it for the rules behind that part: death, the cache, flasks, levels. You never have to memorise anything.'},
+ {tab:'food',sel:'nav [data-t="food"]',t:'Food',t2:1,b:'Meal log in words, no counting. Your two kitchen rules live here too.'},
+ {tab:'food',sel:'#v-food .fold:nth-of-type(3)',t:'Eating out',b:'Save a standing order for each place you actually go. Decide once while you are not hungry, then never decide at the counter.',open:'eat'},
+ {tab:'work',sel:'#t-session',t:'Workouts',b:'Alternates A and B for you. Type the weight and reps of your top set, tap Log. That is the entire lift entry.'},
+ {tab:'hist',sel:'#t-cal',t:'History',b:'Tap any day to backfill or fix it. Gold scored, green was a Floor day, red was a zero, blue used a flask.'},
+ {tab:'stats',sel:'#t-weight',t:'Stats',b:'Weight goes in here whenever you weigh. Only the 7-day average matters. Levels and export live below it.'},
+ {tab:'today',sel:'#t-floor',t:'Week one',b:'Use the Floor and the Workouts tab. Ignore the rest until it is boring. Add the Sunday batch in week two, weight in week three.'}
+];
+let TI=-1;
+function tourStart(){TI=0;drawTour()}
+function tourEnd(){TI=-1;el('tour').classList.remove('on');S.tourDone=1;save()}
+function drawTour(){
+  const st=TOUR[TI];
+  if(!st){tourEnd();return}
+  if(st.open&&!OPEN[st.open]){OPEN[st.open]=1;render()}
+  go(st.tab);
+  requestAnimationFrame(()=>{
+    const node=document.querySelector(st.sel);
+    if(!node){TI++;drawTour();return}
+    const r=node.getBoundingClientRect(),pad=6;
+    const h=el('hole');
+    h.style.top=(r.top-pad)+'px';h.style.left=(r.left-pad)+'px';
+    h.style.width=(r.width+pad*2)+'px';h.style.height=(r.height+pad*2)+'px';
+    h.style.borderRadius=(r.height<40?r.height/2+pad:18)+'px';
+    const c=el('tcard');
+    c.innerHTML=`<h4>${st.t}</h4><p>${st.b}</p>
+      <div id="trow"><span class="step">${TI+1} / ${TOUR.length}</span>
+        ${TI?'<button class="btn sm" id="tback">Back</button>':'<button class="btn sm" id="tskip">Skip</button>'}
+        <button class="btn sm gold" id="tnext">${TI===TOUR.length-1?'Done':'Next'}</button></div>`;
+    el('tour').classList.add('on');
+    const below=r.bottom<window.innerHeight*0.55;
+    c.style.top='';c.style.bottom='';
+    if(below)c.style.top=(r.bottom+14)+'px';else c.style.bottom=(window.innerHeight-r.top+14)+'px';
+  });
+}
+addEventListener('resize',()=>{if(TI>=0)drawTour()});
+
 /* ============ render ============ */
 let tab='today';
 const el=id=>document.getElementById(id);
@@ -378,6 +442,7 @@ function render(){
   el('v-work').innerHTML=vWork();
   el('v-hist').innerHTML=vHist();
   el('v-stats').innerHTML=vStats();
+  const h=el('help'); if(h)h.onclick=tourStart;
   save();
 }
 
@@ -393,17 +458,18 @@ function vToday(){
   const canFlask=r===0&&!x.flask&&flasksLeft>0;
 
   return `
-  <div class="readout">
+  <div class="readout" id="t-readout" style="position:relative">
+    <button class="help" id="tourgo" aria-label="How this works">?</button>
     <div class="eyebrow">Today &middot; ${parse(TODAY).toLocaleDateString('en-US',{weekday:'long',month:'short',day:'numeric'})}</div>
     <div class="rune-line"><div class="rune-big num">${r?'+'+fmt(r):'0'}</div><div class="rune-unit">runes / ${ceilMax} ceiling</div></div>
     <div class="ceil">${blocks}</div>
     <div class="meta">
-      <div style="flex:1.25"><div class="eyebrow">Banked</div><div class="v gold">${fmt(L.pool)}</div></div>
+      <div style="flex:1.5"><div class="eyebrow">Banked</div><div class="v gold" style="font-size:12px">${fmt(L.pool)}<span style="color:var(--dim)">/${fmt(nextCost())}</span></div></div>
       <div><div class="eyebrow">Cache</div><div class="v">${cacheTxt}</div></div>
       <div><div class="eyebrow">Streak</div><div class="v">${L.streak}</div></div>
-      <div><div class="eyebrow">Boss</div><div class="v">${boss}</div></div>
+      <div><div class="eyebrow" style="display:flex;align-items:center;gap:4px">Boss ${I('readout')}</div><div class="v">${boss}</div></div>
     </div>
-    <div class="eyebrow" style="margin-top:9px;display:flex;align-items:center">${fmt(Math.max(0,nextCost()-L.pool))} to Level ${S.level+1} ${I('readout')}</div>
+
   </div>
 
   ${L.cache?`<div class="card" style="border-color:#5C2626;background:#1A1215">
@@ -417,7 +483,7 @@ function vToday(){
     <button class="btn" data-go="stats">Open review</button>
   </div>`:''}
 
-  <div class="card floor ${done?'done':''}">
+  <div class="card floor ${done?'done':''}" id="t-floor">
     <div class="hdr"><b>Floor: minimum day ${I('floor')}</b>
       <span class="st ${done?'ok':''}">${done?'Complete &middot; +100':floorCount(x)+' of 3'}</span></div>
     ${row('s2k',fmt(stepMin())+' steps','','',x.s2k||x.s7k||x.s10k,x.s7k||x.s10k)}
@@ -426,7 +492,7 @@ function vToday(){
 ${done?'':'<div class="hint">All three is the entire plan on a bad day.</div>'}
   </div>
 
-  <div class="card">
+  <div class="card" id="t-runes">
     <div class="hdr"><b>Runes ${I('runes')}</b><span class="st">${fmt(cap)} / ${ceilMax}</span></div>
     ${row('s7k','7,000 steps','','+100',x.s7k||x.s10k,!!x.s10k)}
     ${row('s10k','10,000 steps','','+200',x.s10k)}
@@ -448,7 +514,7 @@ function row(k,lbl,sub,val,on,dis){
 
 /* ---------- FOOD ---------- */
 const SECTIONS=['Produce','Meat & Seafood','Dairy','Frozen','Pantry','Other'];
-let OPEN={meals:1,rules:1,eat:0,groc:0};
+let OPEN={meals:1,rules:1,eat:0,groc:0,ladder:0,level:0};
 function fold(id,title,tip,badge,body){
   const o=OPEN[id];
   return `<div class="card fold ${o?'open':''}">
@@ -498,38 +564,28 @@ function vFood(){
 
 /* ---------- WORKOUTS ---------- */
 function vWork(){
-  const l=lastLift(),next=nextSession(),boss=currentBoss(),stall=stalled();
-  const won=S.bossesWon;
+  const l=lastLift(),next=nextSession(),boss=currentBoss(),stall=stalled(),won=S.bossesWon;
   return `
   <h2>Next session ${I('lifting')}</h2>
-  <div class="card">
-    <div class="hdr"><b style="font-size:22px" class="num">Session ${next}</b>
-      <span class="tag">${l?'Last: '+l.session+' &middot; '+l.date.slice(5):'First session'}</span></div>
+  <div class="card" id="t-session">
+    <div class="hdr"><b style="font-size:20px" class="num">Session ${next}</b>
+      <span class="tag">${l?'Last: '+l.session+' &middot; '+l.weight+'&times;'+l.reps:'First session'}</span></div>
     <div class="kv"><span>Target</span><span class="n gold">${boss} &times; 3</span></div>
-    <div class="kv"><span>Last top set</span><span class="n">${l?l.weight+' &times; '+l.reps:'&mdash;'}</span></div>
-    <div class="kv"><span>Sessions this week</span><span class="n">${liftsThisWeek()} / ${liftsWeek()}</span></div>
-    ${stall?`<div class="hint" style="color:var(--blood)">Stalled twice at ${l.weight}. Drop to ${boss} and climb back. Stalling is not death.</div>`:''}
-  </div>
-
-  <h2>Log top set</h2>
-  <div class="card">
-    <div class="split">
+    <div class="kv"><span>This week</span><span class="n">${liftsThisWeek()} / ${liftsWeek()}</span></div>
+    ${stall?`<div class="hint" style="color:var(--blood)">Stalled twice at ${l.weight}. Drop to ${boss} and climb back.</div>`:''}
+    <div class="split" style="margin-top:9px">
       <div><div class="eyebrow">Weight</div><input type="number" id="lw" inputmode="numeric" value="${boss}"></div>
       <div><div class="eyebrow">Reps</div><input type="number" id="lr" inputmode="numeric" value="3"></div>
     </div>
     <div class="split" style="margin-top:8px">
-      <button class="btn gold" data-log="A" style="margin:0">Log as A</button>
-      <button class="btn gold" data-log="B" style="margin:0">Log as B</button>
+      <button class="btn gold" data-log="A" style="margin:0">Log A</button>
+      <button class="btn gold" data-log="B" style="margin:0">Log B</button>
     </div>
-    <div class="hint">Logging pays +300. Clearing a named boss pays +500.</div>
   </div>
-
-  <h2>Boss ladder</h2>
-  <div class="card">
-    ${LADDER.map(b=>`<div class="bossrow ${won.includes(b.w)?'won':(boss>=b.w-9&&boss<=b.w?'cur':'')}">
-      <span class="nm">${b.n}</span><span>${b.w}</span></div>`).join('')}
-    <div class="hint">Restart at 115, +10 per session while it moves. 225 is a rematch.</div>
-  </div>`;
+  ${fold('ladder','Boss ladder','',won.length+' cleared',
+    LADDER.map(b=>`<div class="bossrow ${won.includes(b.w)?'won':(boss>=b.w-9&&boss<=b.w?'cur':'')}">
+      <span class="nm">${b.n}</span><span>${b.w}</span></div>`).join('')
+    +'<div class="hint">Restart at 115, +10 per session while it moves. 225 is a rematch.</div>')}`;
 }
 function liftsThisWeek(){
   const sun=shift(TODAY,-parse(TODAY).getDay());
@@ -558,7 +614,7 @@ function vHist(){
     <b class="num">${first.toLocaleDateString('en-US',{month:'long',year:'numeric'})}</b>
     <button class="btn sm" data-cal="1">&rarr;</button>
   </div>
-  <div class="cal">${'SMTWTFS'.split('').map(d=>`<div class="dow">${d}</div>`).join('')}${cells}</div>
+  <div class="cal" id="t-cal">${'SMTWTFS'.split('').map(d=>`<div class="dow">${d}</div>`).join('')}${cells}</div>
   <div class="legend eyebrow">
     <span><i style="background:#54471A"></i>Runes</span>
     <span><i style="background:#2F5942"></i>Floor</span>
@@ -598,7 +654,7 @@ function vStats(){
   const btn=(k,lbl)=>`<button class="btn sm" data-lvl="${k}" ${(!afford||capd(k))?'disabled':''}>${lbl}</button>`;
   return `
   <h2>Weight ${I('weight')}</h2>
-  <div class="card">
+  <div class="card" id="t-weight">
     <div class="split"><input type="number" step="0.1" id="wt" inputmode="decimal" placeholder="${S.weights[TODAY]!=null?S.weights[TODAY]:'lbs today'}">
       <button class="btn sm" id="wsave" style="flex:0 0 32%">Save</button></div>
     <div class="kv" style="margin-top:8px"><span>7-day average</span><span class="n">${a?a.v.toFixed(1)+' lb':'&mdash;'}</span></div>
@@ -615,14 +671,12 @@ function vStats(){
     <div class="hint">${wk>lw?'Beating last week is the only weekly target.':'Behind last week. Just farm.'}</div>
   </div>
 
-  <h2>Level ${S.level}</h2>
-  <div class="card">
-    <div class="kv"><span>Vigor ${st.vigor}<span class="sub" style="color:var(--dim)"> &middot; floor ${fmt(stepMin())} steps</span></span>${btn('vigor','+1')}</div>
-    <div class="kv"><span>Endurance ${st.endurance}<span class="sub" style="color:var(--dim)"> &middot; ${fmt(weekSteps())} steps/wk</span></span>${btn('endurance','+1')}</div>
+  ${fold('level','Level '+S.level,'progress',afford?'level up':'',`
+    <div class="kv"><span>Vigor ${st.vigor}<span class="sub" style="color:var(--dim)"> &middot; ${fmt(stepMin())} steps</span></span>${btn('vigor','+1')}</div>
+    <div class="kv"><span>Endurance ${st.endurance}<span class="sub" style="color:var(--dim)"> &middot; ${fmt(weekSteps())}/wk</span></span>${btn('endurance','+1')}</div>
     <div class="kv"><span>Strength ${st.strength}<span class="sub" style="color:var(--dim)"> &middot; ${liftsWeek()} lifts/wk</span></span>${btn('strength','+1')}</div>
-    <div class="kv"><span>Discipline ${st.discipline}<span class="sub" style="color:var(--dim)"> &middot; ${rules().length} kitchen rule${rules().length>1?'s':''}</span></span>${btn('discipline','+1')}</div>
-    <div class="hint">${afford?'Spending '+fmt(nextCost())+' banks the runes permanently and raises the requirement.':'Need '+fmt(Math.max(0,nextCost()-L.pool))+' more runes. Consistency stat leads: Strength and Endurance cannot pass Vigor +1.'}</div>
-  </div>
+    <div class="kv"><span>Discipline ${st.discipline}<span class="sub" style="color:var(--dim)"> &middot; ${rules().length} rule${rules().length>1?'s':''}</span></span>${btn('discipline','+1')}</div>
+    <div class="hint">${afford?'Spending '+fmt(nextCost())+' banks the runes permanently and raises the requirement.':'Need '+fmt(Math.max(0,nextCost()-L.pool))+' more runes.'}</div>`)}
 
   <div class="split">
     <button class="btn sm" id="exp" style="flex:1">Export JSON</button>
@@ -635,9 +689,13 @@ function vStats(){
 function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
 document.addEventListener('click',e=>{
-  const t=e.target.closest('[data-fold],[data-tip],[data-t],[data-k],[data-flask],[data-day],[data-cal],[data-log],[data-lvl],[data-gtog],[data-gdel],[data-odel],[data-batch],[data-go],#gadd,#gclear,#oadd,#wsave,#wasave,#exp,#imp,#closeSheet,#scrim');
+  const t=e.target.closest('#tnext,#tback,#tskip,#tourgo,[data-fold],[data-tip],[data-t],[data-k],[data-flask],[data-day],[data-cal],[data-log],[data-lvl],[data-gtog],[data-gdel],[data-odel],[data-batch],[data-go],#gadd,#gclear,#oadd,#wsave,#wasave,#exp,#imp,#closeSheet,#scrim');
   if(!t)return;
 
+  if(t.id==='tnext'){TI++;drawTour();return}
+  if(t.id==='tback'){TI--;drawTour();return}
+  if(t.id==='tskip'){tourEnd();return}
+  if(t.id==='tourgo'){tourStart();return}
   if(t.dataset.fold){OPEN[t.dataset.fold]=OPEN[t.dataset.fold]?0:1;render();return}
   if(t.dataset.tip){showTip(t.dataset.tip);return}
   if(t.dataset.t||t.dataset.go){go(t.dataset.t||t.dataset.go);return}
@@ -716,6 +774,10 @@ function go(t){
 }
 day(TODAY);
 render();
+
+
+
+if(!S.tourDone)setTimeout(tourStart,450);
 </script>
 </body>
 </html>

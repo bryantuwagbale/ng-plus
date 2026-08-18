@@ -1,44 +1,36 @@
 # New Gains+
 
-A daily tracker for fat loss and strength recovery, built around one idea: **adherence beats optimality**.
+Single-file HTML PWA. No build step, no dependencies, no backend.
 
-Live: https://bryantuwagbale.github.io/ng-plus/
+## Deploy
 
-Single HTML file, no build step, no dependencies, no account. Saves to your own browser. Installable to the home screen on iOS and Android.
+1. Replace `index.html` in the root of the `ng-plus` repo.
+2. Commit and push. GitHub Pages serves it at `bryantuwagbale.github.io/ng-plus`.
+3. On iPhone: open in Safari, hard refresh, Share > Add to Home Screen.
+   If you had an older icon, delete it first. iOS caches meta tags.
 
-## The idea
+## Data
 
-Most fitness apps optimize the plan. This one optimizes the odds you actually do it. Every mechanic exists to make a bad day survivable, because a lapse becoming a collapse is the thing that ends most attempts.
+Everything lives in `localStorage` under the key `ngplus.v3`.
+Export and import JSON is at the bottom of the Stats tab. That is the only way to move data between devices.
 
-## Mechanics
+Clearing Safari website data wipes it. Export before you do anything drastic.
 
-**The Floor.** Three things: a step minimum, protein at lunch, dinner plated in the kitchen. It's the entire plan on your worst day, and it counts as a full success rather than a partial one.
+## Tabs
 
-**Runes.** Earned by doing the day's actions. 100 for the Floor, up to 200 for steps, 300 for a lift session, 100 each for a pre-made lunch and plating dinner. A full day is 800.
+- **Today** — Floor checklist, rune actions, cache and streak, flask
+- **Food** — meal log, kitchen rules, Sunday batch, standing orders, grocery list
+- **Workouts** — A/B session, log top set, boss ladder
+- **History** — editable calendar for backfill
+- **Stats** — weight averages, weekly runes, levels and stats
 
-**Levels.** Runes are temporary until spent. Leveling makes them permanent and raises one stat, and each stat raises its own requirement. The plan gets harder without you deciding to make it harder. Vigor gates Strength and Endurance, so consistency always leads.
+Tap any `i` for the rules behind that section.
 
-**Death and the cache.** A day scoring zero drops your unspent runes into a cache. Score anything the next day and you recover all of them. Miss twice and they're gone permanently. *Never miss twice* stops being advice and becomes a thing you can lose.
+## Walkthrough
 
-**Flasks.** Two per month. One converts a zero day into a Floor day: no runes, but no death and the streak survives. Using one is a correct play.
+The `?` at the top right of the Today tab runs a 10-step guided tour. It spotlights each part of the app in turn and switches tabs as it goes. It runs itself once on first launch, then never again unless you press the `?`.
 
-**Bosses.** Progressive overload on the squat, from 115 up a ladder of five: 135, 155, 185, 205, 225.
+## Week one
 
-**The only weekly target** is beating last week's rune total. Not a number, just more than last time.
-
-## Running your own
-
-Fork or download, then serve the files from any static host. GitHub Pages works: Settings → Pages → Deploy from a branch → `main` / root.
-
-Data lives in `localStorage`, scoped to the domain it's served from. Back up and restore buttons are at the bottom of the app.
-
-## Files
-
-| File | Purpose |
-|---|---|
-| `index.html` | The entire app |
-| `manifest.json` | Home screen install metadata |
-| `sw.js` | Service worker, offline caching |
-| `icon-*.png` | App icons |
-
-MIT licensed. Take it apart.
+Use the Today tab and the Workouts tab. Ignore everything else.
+Add the Sunday batch in week two. Add weight entry in week three.
