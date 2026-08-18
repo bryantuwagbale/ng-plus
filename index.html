@@ -75,12 +75,12 @@ h2:first-child{margin-top:2px}
 .rune-big{font-family:var(--mono);font-size:30px;transition:filter .3s ease;line-height:1;font-weight:600;letter-spacing:-.045em;
   background:linear-gradient(180deg,#F6DE93,#C99B22);-webkit-background-clip:text;background-clip:text;color:transparent}
 .rune-unit{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--dim)}
-.ceil{display:flex;gap:3px;margin-top:5px}
+.ceil{display:flex;gap:3px;margin-top:4px}
 .ceil i{flex:1;height:3px;background:rgba(255,255,255,.10);border-radius:3px;
   transition:background .45s cubic-bezier(.22,1,.36,1),box-shadow .45s ease}
 .ceil i.f{background:var(--gold);box-shadow:0 0 10px rgba(217,178,60,.5)}
 .ceil i.l{background:var(--goldsoft);box-shadow:0 0 10px rgba(240,206,99,.55)}
-.meta{display:flex;margin-top:7px;padding-top:6px;border-top:.5px solid var(--edge)}
+.meta{display:flex;gap:6px;margin-top:7px;padding-top:6px;border-top:.5px solid var(--edge)}
 .meta div{flex:1;min-width:0}
 .meta .v{font-family:var(--mono);font-size:13px;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ok{color:var(--jade)}.bad{color:var(--blood)}.gold{color:var(--gold)}.blue{color:var(--flask)}
@@ -89,7 +89,7 @@ h2:first-child{margin-top:2px}
 .hdr .st{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ash);white-space:nowrap}
 
 /* ---- rows ---- */
-.row{display:flex;align-items:center;gap:11px;padding:5px 2px;border-top:.5px solid var(--edge);width:100%;text-align:left}
+.row{display:flex;align-items:center;gap:11px;padding:4px 2px;border-top:.5px solid var(--edge);width:100%;text-align:left}
 .row:first-of-type{border-top:none}
 .box{width:22px;height:22px;flex:0 0 22px;border:1.5px solid rgba(255,255,255,.26);border-radius:8px;position:relative;
   background:rgba(255,255,255,.05);
@@ -136,8 +136,8 @@ nav{
   background:rgba(15,19,26,.86);border:.5px solid var(--edge);border-radius:28px;padding:5px;
   box-shadow:0 1px 0 var(--edge-top) inset,0 10px 34px rgba(0,0,0,.5);z-index:10;
 }
-nav button{flex:1;padding:7px 2px 6px;border-radius:23px;font-family:var(--mono);font-size:9px;
-  letter-spacing:.09em;text-transform:uppercase;color:var(--dim);position:relative;z-index:1;
+nav button{flex:1;padding:7px 1px 6px;border-radius:23px;font-family:var(--mono);font-size:8px;
+  letter-spacing:.01em;text-transform:uppercase;color:var(--dim);position:relative;z-index:1;
   transition:color .28s ease,transform .3s cubic-bezier(.34,1.4,.44,1)}
 nav button span{display:block;font-size:15px;line-height:1;margin-bottom:3px;opacity:.5}
 nav button.on{color:#0A0C10}
@@ -275,8 +275,8 @@ h2 .i{margin-left:8px;vertical-align:-5px;width:19px;height:19px;line-height:18p
     <button data-t="today" class="on"><span>◉</span>Today</button>
     <button data-t="food"><span>◧</span>Food</button>
     <button data-t="work"><span>▤</span>Workouts</button>
-    <button data-t="hist"><span>▦</span>History</button>
-    <button data-t="stats"><span>◈</span>Stats</button>
+    <button data-t="hist"><span>▦</span>Remembrances</button>
+    <button data-t="stats"><span>◈</span>Attributes</button>
   </nav>
 </div>
 <div id="tour"><div id="hole"></div><div id="tcard"></div></div>
@@ -406,14 +406,14 @@ function weekRunes(off){
 
 /* ============ tooltips ============ */
 const TIP={
- readout:()=>['The readout','<div class="l"><span>Banked</span><span>runes not yet spent</span></div><div class="l"><span>Cache</span><span>runes dropped on a death</span></div><div class="l"><span>Streak</span><span>consecutive scoring days</span></div><div class="l"><span>Boss</span><span>next weight on the ladder</span></div><br><b>Death and the cache.</b> A day that scores 0 runes is a death, and all unbanked runes drop into the cache. Hit the Floor the next day and the cache returns in full, no penalty, no making it up. <b>Two zero days in a row and it is gone permanently.</b> Never miss twice.<br><br><b>Flasks.</b> Two charges a month, refilled on the 1st. You have '+(2-flasksUsed())+' left. One turns a zero day into a Floor day: no runes, but no death, cache intact, streak intact. Using one is a correct play. Do not spend the second before the 15th.<br><br><b>Banking.</b> Level '+(S.level+1)+' costs '+fmt(nextCost())+'. Leveling spends the pool and makes those runes permanent.'],
+ readout:()=>['The readout','<div class="l"><span>Banked</span><span>runes not yet spent</span></div><div class="l"><span>Lost Runes</span><span>dropped where you died</span></div><div class="l"><span>Streak</span><span>consecutive scoring days</span></div><div class="l"><span>Boss</span><span>next weight on the ladder</span></div><br><b>Death and Lost Runes.</b> A day that scores 0 runes is a death, and every unbanked rune drops on the spot. Hit the Floor the next day and you recover them in full, no penalty, no making it up. <b>Two zero days in a row and it is gone permanently.</b> Never miss twice.<br><br><b>Flask of Crimson Tears.</b> Two charges a month, refilled on the 1st. You have '+(2-flasksUsed())+' left. One turns a zero day into a Floor day: no runes, but no death, nothing dropped, streak intact. Using one is a correct play. Do not spend the second before the 15th.<br><br><b>Banking.</b> Level '+(S.level+1)+' costs '+fmt(nextCost())+'. Leveling spends the pool and makes those runes permanent.'],
  floor:()=>['The Floor','<b>'+fmt(stepMin())+' steps. Protein at lunch. Dinner plated in the kitchen.</b><br><br>That is the entire plan on a bad day. All three checked is a full success worth 100 runes, not a partial one.<br><br>When you are behind, tired or tilted, the answer is never a bigger play. Behind. Just farm.'],
  runes:()=>['Runes','<div class="l"><span>Floor</span><span>+100</span></div><div class="l"><span>7,000 steps</span><span>+100</span></div><div class="l"><span>10,000 steps</span><span>+200</span></div><div class="l"><span>Lift session, top set logged</span><span>+300</span></div><div class="l"><span>Lunch was already made</span><span>+100</span></div><div class="l"><span>Dinner plated in the kitchen</span><span>+100</span></div><div class="l"><span>Named boss cleared</span><span>+500</span></div><br>Ceiling is 500 without a lift, 800 with one. Runes stay unbanked until spent on a level.'],
- kitchen:()=>['Kitchen rules','<b>Lunch</b> scores the decision, not the food. Something that already existed is a pass. Deciding at noon and buying is a fail. Leftovers count wherever they came from.<br><br><b>Dinner:</b> portion at the counter, put the rest away, nothing served at the table. Seconds should require standing up and opening a container.<br><br><b>Snacks</b> are not banned. Formats are. Portion into bags on shopping day.<br><br><b>Sunday batch:</b> five portioned lunches, 40g protein each. One Instant Pot run. This removes the noon decision five times and is the highest leverage thing you do all week.'],
+ kitchen:()=>['Kitchen rules','<b>Lunch</b> scores the decision, not the food. Something that already existed is a pass. Deciding at noon and buying is a fail. Leftovers count wherever they came from.<br><br><b>Dinner:</b> portion at the counter, put the rest away, nothing served at the table. Seconds should require standing up and opening a container.<br><br><b>Snacks</b> are not banned. Formats are. Portion into bags on shopping day.<br><br><b>Crafting Kit, Sundays:</b> five portioned lunches, 40g protein each. One Instant Pot run. The cookbook never changes. This removes the noon decision five times and is the highest leverage thing you do all week.'],
  eatout:()=>['Eating out','Eating out is not a death and not banned. The leak is deciding while hungry.<div class="l"><span>One item</span><span>no combo</span></div><div class="l"><span>Drink</span><span>zero calorie</span></div><div class="l"><span>Grilled over fried</span><span>when both exist</span></div><div class="l"><span>Sides</span><span>skip or swap</span></div><br>The second item is where the calories are, not the first.<br><br><b>Standing orders</b> are your pre-decided order at each place you actually go. Decide once, not hungry, then never decide at the counter again.<br><br>Protein at lunch still counts here, so the Floor is reachable on a drive-through day. It just does not earn the lunch rune.'],
- lifting:()=>['Lifting','<b>A / B sessions</b> alternate. Log the top set only, weight and reps. Everything else is optional detail.<br><br><b>Bosses.</b> Start at 115, add 10 lb per session while it keeps moving. Clearing a named weight pays 500 runes.<div class="l"><span>First Plate</span><span>135</span></div><div class="l"><span>The Wall of Habit</span><span>155</span></div><div class="l"><span>Old Ground</span><span>185</span></div><div class="l"><span>The Approach</span><span>205</span></div><div class="l"><span>Two Plates</span><span>225</span></div><br><b>Stalling.</b> Same weight twice means the ladder stopped. Drop to 85 percent and climb back. Stalling is not death and costs nothing.<br><br>225 is a rematch, not a first meeting. Strength returns 3 to 5 times faster than it was built.'],
+ lifting:()=>['Lifting','<b>A / B sessions</b> alternate. Log the top set only, weight and reps. Everything else is optional detail.<br><br><b>Bosses.</b> Start at 115, add 10 lb per session while it keeps moving. Clearing a named weight pays 500 runes.<div class="l"><span>First Plate</span><span>135</span></div><div class="l"><span>The Wall of Habit</span><span>155</span></div><div class="l"><span>Old Ground</span><span>185</span></div><div class="l"><span>The Approach</span><span>205</span></div><div class="l"><span>Two Plates</span><span>225</span></div><br><b>Stalling.</b> Same weight twice means the ladder stopped. Drop to 85 percent and climb back. It is a Stake of Marika, not a death: a nearer restart at no cost.<br><br>225 is a rematch, not a first meeting. Strength returns 3 to 5 times faster than it was built.'],
  weight:()=>['Weight','The 7-day average is the only number that means anything. A single day is water.<br><br>Target is 0.5 to 1.0 lb down per week. Under 0.25 for three straight weeks with runes at target means change one thing. Over 1.5 means add food back.<br><br>Judge the first three weeks on runes alone.'],
- progress:()=>['Runes, levels and the Rest Site','<b>Beating last week is the only weekly target.</b> If runes fall week over week, the level is too high, not you. Drop a stat.<br><br><b>Levels.</b> Level 2 costs 1,500 and every level after costs 500 more. Leveling banks the pool permanently and raises one stat. Raising a stat raises the requirement. That is the ramp.<div class="l"><span>Vigor</span><span>floor steps</span></div><div class="l"><span>Endurance</span><span>weekly steps</span></div><div class="l"><span>Strength</span><span>lifts per week</span></div><div class="l"><span>Discipline</span><span>kitchen rules</span></div><br>Strength and Endurance cannot pass Vigor plus 1. The consistency stat leads.<br><br><b>Rest Site</b>, Sundays: runes against last week, weight average, level up if affordable, grocery list, five lunches. Goals are set once. That is the only review.']
+ progress:()=>['Runes, levels and the Site of Grace','<b>Beating last week is the only weekly target.</b> If runes fall week over week, the level is too high, not you. Drop a stat.<br><br><b>Levels.</b> Level 2 costs 1,500 and every level after costs 500 more. Leveling banks the pool permanently and raises one stat. Raising a stat raises the requirement. That is the ramp.<div class="l"><span>Vigor</span><span>floor steps</span></div><div class="l"><span>Endurance</span><span>weekly steps</span></div><div class="l"><span>Strength</span><span>lifts per week</span></div><div class="l"><span>Mind</span><span>kitchen rules</span></div><br>Strength and Endurance cannot pass Vigor plus 1. The consistency stat leads.<br><br><b>Site of Grace</b>, Sundays: rest, refill, and review. runes against last week, weight average, level up if affordable, grocery list, five lunches. Goals are set once. That is the only review.']
 };
 function showTip(k){
   const [t,b]=TIP[k]();
@@ -425,16 +425,16 @@ const I=k=>`<button class="i" data-tip="${k}" aria-label="What is this">i</butto
 
 /* ============ walkthrough ============ */
 const TOUR=[
- {tab:'today',sel:'#t-readout',t:'The tally',b:'Runes earned today against the ceiling. Below it: banked runes, the cache, your streak and the next boss weight.'},
+ {tab:'today',sel:'#t-readout',t:'The tally',b:'Runes earned today against the ceiling. Below it: banked runes, any runes you dropped on a zero day, your streak and the next boss weight.'},
  {tab:'today',sel:'#t-floor',t:'The Floor',b:'Three checkboxes. That is the whole program on a bad day, and hitting all three is a full success worth 100 runes.'},
  {tab:'today',sel:'#t-runes',t:'Everything else',b:'Optional runes on top of the Floor. Tap a row when it happens. Nothing here is required.'},
- {tab:'today',sel:'#t-readout .i',t:'The i buttons',b:'Every section has one. Tap it for the rules behind that part: death, the cache, flasks, levels. You never have to memorise anything.'},
+ {tab:'today',sel:'#t-readout .i',t:'The i buttons',b:'Every section has one. Tap it for the rules behind that part: death, lost runes, flasks, levels. You never have to memorise anything.'},
  {tab:'food',sel:'nav [data-t="food"]',t:'Food',t2:1,b:'Meal log in words, no counting. Your two kitchen rules live here too.'},
  {tab:'food',sel:'#v-food .fold:nth-of-type(3)',t:'Eating out',b:'Save a standing order for each place you actually go. Decide once while you are not hungry, then never decide at the counter.',open:'eat'},
  {tab:'work',sel:'#t-session',t:'Workouts',b:'Alternates A and B for you. Type the weight and reps of your top set, tap Log. That is the entire lift entry.'},
- {tab:'hist',sel:'#t-cal',t:'History',b:'Tap any day to backfill or fix it. Gold scored, green was a Floor day, red was a zero, blue used a flask.'},
- {tab:'stats',sel:'#t-weight',t:'Stats',b:'Weight goes in here whenever you weigh. Only the 7-day average matters. Levels and export live below it.'},
- {tab:'today',sel:'#t-floor',t:'Week one',b:'Use the Floor and the Workouts tab. Ignore the rest until it is boring. Add the Sunday batch in week two, weight in week three.'}
+ {tab:'hist',sel:'#t-cal',t:'Remembrances',b:'Tap any day to backfill or fix it. Gold scored, green was a Floor day, red was a zero, blue used a flask.'},
+ {tab:'stats',sel:'#t-weight',t:'Attributes',b:'Weight goes in here whenever you weigh. Only the 7-day average matters. Levels and export live below it.'},
+ {tab:'today',sel:'#t-floor',t:'Week one',b:'Use the Floor and the Workouts tab. Ignore the rest until it is boring. Add the Crafting Kit in week two, weight in week three.'}
 ];
 let TI=-1;
 function tourStart(){TI=0;drawTour()}
@@ -453,7 +453,8 @@ function drawTour(){
     h.style.width=(r.width+pad*2)+'px';h.style.height=(r.height+pad*2)+'px';
     h.style.borderRadius=(r.height<40?r.height/2+pad:18)+'px';
     const c=el('tcard');
-    c.innerHTML=`<button class="tx" id="tskip" aria-label="Close walkthrough">&times;</button>
+    c.innerHTML=`<button class="tx" id="tskip" aria-label="Close guidance">&times;</button>
+      <div class="eyebrow" style="margin-bottom:4px">Guidance of Grace</div>
       <h4>${st.t}</h4><p>${st.b}</p>
       <div id="trow"><button class="step" id="tskip2">Skip</button>
         <span class="step" style="margin:0 auto 0 10px">${TI+1} / ${TOUR.length}</span>
@@ -467,6 +468,44 @@ function drawTour(){
 }
 addEventListener('resize',()=>{if(TI>=0)drawTour()});
 
+
+/* ============ about ============ */
+
+const LINES=[
+ 'Adherence beats optimality. Always.',
+ 'Never miss twice.',
+ 'Behind. Just farm.',
+ 'The Floor is the whole plan on a bad day.',
+ 'A Floor day is a full success, not a partial one.',
+ 'Compensation is what turns a lapse into a cycle.',
+ 'Beating last week is the only weekly target.',
+ 'Stalling is not death.',
+ 'The number is evidence, not a verdict.',
+ 'This is a second playthrough. The map is already known.',
+ 'Consistency is the stat that leads.',
+ 'Decide once, while you are not hungry.'
+];
+function todayLine(){
+  const d=parse(TODAY);
+  return LINES[Math.floor((Date.UTC(d.getFullYear(),d.getMonth(),d.getDate())/864e5))%LINES.length];
+}
+function showAbout(){
+  el('sheet').innerHTML=`<div class="grip"></div>
+    <div class="tiptitle">New Gains+</div>
+    <div class="tipbody">
+      <p style="margin:0 0 12px;color:var(--goldsoft);font-size:14px">${todayLine()}</p>
+      <b>What this is.</b> A tracker for losing fat and rebuilding strength, built around the fact that the hard part is showing up, not knowing what to do. Effort converts into runes so that progress is visible on days the scale is not.
+      <br><br><b>Morning.</b> Weigh in. You will not see the number. That is the point: logging it is the job, reacting to it is not.
+      <br><br><b>During the day.</b> Tap the three Floor boxes as they actually happen. Steps, protein at lunch, dinner plated in the kitchen. That is a complete day.
+      <br><br><b>Anything above that</b> is upside. More steps, a lift, lunch that was already made.
+      <br><br><b>On a bad day.</b> Hit the Floor and stop. Do not make it up, do not double a session, do not skip a meal to compensate. If the day is already gone, spend a flask.<br><br><b>A zero day is a death.</b> Every unbanked rune drops where you fell. Hit the Floor tomorrow and you recover them in full. Die again first and they are gone.
+      <br><br><b>Sunday.</b> Rest at the Site of Grace. Runes against last week, the weight average unlocks itself, level up, grocery list, five lunches.
+      <br><br><b>The one rule</b> the whole thing exists to protect: never miss twice.
+    </div>
+    <button class="btn gold" id="tourgo2">Guidance of Grace</button>
+    <button class="btn" id="closeSheet">Close</button>`;
+  el('scrim').classList.add('on');
+}
 
 /* ============ dom morph: keeps element identity so transitions run ============ */
 function morph(a,b){
@@ -537,7 +576,7 @@ function vToday(){
   const ceilMax=x.lift?800:500,cap=routine(x);
   const on=[floorDone(x),x.s7k||x.s10k,x.s10k,x.lunchMade,x.dinner,x.lift];
   const blocks=on.map((f,i)=>`<i class="${f?(i===5?'l':'f'):''}" style="${i===5?'flex:3':''}"></i>`).join('');
-  const cacheTxt=L.cache?`<span class="bad">${fmt(L.cache)} dropped</span>`:'<span class="ok">safe</span>';
+  const cacheTxt=L.cache?`<span class="bad">${fmt(L.cache)}</span>`:'<span class="ok">none</span>';
   const boss=currentBoss(),bn=bossName(boss);
   const flasksLeft=2-flasksUsed();
   const canFlask=r===0&&!x.flask&&flasksLeft>0;
@@ -550,7 +589,7 @@ function vToday(){
     <div class="ceil">${blocks}</div>
     <div class="meta">
       <div style="flex:1.5"><div class="eyebrow">Banked</div><div class="v gold" style="font-size:12px">${fmt(L.pool)}<span style="color:var(--dim)">/${fmt(nextCost())}</span></div></div>
-      <div><div class="eyebrow">Cache</div><div class="v">${cacheTxt}</div></div>
+      <div><div class="eyebrow">Lost Runes</div><div class="v">${cacheTxt}</div></div>
       <div><div class="eyebrow">Streak</div><div class="v">${L.streak}</div></div>
       <div><div class="eyebrow" style="display:flex;align-items:center;gap:4px">Boss ${I('readout')}</div><div class="v">${boss}</div></div>
     </div>
@@ -558,12 +597,12 @@ function vToday(){
   </div>
 
   ${L.cache?`<div class="card" style="border-color:#5C2626;background:#1A1215">
-    <div class="hdr"><b>Behind. Just farm.</b><span class="st bad">${fmt(L.cache)} in cache</span></div>
-    <div class="hint" style="color:var(--ash)">Hit the Floor today and the cache returns in full. Miss again and it is gone.</div>
+    <div class="hdr"><b>Behind. Just farm.</b><span class="st bad">${fmt(L.cache)} lost</span></div>
+    <div class="hint" style="color:var(--ash)">Hit the Floor today and your lost runes come back in full. Miss again and they are gone.</div>
   </div>`:''}
 
   ${isSunday(TODAY)?`<div class="card" style="border-color:#54471A">
-    <div class="hdr"><b>Rest Site</b><span class="st">Sunday</span></div>
+    <div class="hdr"><b>Site of Grace</b><span class="st">Sunday</span></div>
     <div class="hint" style="color:var(--ash)">Weekly review, level up, grocery list, five lunches.</div>
     <button class="btn" data-go="stats">Open review</button>
   </div>`:''}
@@ -594,7 +633,7 @@ ${done?'':'<div class="hint">All three is the entire plan on a bad day.</div>'}
   </div>
 
   ${canFlask&&floorCount(x)===0?`<button class="btn" data-flask="${TODAY}" style="border-color:rgba(97,165,232,.45);color:var(--flask)">Spend flask &middot; ${flasksLeft} left</button>`:''}
-  ${x.flask?`<div class="card" style="border-color:#2C4C69"><b class="blue">Flask spent.</b> <span class="hint" style="display:inline">Counts as a Floor day. Cache and streak intact.</span></div>`:''}
+  ${x.flask?`<div class="card" style="border-color:#2C4C69"><b class="blue">Flask spent.</b> <span class="hint" style="display:inline">Counts as a Floor day. Runes and streak intact.</span></div>`:''}
   `;
 }
 function row(k,lbl,sub,val,on,dis){
@@ -623,18 +662,18 @@ function vFood(){
   return `
   ${fold('meals',"Today's meals",'',[x.meals.b,x.meals.l,x.meals.d].filter(Boolean).length+'/3',`
     <div class="eyebrow">Breakfast</div>
-    <input type="text" data-meal="b" value="${esc(x.meals.b)}" placeholder="Eggs and sausage" style="margin:3px 0 8px">
+    <input type="text" data-meal="b" data-d="${TODAY}" value="${esc(x.meals.b)}" placeholder="Eggs and sausage" style="margin:3px 0 8px">
     <div class="eyebrow">Lunch</div>
-    <input type="text" data-meal="l" value="${esc(x.meals.l)}" placeholder="What you ate" style="margin:3px 0 8px">
+    <input type="text" data-meal="l" data-d="${TODAY}" value="${esc(x.meals.l)}" placeholder="What you ate" style="margin:3px 0 8px">
     <div class="eyebrow">Dinner</div>
-    <input type="text" data-meal="d" value="${esc(x.meals.d)}" placeholder="What you ate" style="margin:3px 0 0">`)}
+    <input type="text" data-meal="d" data-d="${TODAY}" value="${esc(x.meals.d)}" placeholder="What you ate" style="margin:3px 0 0">`)}
 
   ${fold('rules','Kitchen rules','kitchen','',`
     ${row('lunchMade','Lunch was already made','Leftovers count, wherever from','+100',x.lunchMade)}
     ${row('protein','Protein at lunch','','',x.protein)}
     ${row('dinner','Dinner plated in the kitchen','','+100',x.dinner)}
     <button class="row ${S.batch[sun]?'on':''}" data-batch="${sun}">
-      <span class="box"></span><span class="lbl">Five portioned lunches, 40g protein<span class="sub">Sunday batch, Instant Pot</span></span></button>`)}
+      <span class="box"></span><span class="lbl">Five portioned lunches, 40g protein<span class="sub">Crafting Kit, Sunday, Instant Pot</span></span></button>`)}
 
   ${fold('eat','Eating out','eatout',S.orders.length+' orders',`
     ${S.orders.length?S.orders.map((o,i)=>`<div class="gi"><span><b>${esc(o.p)}</b><br><span style="color:var(--ash);font-size:13px">${esc(o.o)}</span></span><button class="x" data-odel="${i}">&times;</button></div>`).join(''):'<div class="hint">Decide your order at each place once, while you are not hungry.</div>'}
@@ -665,7 +704,7 @@ function vWork(){
       <span class="tag">${l?'Last: '+l.session+' &middot; '+l.weight+'&times;'+l.reps:'First session'}</span></div>
     <div class="kv"><span>Target</span><span class="n gold">${boss} &times; 3</span></div>
     <div class="kv"><span>This week</span><span class="n">${liftsThisWeek()} / ${liftsWeek()}</span></div>
-    ${stall?`<div class="hint" style="color:var(--blood)">Stalled twice at ${l.weight}. Drop to ${boss} and climb back.</div>`:''}
+    ${stall?`<div class="hint" style="color:var(--blood)">Stalled twice at ${l.weight}. Respawn at the stake: ${boss}, then climb back.</div>`:''}
     <div class="split" style="margin-top:9px">
       <div><div class="eyebrow">Weight</div><input type="number" id="lw" inputmode="numeric" value="${boss}"></div>
       <div><div class="eyebrow">Reps</div><input type="number" id="lr" inputmode="numeric" value="3"></div>
@@ -733,6 +772,14 @@ function sheetDay(k){
       ${R('lift','Lift session','','+300',x.lift)}
       ${R('lunchMade','Lunch was already made','','+100',x.lunchMade)}
     </div>
+    <div class="card" style="margin:0 0 10px">
+      <div class="eyebrow">Breakfast</div>
+      <input type="text" data-meal="b" data-d="${k}" value="${esc(x.meals.b)}" placeholder="Eggs and sausage" style="margin:3px 0 8px">
+      <div class="eyebrow">Lunch</div>
+      <input type="text" data-meal="l" data-d="${k}" value="${esc(x.meals.l)}" placeholder="What you ate" style="margin:3px 0 8px">
+      <div class="eyebrow">Dinner</div>
+      <input type="text" data-meal="d" data-d="${k}" value="${esc(x.meals.d)}" placeholder="What you ate" style="margin:3px 0 0">
+    </div>
     ${r===0&&flasksLeft>0||x.flask?`<button class="btn" data-flask="${k}" style="border-color:#2C4C69;color:var(--flask)">
       ${x.flask?'Undo flask':'Spend flask &middot; '+flasksLeft+' left'}</button>`:''}
     <button class="btn" data-clearday="${k}">Clear this day</button>
@@ -755,14 +802,14 @@ function vStats(){
     <div class="kv"><span>Change</span><span class="n ${d==null?'':(d>=0.5?'ok':(d<0?'bad':''))}">${d==null?'&mdash;':(d>0?'-':'+')+Math.abs(d).toFixed(1)+' lb'}</span></div>
     <div class="hint">Target 0.5 to 1.0 lb down per week. Single days mean nothing.</div>`:`
     <div class="kv"><span>${Object.keys(S.weights).length} weigh-in${Object.keys(S.weights).length===1?'':'s'} logged</span><button class="btn sm" id="showw">Show</button></div>
-    <div class="hint">Numbers open on their own at the Rest Site. Logging is the job.</div>`}
+    <div class="hint">Numbers open on their own at the Site of Grace. Logging is the job.</div>`}
   </div>
 
   <h2>Runes ${I('progress')}</h2>
   <div class="card">
     <div class="kv"><span>This week vs last</span><span class="n gold">${fmt(wk)} <span style="color:var(--dim)">/ ${fmt(lw)}</span></span></div>
     <div class="kv"><span>Banked</span><span class="n">${fmt(L.pool)} / ${fmt(nextCost())} to Level ${S.level+1}</span></div>
-    ${L.cacheLost?`<div class="kv"><span>Caches lost</span><span class="n bad">${L.cacheLost}</span></div>`:''}
+    ${L.cacheLost?`<div class="kv"><span>Runes lost for good</span><span class="n bad">${L.cacheLost}</span></div>`:''}
     <div class="hint">${wk>lw?'Beating last week is the only weekly target.':'Behind last week. Just farm.'}</div>
   </div>
 
@@ -770,10 +817,10 @@ function vStats(){
     <div class="kv"><span>Vigor ${st.vigor}<span class="sub" style="color:var(--dim)"> &middot; ${fmt(stepMin())} steps</span></span>${btn('vigor','+1')}</div>
     <div class="kv"><span>Endurance ${st.endurance}<span class="sub" style="color:var(--dim)"> &middot; ${fmt(weekSteps())}/wk</span></span>${btn('endurance','+1')}</div>
     <div class="kv"><span>Strength ${st.strength}<span class="sub" style="color:var(--dim)"> &middot; ${liftsWeek()} lifts/wk</span></span>${btn('strength','+1')}</div>
-    <div class="kv"><span>Discipline ${st.discipline}<span class="sub" style="color:var(--dim)"> &middot; ${rules().length} rule${rules().length>1?'s':''}</span></span>${btn('discipline','+1')}</div>
+    <div class="kv"><span>Mind ${st.discipline}<span class="sub" style="color:var(--dim)"> &middot; ${rules().length} rule${rules().length>1?'s':''}</span></span>${btn('discipline','+1')}</div>
     <div class="hint">${afford?'Spending '+fmt(nextCost())+' banks the runes permanently and raises the requirement.':'Need '+fmt(Math.max(0,nextCost()-L.pool))+' more runes.'}</div>`)}
 
-  ${fold('data','Data','',''.trim(),`
+  ${fold('data','Rebirth','',''.trim(),`
     <div class="split"><button class="btn sm" id="exp" style="flex:1;margin:0">Export JSON</button>
       <button class="btn sm" id="imp" style="flex:1;margin:0">Import JSON</button></div>
     <button class="btn sm" id="resetday" style="width:100%;margin-top:8px">Reset today</button>
@@ -786,13 +833,14 @@ function vStats(){
 function esc(s){return String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
 
 document.addEventListener('click',e=>{
-  const t=e.target.closest('#tour,#tnext,#tback,#tskip,#tskip2,#tourgo,[data-fold],[data-tip],[data-t],[data-k],[data-flask],[data-day],[data-cal],[data-log],[data-lvl],[data-gtog],[data-gdel],[data-odel],[data-batch],[data-go],#wclear,#undolift,#resetday,#resetall,[data-clearday],#showw,#gadd,#gclear,#oadd,#wtsave,#wsave,#wasave,#exp,#imp,#closeSheet,#scrim');
+  const t=e.target.closest('#tour,#tnext,#tback,#tskip,#tskip2,#tourgo,#tourgo2,[data-fold],[data-tip],[data-t],[data-k],[data-flask],[data-day],[data-cal],[data-log],[data-lvl],[data-gtog],[data-gdel],[data-odel],[data-batch],[data-go],#wclear,#undolift,#resetday,#resetall,[data-clearday],#showw,#gadd,#gclear,#oadd,#wtsave,#wsave,#wasave,#exp,#imp,#closeSheet,#scrim');
   if(!t)return;
 
   if(t.id==='tnext'){TI++;drawTour();return}
   if(t.id==='tback'){TI--;drawTour();return}
   if(t.id==='tskip'||t.id==='tskip2'||t.id==='tour'){tourEnd();return}
-  if(t.id==='tourgo'){tourStart();return}
+  if(t.id==='tourgo'){showAbout();return}
+  if(t.id==='tourgo2'){el('scrim').classList.remove('on');setTimeout(tourStart,260);return}
   if(t.dataset.fold){OPEN[t.dataset.fold]=OPEN[t.dataset.fold]?0:1;render();return}
   if(t.dataset.tip){showTip(t.dataset.tip);return}
   if(t.dataset.t||t.dataset.go){go(t.dataset.t||t.dataset.go);return}
@@ -809,7 +857,6 @@ document.addEventListener('click',e=>{
     if(!x.flask&&flasksUsed()>=2)return;
     x.flask=x.flask?0:1;afterEdit(k);return;
   }
-  if(t.dataset.info){sheetInfo(t.dataset.info);return}
   if(t.dataset.day){sheetDay(t.dataset.day);return}
   if(t.dataset.cal){calM+=+t.dataset.cal;if(calM<0){calM=11;calY--}if(calM>11){calM=0;calY++}render();return}
   if(t.id==='closeSheet'||(t.id==='scrim'&&e.target.id==='scrim')){el('scrim').classList.remove('on');return}
@@ -879,7 +926,7 @@ document.addEventListener('click',e=>{
 });
 document.addEventListener('input',e=>{
   const m=e.target.dataset.meal;
-  if(m){day(TODAY).meals[m]=e.target.value;save()}
+  if(m){const dd=e.target.dataset.d||TODAY;day(dd).meals[m]=e.target.value;save()}
 });
 function afterEdit(d){
   const openSheet=el('scrim').classList.contains('on');
@@ -901,6 +948,10 @@ function go(t){
 }
 day(TODAY);
 render();
+addEventListener('visibilitychange',()=>{
+  if(!document.hidden&&iso(new Date())!==TODAY)location.reload();
+});
+addEventListener('focus',()=>{if(iso(new Date())!==TODAY)location.reload()});
 
 
 
