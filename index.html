@@ -2,12 +2,14 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,maximum-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <meta name="theme-color" content="#0E141C">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <title>New Gains+</title>
-<link rel="manifest" href='data:application/manifest+json,{"name":"New Gains%2B","short_name":"NG%2B","display":"standalone","background_color":"%230E141C","theme_color":"%230E141C","start_url":"."}'>
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<link rel="icon" type="image/png" href="favicon.png">
 <style>
 :root{
   --bg:#0E141C;
@@ -315,7 +317,9 @@ function day(d){
 function has(d){return !!S.days[d]}
 
 const stepMin=()=>2000+500*(S.stats.vigor-1);
-const weekSteps=()=>[49,55,60,65,70][Math.min(S.stats.endurance-1,4)]*1000;
+const stepTier1=()=>5000+1000*(S.stats.endurance-1);
+const stepTier2=()=>stepTier1()+3000;
+const weekSteps=()=>stepTier1()*7;
 const liftsWeek=()=>1+S.stats.strength;
 const RULES=['Dinner plated in the kitchen','No seconds','Snacks portioned into bags on shopping day','Nothing eaten standing at the counter'];
 const rules=()=>RULES.slice(0,S.stats.discipline);
@@ -399,12 +403,12 @@ function weekRunes(off){
 const TIP={
  readout:()=>['The readout','<div class="l"><span>Banked</span><span>runes not yet spent</span></div><div class="l"><span>Lost Runes</span><span>dropped where you died</span></div><div class="l"><span>Streak</span><span>consecutive scoring days</span></div><div class="l"><span>Boss</span><span>next weight on the ladder</span></div><br><b>Death and Lost Runes.</b> A day that scores 0 runes is a death, and every unbanked rune drops on the spot. Hit the Floor the next day and you recover them in full, no penalty, no making it up. <b>Two zero days in a row and it is gone permanently.</b> Never miss twice.<br><br><b>Flask of Crimson Tears.</b> Two charges a month, refilled on the 1st. You have '+(2-flasksUsed())+' left. One turns a zero day into a Floor day: no runes, but no death, nothing dropped, streak intact. Using one is a correct play. Do not spend the second before the 15th.<br><br><b>Banking.</b> Level '+(S.level+1)+' costs '+fmt(nextCost())+'. Leveling spends the pool and makes those runes permanent.'],
  floor:()=>['The Floor','<b>'+fmt(stepMin())+' steps. Protein at lunch. Dinner plated in the kitchen.</b><br><br>That is the entire plan on a bad day. All three checked is a full success worth 100 runes, not a partial one.<br><br>When you are behind, tired or tilted, the answer is never a bigger play. Behind. Just farm.'],
- runes:()=>['Runes','<div class="l"><span>Floor</span><span>+100</span></div><div class="l"><span>7,000 steps</span><span>+100</span></div><div class="l"><span>10,000 steps</span><span>+200</span></div><div class="l"><span>Lift session, top set logged</span><span>+300</span></div><div class="l"><span>Lunch was already made</span><span>+100</span></div><div class="l"><span>Dinner plated in the kitchen</span><span>+100</span></div><div class="l"><span>Named boss cleared</span><span>+500</span></div><br>Ceiling is 500 without a lift, 800 with one. Runes stay unbanked until spent on a level.'],
+ runes:()=>['Runes','<div class="l"><span>Floor</span><span>+100</span></div><div class="l"><span>'+fmt(stepTier1())+' steps</span><span>+100</span></div><div class="l"><span>'+fmt(stepTier2())+' steps</span><span>+200</span></div><div class="l"><span>Went downstairs to the gym</span><span>+150</span></div><div class="l"><span>Lift session, top set logged</span><span>+300</span></div><div class="l"><span>Lunch was already made</span><span>+100</span></div><div class="l"><span>Dinner plated in the kitchen</span><span>+100</span></div><div class="l"><span>Named boss cleared</span><span>+500</span></div><br>Step targets rise with Endurance, so they stay a stretch and never a wall. Runes stay unbanked until spent on a level.'],
  kitchen:()=>['Kitchen rules','<b>Lunch</b> scores the decision, not the food. Something that already existed is a pass. Deciding at noon and buying is a fail. Leftovers count wherever they came from.<br><br><b>Dinner:</b> portion at the counter, put the rest away, nothing served at the table. Seconds should require standing up and opening a container.<br><br><b>Snacks</b> are not banned. Formats are. Portion into bags on shopping day.<br><br><b>Crafting Kit, Sundays:</b> five portioned lunches, 40g protein each. One Instant Pot run. The cookbook never changes. This removes the noon decision five times and is the highest leverage thing you do all week.'],
  eatout:()=>['Eating out','Eating out is not a death and not banned. The leak is deciding while hungry.<div class="l"><span>One item</span><span>no combo</span></div><div class="l"><span>Drink</span><span>zero calorie</span></div><div class="l"><span>Grilled over fried</span><span>when both exist</span></div><div class="l"><span>Sides</span><span>skip or swap</span></div><br>The second item is where the calories are, not the first.<br><br><b>Standing orders</b> are your pre-decided order at each place you actually go. Decide once, not hungry, then never decide at the counter again.<br><br>Protein at lunch still counts here, so the Floor is reachable on a drive-through day. It just does not earn the lunch rune.'],
  lifting:()=>['Lifting','<b>A / B sessions</b> alternate. Log the top set only, weight and reps. Everything else is optional detail.<br><br><b>Bosses.</b> Start at 115, add 10 lb per session while it keeps moving. Clearing a named weight pays 500 runes.<div class="l"><span>First Plate</span><span>135</span></div><div class="l"><span>The Wall of Habit</span><span>155</span></div><div class="l"><span>Old Ground</span><span>185</span></div><div class="l"><span>The Approach</span><span>205</span></div><div class="l"><span>Two Plates</span><span>225</span></div><br><b>Stalling.</b> Same weight twice means the ladder stopped. Drop to 85 percent and climb back. It is a Stake of Marika, not a death: a nearer restart at no cost.<br><br>225 is a rematch, not a first meeting. Strength returns 3 to 5 times faster than it was built.'],
  weight:()=>['Weight','The 7-day average is the only number that means anything. A single day is water.<br><br>Target is 0.5 to 1.0 lb down per week. Under 0.25 for three straight weeks with runes at target means change one thing. Over 1.5 means add food back.<br><br>Judge the first three weeks on runes alone.'],
- progress:()=>['Runes, levels and the Site of Grace','<b>Beating last week is the only weekly target.</b> If runes fall week over week, the level is too high, not you. Drop a stat.<br><br><b>Levels.</b> Level 2 costs 1,500 and every level after costs 500 more. Leveling banks the pool permanently and raises one stat. Raising a stat raises the requirement. That is the ramp.<div class="l"><span>Vigor</span><span>floor steps</span></div><div class="l"><span>Endurance</span><span>weekly steps</span></div><div class="l"><span>Strength</span><span>lifts per week</span></div><div class="l"><span>Mind</span><span>kitchen rules</span></div><br>Strength and Endurance cannot pass Vigor plus 1. The consistency stat leads.<br><br><b>Site of Grace</b>, Sundays: rest, refill, and review. runes against last week, weight average, level up if affordable, grocery list, five lunches. Goals are set once. That is the only review.']
+ progress:()=>['Runes, levels and the Site of Grace','<b>Beating last week is the only weekly target.</b> If runes fall week over week, the level is too high, not you. Drop a stat.<br><br><b>Levels.</b> Level 2 costs 1,500 and every level after costs 500 more. Leveling banks the pool permanently and raises one stat. Raising a stat raises the requirement. That is the ramp.<div class="l"><span>Vigor</span><span>floor steps</span></div><div class="l"><span>Endurance</span><span>step targets</span></div><div class="l"><span>Strength</span><span>lifts per week</span></div><div class="l"><span>Mind</span><span>kitchen rules</span></div><br>Strength and Endurance cannot pass Vigor plus 1. The consistency stat leads.<br><br><b>Site of Grace</b>, Sundays: rest, refill, and review. runes against last week, weight average, level up if affordable, grocery list, five lunches. Goals are set once. That is the only review.']
 };
 function showTip(k){
   const [t,b]=TIP[k]();
@@ -617,8 +621,8 @@ ${done?'':'<div class="hint">All three is the entire plan on a bad day.</div>'}
 
   <div class="card" id="t-runes">
     <div class="hdr"><b>Runes ${I('runes')}</b><span class="st">${fmt(cap)} / ${ceilMax}</span></div>
-    ${row('s7k','7,000 steps','','+100',x.s7k||x.s10k,!!x.s10k)}
-    ${row('s10k','10,000 steps','','+200',x.s10k)}
+    ${row('s7k',fmt(stepTier1())+' steps','','+100',x.s7k||x.s10k,!!x.s10k)}
+    ${row('s10k',fmt(stepTier2())+' steps','','+200',x.s10k)}
     ${row('gym','Went downstairs to the gym','Arriving counts. One set counts.','+150',x.gym||x.lift,!!x.lift)}
     ${row('lift','Lift session logged','','+300',x.lift,true)}
     ${row('lunchMade','Lunch was already made','','+100',x.lunchMade)}
@@ -762,8 +766,8 @@ function sheetDay(k){
       ${R('s2k',fmt(stepMin())+' steps','Floor','',x.s2k||x.s7k||x.s10k,x.s7k||x.s10k)}
       ${R('protein','Protein at lunch','Floor','',x.protein)}
       ${R('dinner','Dinner plated in the kitchen','Floor','+100',x.dinner)}
-      ${R('s7k','7,000 steps','','+100',x.s7k||x.s10k,!!x.s10k)}
-      ${R('s10k','10,000 steps','','+200',x.s10k)}
+      ${R('s7k',fmt(stepTier1())+' steps','','+100',x.s7k||x.s10k,!!x.s10k)}
+      ${R('s10k',fmt(stepTier2())+' steps','','+200',x.s10k)}
       ${R('lift','Lift session','','+300',x.lift)}
       ${R('lunchMade','Lunch was already made','','+100',x.lunchMade)}
     </div>
@@ -812,7 +816,7 @@ function vStats(){
 
   ${fold('level','Level '+S.level,'progress',afford?'level up':'',`
     <div class="kv"><span>Vigor ${st.vigor}<span class="sub" style="color:var(--dim)"> &middot; ${fmt(stepMin())} steps</span></span>${btn('vigor','+1')}</div>
-    <div class="kv"><span>Endurance ${st.endurance}<span class="sub" style="color:var(--dim)"> &middot; ${fmt(weekSteps())}/wk</span></span>${btn('endurance','+1')}</div>
+    <div class="kv"><span>Endurance ${st.endurance}<span class="sub" style="color:var(--dim)"> &middot; ${fmt(stepTier1())}/day &middot; ${fmt(weekSteps())}/wk</span></span>${btn('endurance','+1')}</div>
     <div class="kv"><span>Strength ${st.strength}<span class="sub" style="color:var(--dim)"> &middot; ${liftsWeek()} lifts/wk</span></span>${btn('strength','+1')}</div>
     <div class="kv"><span>Mind ${st.discipline}<span class="sub" style="color:var(--dim)"> &middot; ${rules().length} rule${rules().length>1?'s':''}</span></span>${btn('discipline','+1')}</div>
     <div class="hint">${afford?'Spending '+fmt(nextCost())+' banks the runes permanently and raises the requirement.':'Need '+fmt(Math.max(0,nextCost()-L.pool))+' more runes.'}</div>`)}
