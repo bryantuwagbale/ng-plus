@@ -1,11 +1,11 @@
 {
-  "name": "New Gains+",
-  "short_name": "NG+",
-  "description": "Fat loss and strength tracker. Runes, the Floor, and never miss twice.",
+  "name": "climb",
+  "short_name": "climb",
+  "description": "Fat loss and strength recovery run. Ranked climb back to a former peak.",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0E141C",
-  "theme_color": "#0E141C",
+  "background_color": "#0B0E14",
+  "theme_color": "#0B0E14",
   "start_url": ".",
   "scope": ".",
   "icons": [

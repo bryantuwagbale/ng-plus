@@ -1,4 +1,4 @@
-const C='ngplus-v8';
+const C='climb-v1';
 const FILES=['./','./index.html','./manifest.json','./icon-180.png','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>{
   self.skipWaiting();
