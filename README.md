@@ -1,68 +1,42 @@
-# New Gains+
+# climb
 
-Fat loss and strength tracker. Single-file HTML PWA. No build step, no dependencies, no backend.
+A 15 lb fat loss and strength recovery run, framed as a ranked climb back to a former peak. No build step, single-file PWA, deployed on GitHub Pages.
 
-## Files
+## What this is
 
-Replace everything in the repo root with these:
+The user hit Diamond before (peak lifting strength, a 2-plate squat) and dropped out of ranked. This app isn't a new account, it's the climb back. Every day resolves into one match result:
 
-| File | What it is |
-|---|---|
-| `index.html` | The entire app. All logic, styles, and markup. |
-| `manifest.json` | PWA metadata so it installs as a real app |
-| `icon-180.png` | iOS home screen icon |
-| `icon-192.png`, `icon-512.png` | Android / PWA icons |
-| `icon-maskable-512.png` | Android adaptive icon, extra padding for circle masking |
-| `favicon.png` | Browser tab icon |
+| Result | Requirement | LP |
+|---|---|---|
+| S-Tier | Floor + lift session + 7,000 steps | +30 |
+| Autopilot | Floor: 2,000 steps, protein at lunch, home-cooked dinner | +15 |
+| Loss | Floor not completed | -20 |
 
-## Deploy
+100 LP promotes a division. The ladder runs Iron through Diamond (4 divisions each), then Master, Grandmaster, Challenger, uncapped. Start position is Silver IV, so there's room to fall. Doing nothing is a Loss, silence is the worst outcome on the board.
 
-1. Drop all files in the root of the `ng-plus` repo.
-2. Commit and push. GitHub Pages serves it at `bryantuwagbale.github.io/ng-plus`.
-3. On iPhone: open in Safari, hard refresh, Share > Add to Home Screen.
-   Delete the old icon first. iOS caches icons and meta tags aggressively.
+Two "Loss Mitigated" tokens per month turn a bad day into a no-match: 0 LP change, no demotion, streak intact.
 
-## Data
+## Structure
 
-Everything lives in `localStorage` under `ngplus.v3`. Export and import JSON is under Attributes > Rebirth. That is the only way to move data between devices.
-
-Clearing Safari website data wipes it. Export before doing anything drastic.
-
-## The day
-
-- **Morning, after brushing teeth:** weigh in. The number is hidden until Sunday.
-- **During the day:** tap the three Floor boxes as they happen.
-- **Anything above the Floor** is upside, not obligation.
-- **Bad day:** hit the Floor and stop. No making it up. If the day is gone, spend a flask.
-- **Sunday:** the Site of Grace. Runes vs last week, weight average unlocks itself, level up.
-
-The one rule the system exists to protect: **never miss twice.**
-
-## Runes
-
-| Action | Runes |
-|---|---|
-| Floor (steps, protein at lunch, dinner plated) | 100 |
-| Base step target | 100 |
-| Stretch step target | 200 |
-| Went downstairs to the gym | 150 |
-| Lift session, top set logged | 300 |
-| Lunch was already made | 100 |
-| Dinner plated in the kitchen | 100 |
-| Named boss cleared | 500 |
-
-Step targets scale with Endurance, starting at 5,000 / 8,000 and rising 1,000 per level. They move only when you level, never on a calendar.
+- `index.html` — the entire app. All markup, styles, and logic in one file, no bundler, no dependencies.
+- `manifest.json` — PWA manifest, installable on iOS/Android as a home screen app.
+- `sw.js` — service worker, network-first with cache fallback for offline use.
+- `icon-*.png` — app icons.
 
 ## Tabs
 
-- **Today** — weigh-in, Floor checklist, rune actions, flask
-- **Food** — meal and drink log, kitchen rules, standing orders, grocery list
-- **Workouts** — A/B session, log top set, boss ladder
-- **Remembrances** — editable calendar, tap any day to backfill
-- **Attributes** — weight averages, weekly runes, levels, Rebirth (export/reset)
+- **Today** — weigh-in, rank card, the Floor checklist, Loss Mitigated
+- **Food** — kitchen rules, meal log, Sunday batch cook tracker, grocery list, standing orders
+- **Lift** — Friday/Saturday sessions, 30-minute session clock with 90-second rest timers between lifts, squat ladder (+10 lb per session, deloads to 85% after two stalls)
+- **Matches** — calendar history, color-coded by day result, tap any day to backfill or edit
+- **Rank** — weight trend (7-day rolling average), waist tracking, the full ladder, export/import/reset
 
-Tap any `i` for the rules behind that section. The `?` on Today opens the About page and the walkthrough.
+A "?" in the header runs a guided tour that navigates to and highlights each section.
 
-## Week one
+## Data
 
-Use Today and Workouts. Ignore everything else. Add the Crafting Kit (Sunday batch) in week two, weight in week three.
+Everything lives in `localStorage` under the key `climb.v1`. No backend, no account, no sync between devices. Export/import JSON from the Rank tab (Reset Account section) to move data or back it up.
+
+## Deploying
+
+Push to `main`, GitHub Pages serves straight from the repo root. No build step. If you rename the repo, update your home screen install afterward, the PWA's `start_url`/`scope` are tied to the URL.
