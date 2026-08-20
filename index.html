@@ -711,7 +711,6 @@ function go(t){
   document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
   document.querySelectorAll('.view').forEach(v=>v.classList.toggle('on',v.id==='v-'+t));
   const m=el('mainScroll');
-  m.style.overflowY=(t==='today')?'hidden':'auto';
   m.scrollTop=0;
 }
 (function(){
